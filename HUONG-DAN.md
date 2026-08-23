@@ -32,7 +32,7 @@ Mất khoảng 20 giây. Xong là chị có mọi thứ.
 | `7-DUA-LEN-MANG.bat` | Đăng bản công khai lên Vercel | Khi muốn xem từ điện thoại |
 | `8-DANG-NHAP-VERCEL.bat` | Đăng nhập Vercel | **Một lần duy nhất**, trước khi dùng nút 7 |
 | `9-GOI-BO-SO.bat` | In bộ số gợi ý ra cửa sổ đen | Khi muốn xem nhanh, khỏi mở báo cáo |
-| `10-DAY-LEN-GITHUB.bat` | Đẩy bộ công cụ lên GitHub | **Một lần duy nhất**, để bật tự chạy |
+| `10-DAY-LEN-GITHUB.bat` | Đẩy thay đổi mã nguồn lên GitHub | Khi sửa mã trên máy. Dữ liệu thì GitHub tự lo |
 
 > Máy chị đã cài sẵn rồi, `1-CAI-DAT.bat` không cần chạy lại.
 > Nút 6 mất khoảng 20 giây, chạy xong thì kết quả tự hiện trong báo cáo HTML.
@@ -210,31 +210,42 @@ Muốn đăng lại sau khi có kỳ mới thì bấm lại nút 7 — vẫn gi�
 Mặc định bộ công cụ **không tự chạy**: máy tắt là mọi thứ đứng yên, trang web giữ nguyên
 số liệu của lần đăng cuối.
 
-Muốn nó tự cập nhật kể cả khi máy chị tắt, thì để GitHub chạy hộ. Ba bước, làm một lần:
+Muốn nó tự cập nhật kể cả khi máy chị tắt, thì để GitHub chạy hộ.
 
-### Bước 1 — Tạo repo trống trên GitHub
+### Bước 1 và 2 — ĐÃ XONG
 
-1. Mở https://github.com/new
-2. **Repository name**: `xo-so-vietlott`
-3. Chọn **Public**
-4. **KHÔNG** tích "Add a README file", **KHÔNG** chọn .gitignore, **KHÔNG** chọn license
-   — tích vào là repo không rỗng, lát đẩy lên sẽ kẹt
-5. Bấm **Create repository**
+Repo của chị: **https://github.com/Botraimua/xo-so-vietlott** (công khai)
 
-### Bước 2 — Bấm `10-DAY-LEN-GITHUB.bat`
+Bộ số riêng trong `ve-cua-chi.txt` **không** được đẩy lên — đã chặn trong `.gitignore`
+và đã kiểm chứng: mở đường dẫn đó trên GitHub sẽ báo không tìm thấy.
 
-Nó đẩy toàn bộ mã và dữ liệu lên. Lần đầu có thể hiện cửa sổ đăng nhập GitHub, chị bấm đồng ý.
-
-Bộ số riêng trong `ve-cua-chi.txt` **không được đẩy lên** — em đã chặn sẵn trong `.gitignore`.
-
-### Bước 3 — Nối Vercel với repo đó
+### Bước 3 — Nối Vercel với repo (chị làm nốt bước này)
 
 1. Mở https://vercel.com/psd6/vietlott-thongke/settings/git
 2. Bấm **Connect Git Repository**, chọn **GitHub**, chọn `Botraimua/xo-so-vietlott`
-3. Sang **Settings → General → Root Directory**, gõ vào: `web`
-4. Bấm **Save**
+3. Sang **Settings → General → Root Directory**, gõ vào: `web` rồi **Save**
 
-Xong. Từ đó GitHub tự chạy **2 lần mỗi ngày**:
+### Bước 4 — Chạy thử một lần cho chắc
+
+1. Mở https://github.com/Botraimua/xo-so-vietlott/actions
+2. Bên trái chọn **Cập nhật Vietlott**
+3. Bấm nút **Run workflow** → **Run workflow**
+
+Đợi khoảng 2 phút. Ô tròn chuyển xanh là chạy được.
+
+**Nếu nó đỏ ở bước cuối ("Ghi lại vào repo")**, thường là do GitHub chưa cho phép
+workflow ghi vào repo. Chữa như sau:
+
+1. Mở https://github.com/Botraimua/xo-so-vietlott/settings/actions
+2. Kéo xuống mục **Workflow permissions**
+3. Chọn **Read and write permissions** → **Save**
+4. Quay lại tab Actions bấm **Run workflow** lần nữa
+
+---
+
+## Lịch tự chạy
+
+Từ đó GitHub tự chạy **2 lần mỗi ngày**:
 
 | Giờ Việt Nam | Sau khi quay |
 |---|---|
@@ -245,8 +256,7 @@ Mỗi lần nó tải kỳ mới → chạy lại bàn kiểm thử → sinh b�
 ghi vào repo. Vercel thấy repo đổi thì tự đăng lại trang. Máy chị không cần bật.
 
 > GitHub hay chạy trễ 5–30 phút so với giờ hẹn, chuyện bình thường.
-> Muốn chạy ngay không đợi: vào tab **Actions** trên GitHub, chọn "Cập nhật Vietlott",
-> bấm **Run workflow**.
+> Muốn chạy ngay không đợi: vào tab **Actions**, bấm **Run workflow**.
 
 Sau khi bật cái này thì **nút 7 thành tuỳ chọn** — chỉ dùng khi chị muốn đẩy ngay lập tức
 chứ không đợi tới giờ.
