@@ -17,7 +17,7 @@ Cách chạy:
 
 import re
 import sys
-from datetime import date
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -271,7 +271,7 @@ def ghi(cac_dong):
     """Thêm vé vào sổ. Dòng chưa có ngày thì tự đóng ngày hôm nay."""
     if not FILE_SO.exists():
         FILE_SO.write_text(MAU_DONG, encoding="utf-8")
-    hom_nay = date.today().isoformat()
+    hom_nay = datetime.now(timezone(timedelta(hours=7))).date().isoformat()
     them = 0
     with open(FILE_SO, "a", encoding="utf-8") as f:
         for dong in cac_dong:

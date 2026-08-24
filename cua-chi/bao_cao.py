@@ -11,7 +11,7 @@ import html
 import json
 import math
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -854,7 +854,9 @@ def main(che_do_web=False):
     day_du = [ma for ma, c in SAN_PHAM.items() if c["phan_tich_day_du"] and du_lieu.get(ma)]
     gon = [ma for ma, c in SAN_PHAM.items() if not c["phan_tich_day_du"] and du_lieu.get(ma)]
 
-    bay_gio = datetime.now().strftime("%H:%M ngày %d/%m/%Y")
+    # Bot GitHub chạy trên máy giờ UTC -> phải quy về giờ Việt Nam,
+    # không thì trang ghi lệch 7 tiếng.
+    bay_gio = datetime.now(timezone(timedelta(hours=7))).strftime("%H:%M ngày %d/%m/%Y")
     p = []
     p.append('<!doctype html><html lang="vi"><head><meta charset="utf-8">')
     p.append('<meta name="viewport" content="width=device-width,initial-scale=1">')

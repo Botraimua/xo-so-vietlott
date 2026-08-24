@@ -18,7 +18,7 @@ Cách chạy:
 import json
 import random
 import sys
-from datetime import date
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -149,7 +149,8 @@ def main():
                 return 1
 
     danh_sach = loc or list(KHUON.keys())
-    hom_nay = date.today().isoformat()
+    # Theo giờ Việt Nam, không theo giờ máy chủ chạy bot
+    hom_nay = datetime.now(timezone(timedelta(hours=7))).date().isoformat()
 
     print()
     print("  BỘ SỐ GỢI Ý CHO NGÀY " + ngay_viet(hom_nay))
