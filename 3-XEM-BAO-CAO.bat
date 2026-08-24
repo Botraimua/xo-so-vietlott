@@ -6,6 +6,10 @@ set PYTHONIOENCODING=utf-8
 set PYTHONPATH=%~dp0src
 
 if not exist ".venv\Scripts\python.exe" goto chua_cai
+
+rem Keo ve nhung ve chi da nhap tren trang web
+git pull --rebase --autostash >nul 2>&1
+
 ".venv\Scripts\python.exe" "cua-chi\bao_cao.py"
 if errorlevel 1 goto loi
 

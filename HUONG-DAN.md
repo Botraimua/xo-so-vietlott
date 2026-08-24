@@ -161,6 +161,62 @@ Muốn nhiều hay ít bộ hơn, hoặc chỉ một sản phẩm, thì mở c�
 
 ---
 
+## Nhập vé ngay trên trang web
+
+Trong mục **Sổ vé đã mua** trên trang có ô **"Ghi một tờ vé vào sổ"**. Nhập từ điện thoại
+cũng được — vé đi thẳng vào sổ chính trên GitHub, máy tính và web đều thấy.
+
+Bấm vào một bộ ở mục **Bộ số gợi ý** thì ô này **tự điền hộ**, chị chỉ việc bấm Ghi.
+
+Mật khẩu chỉ phải gõ lần đầu trên mỗi thiết bị, sau đó trình duyệt nhớ.
+
+### Cài đặt — làm một lần
+
+Ô nhập chưa chạy được cho tới khi chị làm 2 việc sau. Bấm thử bây giờ sẽ báo
+*"Máy chủ chưa được cài đặt"* — đúng như vậy.
+
+**Bước 1 — Tạo chìa khoá GitHub**
+
+1. Mở https://github.com/settings/personal-access-tokens/new
+2. **Token name**: `vietlott-ghi-ve`
+3. **Expiration**: chọn `No expiration` (hoặc 1 năm, hết hạn thì tạo lại)
+4. **Repository access** → chọn **Only select repositories** → chọn `xo-so-vietlott`
+5. **Permissions → Repository permissions**, đặt đúng 2 mục này:
+   - **Contents**: `Read and write`
+   - **Actions**: `Read and write`
+6. Bấm **Generate token**, rồi **copy** chuỗi hiện ra (chỉ hiện một lần)
+
+**Bước 2 — Dán vào Vercel**
+
+1. Mở https://vercel.com/psd6/vietlott-thongke/settings/environment-variables
+2. Thêm biến thứ nhất: Key = `GITHUB_TOKEN`, Value = chuỗi vừa copy → **Save**
+3. Thêm biến thứ hai: Key = `MAT_KHAU`, Value = mật khẩu chị tự nghĩ → **Save**
+4. Bấm `7-DUA-LEN-MANG.bat` một lần để trang nhận biến mới
+
+Xong. Từ đó nhập vé trên trang là chạy.
+
+### Chạy như thế nào
+
+1. Chị bấm **Ghi vào sổ** trên trang
+2. Máy chủ kiểm mật khẩu, ghi thêm một dòng vào `cua-chi/so-ve.txt` trên GitHub
+3. Máy chủ kích workflow dựng lại trang — khoảng **2 phút** sau vé hiện ra, đã chấm sẵn
+4. Lần sau chị bấm nút 0 hoặc nút 3 trên máy, nó tự kéo vé đó về
+
+**Mật khẩu để làm gì:** trang công khai nên nếu không có mật khẩu thì ai cũng ghi vé vào
+sổ chị được. Mật khẩu kiểm ở phía máy chủ, không nằm trong trang. Chìa khoá GitHub cũng
+nằm ở phía máy chủ, người xem trang không thấy được.
+
+**Nếu bấm Ghi mà báo lỗi:**
+
+| Báo | Nghĩa là |
+|---|---|
+| *Máy chủ chưa được cài đặt* | Chưa làm Bước 1–2, hoặc chưa bấm nút 7 sau khi thêm biến |
+| *Mật khẩu không đúng* | Gõ sai. Xoá ô mật khẩu rồi gõ lại |
+| *Không đọc được sổ vé (mã 403/404)* | Chìa khoá thiếu quyền, hoặc chọn nhầm repo ở Bước 1 |
+| *Không gọi được máy chủ* | Chị đang mở file HTML từ máy. Ô nhập chỉ chạy trên trang web thật |
+
+---
+
 ## Sổ vé đã mua (nút 11)
 
 Khi chị **mua thật** một bộ số, ghi nó vào sổ để theo dõi kết quả và lãi/lỗ thật:
@@ -168,7 +224,10 @@ Khi chị **mua thật** một bộ số, ghi nó vào sổ để theo dõi kế
 1. Trong báo cáo, bấm vào bộ số chị mua (nó tự chép, kèm luôn tên chiến lược và ngày)
 2. Bấm **`11-GHI-VE-DA-MUA.bat`** — vé vào sổ với ngày hôm nay
 
-Từ đó, mỗi lần mở báo cáo (nút 0 / nút 3) sẽ có mục **"Sổ vé đã mua"**:
+Hoặc nhập thẳng trên trang web — xem mục ngay trên.
+
+Từ đó, mỗi lần mở báo cáo (nút 0 / nút 3) sẽ có mục **"Sổ vé đã mua"**. Hai nút này giờ
+**tự kéo về** những vé chị đã nhập trên web trước khi dựng báo cáo:
 
 - Vé chưa tới kỳ quay: hiện *chờ quay*. Quay xong: tự chấm, tô xanh số trùng
 - Trúng giải: ghi rõ hạng và tiền (Power 6/55: nhất 40tr / nhì 500k / ba 50k;

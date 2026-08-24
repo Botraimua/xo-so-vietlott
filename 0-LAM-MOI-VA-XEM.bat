@@ -7,6 +7,9 @@ set PYTHONPATH=%~dp0src
 
 if not exist ".venv\Scripts\python.exe" goto chua_cai
 
+rem Keo ve nhung ve chi da nhap tren trang web
+git pull --rebase --autostash >nul 2>&1
+
 ".venv\Scripts\python.exe" "cua-chi\cap_nhat.py"
 ".venv\Scripts\python.exe" "cua-chi\do_ve.py"
 ".venv\Scripts\python.exe" "cua-chi\goi_so.py" >nul
