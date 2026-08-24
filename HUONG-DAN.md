@@ -98,12 +98,21 @@ Trong đó:
 | Sản phẩm | Số kỳ | Từ ngày | Lịch quay |
 |---|---:|---|---|
 | Power 6/55 | 1.388 | 01/08/2017 | Thứ 3 – 5 – 7, 18h |
-| Mega 6/45 | 1.355 | 25/10/2017 | Thứ 4 – 6 – CN, 18h |
-| Lotto 5/35 | 767 | 29/06/2025 | Hằng ngày, 21h |
-| Keno | 81.861 | 04/12/2022 | Mỗi 10 phút |
+| Mega 6/45 | 1.553 | 20/07/2016 | Thứ 4 – 6 – CN, 18h |
+| **Lotto 5/35** | 842 | 29/06/2025 | **hằng ngày 2 kỳ — 13h và 21h** |
+| Keno | 81.861 | 04/12/2022 | Mỗi 10 phút, 6h – 21h55 |
 | Bingo18 | 87.059 | 03/12/2024 | Mỗi 10 phút |
-| Max 3D | 1.118 | 22/04/2019 | Thứ 2 – 4 – 6, 18h |
-| Max 3D Pro | 765 | 14/09/2021 | Thứ 3 – 5 – 7, 18h |
+| Max 3D | 1.122 | 22/04/2019 | Thứ 2 – 4 – 6, 18h |
+| Max 3D Pro | 769 | 14/09/2021 | Thứ 3 – 5 – 7, 18h |
+
+Lịch trên **lấy từ chính dữ liệu**, không phải chép ở đâu: đếm thứ trong tuần và số kỳ
+mỗi ngày của 120 ngày gần nhất.
+
+> **Dữ liệu gốc của tác giả có lỗ, đã lấy bù xong.** Lotto 5/35 hụt 74 kỳ (vì repo gốc chỉ
+> lấy 1 trang mỗi lần, mà sản phẩm này quay 2 kỳ/ngày), Mega 6/45 hụt 197 kỳ đầu, Max 3D
+> hụt 4, Max 3D Pro hụt 4. Giờ cả 5 sản phẩm **liền mạch, không thiếu kỳ nào** — kiểm bằng
+> cách soi mã kỳ có chạy liên tục không. Để không tái diễn, mỗi lần cập nhật giờ lấy 3 trang
+> thay vì 1.
 
 Dữ liệu thô nằm trong `data\*.jsonl` — mỗi dòng một kỳ quay, mở bằng Notepad
 hay Excel đều đọc được.
@@ -232,12 +241,13 @@ Muốn nó tự cập nhật kể cả khi máy chị tắt thì để GitHub ch
 
 ## Lịch tự chạy
 
-Từ đó GitHub tự chạy **2 lần mỗi ngày**:
+Từ đó GitHub tự chạy **3 lần mỗi ngày**:
 
 | Giờ Việt Nam | Sau khi quay |
 |---|---|
+| ~13h45 | Lotto 5/35 kỳ trưa |
 | ~18h45 | Power 6/55, Mega 6/45, Max 3D, Max 3D Pro |
-| ~21h45 | Lotto 5/35 |
+| ~21h45 | Lotto 5/35 kỳ tối |
 
 Mỗi lần nó tải kỳ mới → chạy lại bàn kiểm thử → sinh bộ số mới cho ngày → dựng lại trang →
 ghi vào repo. Vercel thấy repo đổi thì tự đăng lại trang. Máy chị không cần bật.
@@ -292,7 +302,7 @@ xo-so-vietlott\
 │   ├── kiem-thu.json               kết quả nút 6, báo cáo tự đọc vào
 │   └── goi-so.json                 bộ số gợi ý của ngày hôm nay
 ├── web\index.html               <- bản công khai, Vercel lấy từ đây
-├── .github\workflows\           <- lịch tự chạy 2 lần/ngày trên GitHub
+├── .github\workflows\           <- lịch tự chạy 3 lần/ngày trên GitHub
 ├── data\*.jsonl                 <- dữ liệu thô
 └── src\                         <- bộ crawler gốc (không cần đụng tới)
 ```

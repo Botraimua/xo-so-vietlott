@@ -45,7 +45,7 @@ SAN_PHAM = {
         "max_chinh": 35,
         "co_so_db": True,
         "max_db": 12,
-        "lich": "Hằng ngày, 21h00",
+        "lich": "Hằng ngày 2 kỳ — 13h00 và 21h00",
         "phan_tich_day_du": True,
     },
     "keno": {

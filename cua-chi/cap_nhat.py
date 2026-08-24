@@ -22,6 +22,11 @@ bat_utf8()
 MAC_DINH = ["power_655", "power_645", "power_535", "3d", "3d_pro"]
 NHIEU_KY = ["keno", "bingo18"]
 
+# Lấy mấy trang kết quả mỗi lần. Repo gốc chỉ lấy 1 trang, và chính vì thế dữ liệu
+# Lotto 5/35 của họ hụt 48 kỳ (sản phẩm này quay 2 kỳ/ngày). Lấy 3 trang thì thừa
+# chỗ gối đầu; kỳ đã có sẵn sẽ tự bị loại nên không sợ ghi trùng.
+SO_TRANG = 3
+
 
 def dem_dong(ma):
     f = THU_MUC_DATA / SAN_PHAM[ma]["file"]
@@ -52,6 +57,8 @@ def ky_cuoi(ma):
 def chay_mot(ma):
     truoc = dem_dong(ma)
     lenh = [sys.executable, str(GOC / "src" / "vietlott" / "cli" / "crawl.py"), ma]
+    if ma not in NHIEU_KY:
+        lenh += ["--index_to", str(SO_TRANG)]
     import os
     moi_truong = dict(os.environ)
     moi_truong["PYTHONPATH"] = str(GOC / "src")

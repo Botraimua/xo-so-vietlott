@@ -1,11 +1,13 @@
 name: Cập nhật Vietlott
 
 # Giờ trong cron là giờ UTC. Việt Nam = UTC + 7.
-#   11:45 UTC = 18:45 giờ VN  -> sau khi quay Power 6/55 và Mega 6/45 (18h00)
-#   14:45 UTC = 21:45 giờ VN  -> sau khi quay Lotto 5/35 (21h00)
+#    6:45 UTC = 13:45 giờ VN  -> sau kỳ Lotto 5/35 buổi trưa (13h00)
+#   11:45 UTC = 18:45 giờ VN  -> sau khi quay Power 6/55, Mega 6/45, Max 3D, 3D Pro (18h00)
+#   14:45 UTC = 21:45 giờ VN  -> sau kỳ Lotto 5/35 buổi tối (21h00)
 # GitHub hay chạy trễ 5-30 phút so với giờ hẹn, không sao.
 on:
   schedule:
+    - cron: "45 6 * * *"
     - cron: "45 11 * * *"
     - cron: "45 14 * * *"
   workflow_dispatch:        # cho phép bấm chạy tay trên GitHub
