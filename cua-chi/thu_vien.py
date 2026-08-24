@@ -173,6 +173,27 @@ def ngay_viet(s, kem_thu=True):
     return d.strftime("%d/%m/%Y")
 
 
+def kiem_lo(rows):
+    """
+    Soi mã kỳ có chạy liên tục không, để biết dữ liệu có bị hụt kỳ nào không.
+
+    Đếm số kỳ mỗi ngày là KHÔNG đủ: ngày nào mất trắng thì không hiện ra.
+    Mã kỳ chạy liên tục mới là bằng chứng chắc.
+    """
+    so = []
+    for r in rows:
+        x = str(r.get("id", "")).lstrip("#").lstrip("0") or "0"
+        if x.isdigit():
+            so.append(int(x))
+    if len(so) < 2:
+        return None
+    tap = set(so)
+    dau, cuoi = min(tap), max(tap)
+    le_ra = cuoi - dau + 1
+    return {"co": len(tap), "le_ra": le_ra, "hut": le_ra - len(tap),
+            "ma_dau": dau, "ma_cuoi": cuoi}
+
+
 def thong_ke(ma, rows):
     """Tính tần suất, lần cuối xuất hiện, số kỳ chưa về (gan) cho từng con số."""
     cfg = SAN_PHAM[ma]

@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bieu_do import CSS_BIEU_DO, cot, khung  # noqa: E402
 from thu_vien import (  # noqa: E402
     SAN_PHAM, THU_MUC_BAO_CAO, bat_utf8, doc_du_lieu, doc_ve, do_mot_ve,
-    ngay_viet, tach_so, thong_ke,
+    kiem_lo, ngay_viet, tach_so, thong_ke,
 )
 
 bat_utf8()
@@ -209,6 +209,25 @@ def khoi_ve(du_lieu):
             p.append("<li>" + e(l["loi"]) + " &mdash; <code>" + e(l["raw"]) + "</code></li>")
         p.append("</ul></div>")
     return "\n".join(p)
+
+
+def dong_chat_luong(rows):
+    """Một dòng cho biết dữ liệu có liền mạch không. Soi bằng mã kỳ."""
+    lo = kiem_lo(rows)
+    if not lo:
+        return ""
+    if lo["hut"] == 0:
+        return ('<div class="mo">Dữ liệu liền mạch: mã kỳ chạy đủ từ '
+                + str(lo["ma_dau"]) + " đến " + str(lo["ma_cuoi"]) + ", không thiếu kỳ nào.</div>")
+    ty = lo["hut"] / lo["le_ra"] * 100
+    return ('<div class="canh" style="margin:10px 0">Dữ liệu <strong>chưa đầy đủ</strong>: '
+            "trong khoảng mã kỳ " + str(lo["ma_dau"]) + "&ndash;" + str(lo["ma_cuoi"])
+            + " lẽ ra có " + format(lo["le_ra"], ",").replace(",", ".") + " kỳ, hiện có "
+            + format(lo["co"], ",").replace(",", ".") + " kỳ &mdash; <strong>hụt "
+            + format(lo["hut"], ",").replace(",", ".") + " kỳ (" + format(ty, ".0f")
+            + "%)</strong>. Bảng tần suất vẫn dùng được vì mẫu đủ lớn và phần hụt là "
+            "một quãng thời gian, không thiên về con số nào; nhưng đừng đọc nó như thể "
+            "đã bao trọn mọi kỳ quay.</div>")
 
 
 # ---------- Bộ số gợi ý ----------
@@ -426,6 +445,7 @@ def khoi_san_pham(ma, rows):
     p.append('<div class="mo">' + e(cfg["lich"]) + " &middot; " + str(tk["tong_ky"])
              + " kỳ &middot; " + e(ngay_viet(tk["tu_ngay"], kem_thu=False)) + " &rarr; "
              + e(ngay_viet(tk["den_ngay"], kem_thu=False)) + "</div>")
+    p.append(dong_chat_luong(rows))
 
     # --- kỳ gần nhất
     so_ky_hien = 8 if ma == "keno" else 10
@@ -524,9 +544,10 @@ def khoi_gon(ma, rows):
         chinh, db = tach_so(ky, ma)
         noi_dung = day_bi(chinh, db)
     return ('<div class="the"><div><strong>' + e(cfg["ten"]) + '</strong> <span class="mo">&middot; '
-            + str(len(rows)) + " kỳ</span></div>"
+            + format(len(rows), ",").replace(",", ".") + " kỳ</span></div>"
             + '<div class="mo">' + e(ngay_viet(ky.get("date"))) + " &middot; kỳ " + e(ky.get("id"))
-            + "</div><div style='margin-top:6px'>" + noi_dung + "</div></div>")
+            + "</div><div style='margin-top:6px'>" + noi_dung + "</div>"
+            + dong_chat_luong(rows) + "</div>")
 
 
 def main(che_do_web=False):
