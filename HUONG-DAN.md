@@ -212,34 +212,27 @@ số liệu của lần đăng cuối.
 
 Muốn nó tự cập nhật kể cả khi máy chị tắt, thì để GitHub chạy hộ.
 
-### Bước 1 và 2 — ĐÃ XONG
+### Đã xong
 
-Repo của chị: **https://github.com/Botraimua/xo-so-vietlott** (công khai)
+- ✅ Repo: **https://github.com/Botraimua/xo-so-vietlott** (công khai).
+  Bộ số riêng trong `ve-cua-chi.txt` **không** lên mạng — đã chặn và đã kiểm chứng.
+- ✅ **Workflow đã chạy thật** lúc 00h20 ngày 24/08/2026: tự tải kỳ mới, dựng lại trang,
+  ghi vào repo. Không cần chạy thử nữa.
+- ✅ **Root Directory** trên Vercel đã đặt là `web`.
 
-Bộ số riêng trong `ve-cua-chi.txt` **không** được đẩy lên — đã chặn trong `.gitignore`
-và đã kiểm chứng: mở đường dẫn đó trên GitHub sẽ báo không tìm thấy.
+### Còn một bước: nối Vercel với GitHub
 
-### Bước 3 — Nối Vercel với repo (chị làm nốt bước này)
+Hiện Vercel **chưa** biết tới repo, nên nó chưa tự đăng lại trang khi GitHub có bản mới.
+Trong lúc chưa nối, chị vẫn đăng được bằng `7-DUA-LEN-MANG.bat`.
+
+Nối như sau:
 
 1. Mở https://vercel.com/psd6/vietlott-thongke/settings/git
-2. Bấm **Connect Git Repository**, chọn **GitHub**, chọn `Botraimua/xo-so-vietlott`
-3. Sang **Settings → General → Root Directory**, gõ vào: `web` rồi **Save**
+2. Bấm **Connect Git Repository** → chọn **GitHub** → chọn `Botraimua/xo-so-vietlott`
+3. Xong. Không phải sửa gì thêm — Root Directory đã đúng rồi.
 
-### Bước 4 — Chạy thử một lần cho chắc
-
-1. Mở https://github.com/Botraimua/xo-so-vietlott/actions
-2. Bên trái chọn **Cập nhật Vietlott**
-3. Bấm nút **Run workflow** → **Run workflow**
-
-Đợi khoảng 2 phút. Ô tròn chuyển xanh là chạy được.
-
-**Nếu nó đỏ ở bước cuối ("Ghi lại vào repo")**, thường là do GitHub chưa cho phép
-workflow ghi vào repo. Chữa như sau:
-
-1. Mở https://github.com/Botraimua/xo-so-vietlott/settings/actions
-2. Kéo xuống mục **Workflow permissions**
-3. Chọn **Read and write permissions** → **Save**
-4. Quay lại tab Actions bấm **Run workflow** lần nữa
+Sau bước này, mỗi lần GitHub cập nhật dữ liệu thì Vercel tự đăng lại trang trong khoảng
+1 phút, hoàn toàn không cần chị đụng tay.
 
 ---
 
