@@ -224,6 +224,47 @@ function dienVaoO(chuoi){
     }).then(function(){ nut.disabled = false; });
   });
 })();
+
+// ----- Xoa mot to ve khoi so -----
+document.querySelectorAll('.nut-xoa').forEach(function(nut){
+  nut.addEventListener('click', function(){
+    var dong = nut.dataset.dong || '';
+    if(!dong) return;
+    if(!confirm('Xoa to ve nay khoi so?   [ ' + dong + ' ]   Xoa roi khong lay lai duoc.')) return;
+
+    var mk = '';
+    try { mk = localStorage.getItem('vietlott_mk') || ''; } catch(e){}
+    if(!mk){
+      mk = prompt('Nhap mat khau de xoa ve:') || '';
+      if(!mk) return;
+    }
+
+    var cu = nut.textContent;
+    nut.disabled = true; nut.textContent = 'Dang xoa...';
+    fetch('/api/ghi-ve', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({viec: 'xoa', matKhau: mk, dong: dong})
+    }).then(function(r){
+      return r.json().then(function(j){ return {ok: r.ok, ma: r.status, j: j}; });
+    }).then(function(kq){
+      if(kq.ok && kq.j.ok){
+        try { localStorage.setItem('vietlott_mk', mk); } catch(e){}
+        var tr = nut.closest('tr');
+        if(tr){ tr.style.opacity = '.35'; tr.style.textDecoration = 'line-through'; }
+        nut.textContent = 'Da xoa';
+        alert(kq.j.thong_bao || 'Da xoa khoi so.');
+      } else {
+        nut.disabled = false; nut.textContent = cu;
+        alert(kq.j.loi || ('Loi ' + kq.ma));
+      }
+    }).catch(function(){
+      nut.disabled = false; nut.textContent = cu;
+      alert('Khong goi duoc may chu. Xoa ve chi chay tren trang vietlott-thongke.vercel.app, '
+        + 'khong chay khi mo file HTML tu may.');
+    });
+  });
+});
 """
 
 
@@ -361,7 +402,8 @@ def khoi_so_ve():
              "</tbody></table></div></div>")
 
     p.append('<div class="the"><div class="cuon"><table><thead><tr>'
-             "<th>Ngày mua</th><th>Vé</th><th>Kỳ quay</th><th>Kết quả</th></tr></thead><tbody>")
+             "<th>Ngày mua</th><th>Vé</th><th>Kỳ quay</th><th>Kết quả</th>"
+             "<th></th></tr></thead><tbody>")
     for k in reversed(kq):
         v = k["ve"]
         ten = SAN_PHAM[v["ma"]]["ten"]
@@ -371,7 +413,8 @@ def khoi_so_ve():
             o_ve += '<div class="mo">' + e(v["ghi_chu"]) + "</div>"
         if k["trang_thai"] == "cho":
             p.append("<tr><td>" + e(ngay_viet(v["ngay_mua"], kem_thu=False)) + "</td><td>" + o_ve
-                     + '</td><td class="mo">&mdash;</td><td><span class="nhan-nho">chờ quay</span></td></tr>')
+                     + '</td><td class="mo">&mdash;</td><td><span class="nhan-nho">chờ quay</span></td>'
+                     + o_xoa(v) + "</tr>")
             continue
         ky = k["ky"]
         o_ky = e(ngay_viet(ky.get("date"), kem_thu=False)) + '<div class="mo">kỳ ' + e(ky.get("id")) + "</div>"
@@ -393,7 +436,7 @@ def khoi_so_ve():
                      "muốn kỳ khác, thêm @&lt;mã kỳ&gt; vào dòng vé</div>")
         o_kq += "<div>" + dong + "</div>"
         p.append("<tr><td>" + e(ngay_viet(v["ngay_mua"], kem_thu=False)) + "</td><td>" + o_ve
-                 + "</td><td>" + o_ky + "</td><td>" + o_kq + "</td></tr>")
+                 + "</td><td>" + o_ky + "</td><td>" + o_kq + "</td>" + o_xoa(v) + "</tr>")
     p.append("</tbody></table></div></div>")
 
     if loi:
@@ -536,6 +579,12 @@ def khoi_xac_suat():
              "công khai nào nói rõ, nên bảng trên chỉ ghi xác suất <strong>khớp số</strong>, "
              "không đặt tên hạng giải. Power 6/55 và Mega 6/45 thì có bảng giải đầy đủ.</div>")
     return chr(10).join(p)
+
+
+def o_xoa(v):
+    """Ô chứa nút xoá một tờ vé. Xoá theo NGUYÊN VĂN dòng nên không sợ lệch số dòng."""
+    return ('<td><button class="nut-xoa" data-dong="' + e(v.get("raw", ""))
+            + '" title="Xoá tờ vé này khỏi sổ">Xoá</button></td>')
 
 
 def khung_nhap_ve():

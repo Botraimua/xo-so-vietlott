@@ -71,7 +71,7 @@ align-items:center;gap:5px}
 @media (max-width:400px){.luoi-bd{grid-template-columns:1fr}}
 </style></head><body><div class='bao'>
 <header><h1>Thống kê Vietlott</h1>
-<div class="mo">Dựng lúc 22:48 ngày 24/08/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
+<div class="mo">Dựng lúc 22:59 ngày 24/08/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
 <nav>
 <a href="#so-ve">Sổ vé</a>
 <a href="#power_655">Power 6/55</a>
@@ -87,8 +87,8 @@ align-items:center;gap:5px}
 <div class="mo">Mỗi tờ vé gắn với đúng một kỳ quay. Nhập vé ngay bên dưới, hoặc trên máy tính thì bấm một bộ số gợi ý rồi bấm <code>11-GHI-VE-DA-MUA.bat</code>.</div>
 <div class="the nhap-ve"><div class="ten-bd">Ghi một tờ vé vào sổ</div><div class="mo" style="margin:4px 0 10px">Bấm vào bộ số ở mục <a href="#goi-so">Bộ số gợi ý</a> thì ô này tự điền hộ.</div><div class="hang-nhap"><label>Sản phẩm<select id="nv-sp"><option value="power_655">Power 6/55 &mdash; 6 số 1-55</option><option value="power_645">Mega 6/45 &mdash; 6 số 1-45</option><option value="power_535">Lotto 5/35 &mdash; 5 số 1-35 + số đặc biệt 1-12</option><option value="keno">Keno &mdash; 10 số 1-80</option></select></label><label>Các số<input id="nv-so" inputmode="numeric" placeholder="ví dụ 3 12 19 27 41 52"></label><label class="nv-db">Số đặc biệt<input id="nv-db" inputmode="numeric" placeholder="1-12"></label></div><div class="hang-nhap"><label>Ngày mua<input id="nv-ngay" type="date"></label><label>Ghi chú<input id="nv-ghi" placeholder="tuỳ ý"></label><label>Mật khẩu<input id="nv-mk" type="password" placeholder="nhớ sau lần đầu"></label></div><div style="margin-top:10px"><button id="nv-gui" class="nut">Ghi vào sổ</button><span id="nv-bao" class="nv-bao"></span></div></div>
 <div class="the"><div class="cuon"><table><thead><tr><th class="so">Số vé</th><th class="so">Tiền mua vé</th><th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody><tr><td class="so">1<span class="mo"> (1 chờ quay)</span></td><td class="so">10.000đ</td><td class="so">0đ</td><td class="so"><strong style="color:var(--nhan)">-10.000đ</strong></td></tr></tbody></table></div></div>
-<div class="the"><div class="cuon"><table><thead><tr><th>Ngày mua</th><th>Vé</th><th>Kỳ quay</th><th>Kết quả</th></tr></thead><tbody>
-<tr><td>24/08/2026</td><td><strong>Mega 6/45</strong><div><span class="bi ">04</span><span class="bi ">13</span><span class="bi ">22</span><span class="bi ">28</span><span class="bi ">34</span><span class="bi ">42</span></div><div class="mo">gợi ý Số nóng 24/08/2026</div></td><td class="mo">&mdash;</td><td><span class="nhan-nho">chờ quay</span></td></tr>
+<div class="the"><div class="cuon"><table><thead><tr><th>Ngày mua</th><th>Vé</th><th>Kỳ quay</th><th>Kết quả</th><th></th></tr></thead><tbody>
+<tr><td>24/08/2026</td><td><strong>Mega 6/45</strong><div><span class="bi ">04</span><span class="bi ">13</span><span class="bi ">22</span><span class="bi ">28</span><span class="bi ">34</span><span class="bi ">42</span></div><div class="mo">gợi ý Số nóng 24/08/2026</div></td><td class="mo">&mdash;</td><td><span class="nhan-nho">chờ quay</span></td><td><button class="nut-xoa" data-dong="2026-08-24 | power_645: 4 13 22 28 34 42   # gợi ý Số nóng 24/08/2026" title="Xoá tờ vé này khỏi sổ">Xoá</button></td></tr>
 </tbody></table></div></div>
 <h2 id="power_655">Power 6/55</h2>
 <div class="mo">Thứ 3 - Thứ 5 - Thứ 7, 18h00 &middot; 1388 kỳ &middot; 01/08/2017 &rarr; 22/08/2026</div>
@@ -967,4 +967,45 @@ function dienVaoO(chuoi){
     }).then(function(){ nut.disabled = false; });
   });
 })();
+
+// ----- Xoa mot to ve khoi so -----
+document.querySelectorAll('.nut-xoa').forEach(function(nut){
+  nut.addEventListener('click', function(){
+    var dong = nut.dataset.dong || '';
+    if(!dong) return;
+    if(!confirm('Xoa to ve nay khoi so?   [ ' + dong + ' ]   Xoa roi khong lay lai duoc.')) return;
+
+    var mk = '';
+    try { mk = localStorage.getItem('vietlott_mk') || ''; } catch(e){}
+    if(!mk){
+      mk = prompt('Nhap mat khau de xoa ve:') || '';
+      if(!mk) return;
+    }
+
+    var cu = nut.textContent;
+    nut.disabled = true; nut.textContent = 'Dang xoa...';
+    fetch('/api/ghi-ve', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({viec: 'xoa', matKhau: mk, dong: dong})
+    }).then(function(r){
+      return r.json().then(function(j){ return {ok: r.ok, ma: r.status, j: j}; });
+    }).then(function(kq){
+      if(kq.ok && kq.j.ok){
+        try { localStorage.setItem('vietlott_mk', mk); } catch(e){}
+        var tr = nut.closest('tr');
+        if(tr){ tr.style.opacity = '.35'; tr.style.textDecoration = 'line-through'; }
+        nut.textContent = 'Da xoa';
+        alert(kq.j.thong_bao || 'Da xoa khoi so.');
+      } else {
+        nut.disabled = false; nut.textContent = cu;
+        alert(kq.j.loi || ('Loi ' + kq.ma));
+      }
+    }).catch(function(){
+      nut.disabled = false; nut.textContent = cu;
+      alert('Khong goi duoc may chu. Xoa ve chi chay tren trang vietlott-thongke.vercel.app, '
+        + 'khong chay khi mo file HTML tu may.');
+    });
+  });
+});
 </script></body></html>

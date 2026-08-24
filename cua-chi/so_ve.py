@@ -136,7 +136,8 @@ def doc_so():
                        + " số, chị ghi " + str(len(so)))
             continue
         ve.append({"ngay_mua": ngay_mua, "ma": ma, "so": so, "so_db": so_db,
-                   "ky_chon": ky_chon, "ghi_chu": ghi_chu, "dong": so_dong})
+                   "ky_chon": ky_chon, "ghi_chu": ghi_chu, "dong": so_dong,
+                   "raw": line.rstrip()})
     return ve, loi
 
 
