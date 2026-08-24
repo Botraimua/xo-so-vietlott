@@ -59,6 +59,9 @@ Quy tắc:
 
 Lưu lại bằng `Ctrl+S`, đóng Notepad, rồi bấm `0-LAM-MOI-VA-XEM.bat`.
 
+Muốn bộ số này hiện luôn trên trang web thì bấm thêm `10-DAY-LEN-GITHUB.bat` — khoảng
+1 phút sau là có, và bot tự dò lại 3 lần mỗi ngày.
+
 ### Dò nhanh một bộ không cần ghi vào file
 
 Mở cửa sổ lệnh trong thư mục này rồi gõ:
@@ -257,15 +260,15 @@ Bộ công cụ có ba cánh cửa riêng biệt, đừng lẫn:
 
 | Cửa | Ai vào được | Có gì bên trong |
 |---|---|---|
-| Máy của chị | Chỉ chị | Tất cả — kể cả `ve-cua-chi.txt` |
-| Repo GitHub `Botraimua/xo-so-vietlott` | **Riêng tư — chỉ chị** | Mã nguồn, dữ liệu thô, `so-ve.txt` |
-| Trang vietlott-thongke.vercel.app | **Công khai** — ai có link | Thống kê, biểu đồ, bộ số gợi ý, **và Sổ vé** |
+| Máy của chị | Chỉ chị | Tất cả |
+| Repo GitHub `Botraimua/xo-so-vietlott` | **Riêng tư — chỉ chị** | Mã nguồn, dữ liệu thô, `so-ve.txt`, `ve-cua-chi.txt` |
+| Trang vietlott-thongke.vercel.app | **Công khai** — ai có link | Thống kê, biểu đồ, bộ số gợi ý, **Vé của chị**, **Sổ vé** |
 
 Điều dễ hiểu nhầm: **repo riêng tư không làm trang web riêng tư.** Vercel đọc từ repo
 riêng tư rồi dựng ra một trang công khai. Chị đã chọn như vậy (24/08/2026) — biết và đồng ý.
 
-Riêng `ve-cua-chi.txt` (bộ số đang chơi) **không bao giờ rời khỏi máy** — chặn trong
-`.gitignore`, không lên repo, không lên web.
+Từ 24/08/2026 chị chọn công khai **cả hai** mục vé: "Vé của chị" (bộ số đang chơi)
+và "Sổ vé đã mua". Cả hai đều hiện trên trang web.
 
 Trang có đặt cờ `noindex` nên Google không đưa vào kết quả tìm kiếm; phải có đúng đường
 dẫn mới vào được.
