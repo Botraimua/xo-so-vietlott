@@ -1,0 +1,12 @@
+# =====================================================================
+#  SỔ VÉ — những bộ số chị ĐÃ MUA, để theo dõi kết quả thật
+#
+#  Mỗi dòng một tờ vé:  <ngày mua> | <sản phẩm>: <các số>  # ghi chú
+#     2026-08-24 | power: 2 20 23 33 44 52       # gợi ý Số nóng
+#     2026-08-24 | lotto: 4 9 17 22 31 | 5 @843  # @843 = mã kỳ (5/35 quay 2 lần/ngày)
+#
+#  Cách nhanh nhất: trong báo cáo HTML, bấm vào bộ số ở mục "Bộ số gợi ý"
+#  (nó tự chép), rồi bấm 11-GHI-VE-DA-MUA.bat — vé tự vào sổ với ngày hôm nay.
+#
+#  Vé chưa tới kỳ quay sẽ hiện "chờ quay", quay xong tự chấm.
+# =====================================================================

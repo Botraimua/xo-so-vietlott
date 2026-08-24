@@ -734,8 +734,7 @@ def main(che_do_web=False):
     p.append("<nav>")
     if doc_ve() and not che_do_web:
         p.append('<a href="#ve">Vé của chị</a>')
-    if not che_do_web:
-        p.append('<a href="#so-ve">Sổ vé</a>')
+    p.append('<a href="#so-ve">Sổ vé</a>')
     for ma in day_du:
         p.append('<a href="#' + ma + '">' + e(SAN_PHAM[ma]["ten"]) + "</a>")
     if (THU_MUC_BAO_CAO / "goi-so.json").exists():
@@ -749,7 +748,8 @@ def main(che_do_web=False):
 
     if not che_do_web:
         p.append(khoi_ve(du_lieu))
-        p.append(khoi_so_ve())
+    # Sổ vé lên cả bản web — chị chọn công khai (24/08/2026)
+    p.append(khoi_so_ve())
 
     for ma in day_du:
         p.append(khoi_san_pham(ma, du_lieu[ma]))

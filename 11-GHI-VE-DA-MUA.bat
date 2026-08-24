@@ -12,6 +12,21 @@ echo.
 powershell -NoProfile -Command "$t = Get-Clipboard -Raw; if ([string]::IsNullOrWhiteSpace($t)) { exit 1 }; & '.venv\Scripts\python.exe' 'cua-chi\so_ve.py' ghi $t"
 if errorlevel 1 goto trong
 
+echo.
+echo   Dang dua so ve len trang web...
+git pull --rebase --autostash >nul 2>&1
+".venv\Scripts\python.exe" "cua-chiao_cao.py" >nul
+".venv\Scripts\python.exe" "cua-chiao_cao.py" web >nul
+git add cua-chi\so-ve.txt web\index.html
+git commit -q -m "Ghi ve vao so" >nul 2>&1
+git push >nul 2>&1
+if errorlevel 1 (
+  echo   Chua day len mang duoc - khong sao, ve DA vao so tren may.
+  echo   Trang web se tu cap nhat o lan chay tiep theo cua GitHub.
+) else (
+  echo   Xong. Khoang 1 phut nua so ve hien tren https://vietlott-thongke.vercel.app
+)
+echo.
 popd
 pause
 exit /b 0
