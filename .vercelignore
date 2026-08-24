@@ -1,0 +1,12 @@
+# Vercel chi can thu muc web/. Nhung thu duoi day khong can day len.
+.venv
+.git
+data
+src
+nb
+docs
+bao-cao
+node_modules
+*.bat
+*.md
+uv.lock

@@ -9,13 +9,8 @@ if not exist ".venv\Scripts\python.exe" goto chua_cai
 
 echo.
 echo   [1/4] Kiem tra dang nhap Vercel...
-pushd web
 call npx --yes vercel whoami >nul 2>&1
-if errorlevel 1 (
-  popd
-  goto chua_dang_nhap
-)
-popd
+if errorlevel 1 goto chua_dang_nhap
 echo         OK.
 
 echo.
@@ -30,13 +25,9 @@ if errorlevel 1 goto loi
 
 echo.
 echo   [4/4] Dang len Vercel...
-pushd web
+rem Chay tu thu muc goc: tren Vercel, Root Directory da dat la "web"
 call npx --yes vercel deploy --prod --yes
-if errorlevel 1 (
-  popd
-  goto loi_mang
-)
-popd
+if errorlevel 1 goto loi_mang
 
 echo.
 echo   XONG. Trang cua chi:  https://vietlott-thongke.vercel.app

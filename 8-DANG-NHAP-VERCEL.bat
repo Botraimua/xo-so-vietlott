@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-pushd "%~dp0\web"
+pushd "%~dp0"
 title Dang nhap Vercel - lam 1 lan duy nhat
 
 echo.
