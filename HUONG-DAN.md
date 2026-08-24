@@ -209,6 +209,21 @@ Chìa khoá và mật khẩu đi thẳng từ cửa sổ đen lên Vercel, Verce
 
 Muốn đổi mật khẩu sau này thì bấm lại nút 12, nhập lại cả hai giá trị.
 
+### Xoá một tờ vé
+
+Trong mục **Sổ vé đã mua**, mỗi dòng vé có nút **Xoá** ở cuối. Bấm → xác nhận → gõ mật khẩu
+(nếu trình duyệt chưa nhớ). Khoảng 2 phút sau vé biến khỏi sổ, ở cả web lẫn máy.
+
+Xoá theo **nguyên văn dòng vé** chứ không theo số thứ tự, nên không bao giờ xoá nhầm tờ khác.
+Nếu trang đang cũ mà chị bấm xoá, nó báo *"Không tìm thấy vé này trong sổ"* thay vì xoá bừa.
+
+**Xoá rồi không lấy lại được** — nhưng vé cũ vẫn còn trong lịch sử GitHub nếu thật sự cần tìm.
+
+Muốn sửa hoặc xoá nhiều vé một lúc thì mở thẳng `cua-chi\so-ve.txt` bằng Notepad, sửa xong
+bấm `10-DAY-LEN-GITHUB.bat`.
+
+---
+
 ### Chạy như thế nào
 
 1. Chị bấm **Ghi vào sổ** trên trang
