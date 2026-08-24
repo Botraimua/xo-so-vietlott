@@ -18,7 +18,7 @@ Mất khoảng 20 giây. Xong là chị có mọi thứ.
 
 ---
 
-## Mười một nút bấm
+## Mười hai nút bấm
 
 | Nút | Làm gì | Khi nào bấm |
 |---|---|---|
@@ -33,6 +33,7 @@ Mất khoảng 20 giây. Xong là chị có mọi thứ.
 | `8-DANG-NHAP-VERCEL.bat` | Đăng nhập Vercel | **Một lần duy nhất**, trước khi dùng nút 7 |
 | `9-GOI-BO-SO.bat` | In bộ số gợi ý ra cửa sổ đen | Khi muốn xem nhanh, khỏi mở báo cáo |
 | `10-DAY-LEN-GITHUB.bat` | Đẩy thay đổi mã nguồn lên GitHub | Khi sửa mã trên máy. Dữ liệu thì GitHub tự lo |
+| `11-GHI-VE-DA-MUA.bat` | Ghi vé vừa mua vào sổ | Ngay sau khi bấm chép một bộ số gợi ý |
 
 > Máy chị đã cài sẵn rồi, `1-CAI-DAT.bat` không cần chạy lại.
 > Nút 6 mất khoảng 20 giây, chạy xong thì kết quả tự hiện trong báo cáo HTML.
@@ -154,6 +155,35 @@ Muốn nhiều hay ít bộ hơn, hoặc chỉ một sản phẩm, thì mở c�
 > **Nói thẳng một lần cho rõ:** mấy bộ số này **không dễ trúng hơn** bộ chị tự nghĩ,
 > cũng không dễ trúng hơn bộ bốc bừa. Mọi bộ 6 số đều có xác suất y hệt nhau —
 > mục ngay dưới đây là bằng chứng. Đây là công cụ đỡ phải ngồi nghĩ số, thế thôi.
+
+---
+
+## Sổ vé đã mua (nút 11)
+
+Khi chị **mua thật** một bộ số, ghi nó vào sổ để theo dõi kết quả và lãi/lỗ thật:
+
+1. Trong báo cáo, bấm vào bộ số chị mua (nó tự chép, kèm luôn tên chiến lược và ngày)
+2. Bấm **`11-GHI-VE-DA-MUA.bat`** — vé vào sổ với ngày hôm nay
+
+Từ đó, mỗi lần mở báo cáo (nút 0 / nút 3) sẽ có mục **"Sổ vé đã mua"**:
+
+- Vé chưa tới kỳ quay: hiện *chờ quay*. Quay xong: tự chấm, tô xanh số trùng
+- Trúng giải: ghi rõ hạng và tiền (Power 6/55: nhất 40tr / nhì 500k / ba 50k;
+  Mega 6/45: nhất 10tr / nhì 300k / ba 30k; Jackpot ghi mức tối thiểu)
+- Dòng tổng: **tiền mua vé − tiền trúng = lãi/lỗ thật của chị**
+
+Mỗi vé gắn với đúng **một** kỳ: vé mua ngày nào dự kỳ quay đầu tiên từ ngày đó trở đi.
+Lotto 5/35 quay 2 kỳ/ngày — mặc định chấm kỳ 13h; vé mua buổi chiều thì thêm `@<mã kỳ>`
+vào dòng vé trong `cua-chi\so-ve.txt` (ví dụ `@843`).
+
+Lotto 5/35 và Keno chỉ báo số trùng, **không tính tiền** — cơ cấu giải hai sản phẩm này
+không có nguồn công khai đủ rõ, em không đoán bừa.
+
+Sổ nằm ở `cua-chi\so-ve.txt` — file chữ thường, sửa tay bằng Notepad được, và **không
+bao giờ lên mạng** (đã chặn trong .gitignore, giống ve-cua-chi.txt).
+
+Sổ này cũng là bàn thí nghiệm tốt: sau vài chục vé, chị sẽ thấy lãi/lỗ thật của mình
+bám đúng con số −70% mà bảng xác suất dự báo.
 
 ---
 

@@ -230,6 +230,79 @@ def dong_chat_luong(rows):
             "đã bao trọn mọi kỳ quay.</div>")
 
 
+def khoi_so_ve():
+    """Sổ vé đã mua — nhật ký lãi/lỗ thật. Chỉ có ở bản trên máy."""
+    try:
+        from so_ve import FILE_SO, danh_gia
+    except ImportError:
+        return ""
+    if not FILE_SO.exists():
+        return ""
+    kq, tong, loi = danh_gia()
+    if not kq and not loi:
+        return ""
+
+    def vnd(x):
+        return format(x, ",").replace(",", ".") + "đ"
+
+    p = ['<h2 id="so-ve">Sổ vé đã mua</h2>']
+    p.append('<div class="mo">Mỗi tờ vé gắn với đúng một kỳ quay. Ghi thêm vé: bấm vào một '
+             "bộ số gợi ý (nó tự chép) rồi bấm <code>11-GHI-VE-DA-MUA.bat</code>.</div>")
+
+    lai = tong["lai_lo"]
+    p.append('<div class="the"><div class="cuon"><table><thead><tr>'
+             '<th class="so">Số vé</th><th class="so">Tiền mua vé</th>'
+             '<th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody>'
+             '<tr><td class="so">' + str(tong["so_ve"])
+             + ('<span class="mo"> (' + str(tong["cho_quay"]) + " chờ quay)</span>" if tong["cho_quay"] else "")
+             + '</td><td class="so">' + vnd(tong["tien_ve"])
+             + '</td><td class="so">' + vnd(tong["tien_trung"])
+             + '</td><td class="so"><strong style="color:var(--' + ("xanh" if lai >= 0 else "nhan")
+             + ')">' + ("+" if lai >= 0 else "") + vnd(lai) + "</strong></td></tr>"
+             "</tbody></table></div></div>")
+
+    p.append('<div class="the"><div class="cuon"><table><thead><tr>'
+             "<th>Ngày mua</th><th>Vé</th><th>Kỳ quay</th><th>Kết quả</th></tr></thead><tbody>")
+    for k in reversed(kq):
+        v = k["ve"]
+        ten = SAN_PHAM[v["ma"]]["ten"]
+        so_html = day_bi(v["so"], v["so_db"])
+        o_ve = "<strong>" + e(ten) + "</strong><div>" + so_html + "</div>"
+        if v["ghi_chu"]:
+            o_ve += '<div class="mo">' + e(v["ghi_chu"]) + "</div>"
+        if k["trang_thai"] == "cho":
+            p.append("<tr><td>" + e(ngay_viet(v["ngay_mua"], kem_thu=False)) + "</td><td>" + o_ve
+                     + '</td><td class="mo">&mdash;</td><td><span class="nhan-nho">chờ quay</span></td></tr>')
+            continue
+        ky = k["ky"]
+        o_ky = e(ngay_viet(ky.get("date"), kem_thu=False)) + '<div class="mo">kỳ ' + e(ky.get("id")) + "</div>"
+        tap = set(v["so"])
+        o_kq = "<div>" + day_bi(k["so_ky"], k["db_ky"], tap_trung=tap) + "</div>"
+        dong = "Trùng <strong>" + str(k["trung"]) + " số</strong>"
+        if v["so_db"] is not None and k["db_ky"] is not None and k["trung_db"]:
+            dong += " + số đặc biệt"
+        if k["tien"] > 0:
+            dong += ('  <span class="nhan-nho thang">' + e(k["ten_giai"]) + " " + vnd(k["tien"]) + "</span>")
+            if k["toi_thieu"]:
+                dong += '<div class="mo">mức tối thiểu — jackpot thực tế lũy tiến cao hơn</div>'
+        elif v["ma"] in ("power_655", "power_645"):
+            dong += '  <span class="nhan-nho">trượt</span>'
+        else:
+            dong += '<div class="mo">sản phẩm này chỉ báo số trùng, không tính tiền</div>'
+        if k.get("nhieu_ky_cung_ngay"):
+            dong += ('<div class="mo">ngày này quay nhiều kỳ — đang chấm kỳ đầu tiên; '
+                     "muốn kỳ khác, thêm @&lt;mã kỳ&gt; vào dòng vé</div>")
+        o_kq += "<div>" + dong + "</div>"
+        p.append("<tr><td>" + e(ngay_viet(v["ngay_mua"], kem_thu=False)) + "</td><td>" + o_ve
+                 + "</td><td>" + o_ky + "</td><td>" + o_kq + "</td></tr>")
+    p.append("</tbody></table></div></div>")
+
+    if loi:
+        p.append('<div class="canh"><strong>Vài dòng trong so-ve.txt chưa đọc được:</strong><ul>'
+                 + "".join("<li>" + e(x) + "</li>" for x in loi) + "</ul></div>")
+    return chr(10).join(p)
+
+
 # ---------- Bộ số gợi ý ----------
 
 def khoi_goi_so():
@@ -271,6 +344,7 @@ def khoi_goi_so():
                 chep = ma + ": " + " ".join(str(x) for x in so)
                 if db is not None:
                     chep += " | " + str(db)
+                chep += "   # gợi ý " + cl.get("ten", "") + " " + ngay_viet(d.get("ngay"), kem_thu=False)
                 p.append('<div class="bo-so" data-chep="' + e(chep) + '" title="Bấm để chép">'
                          + day_bi(so, db) + "</div>")
             p.append("</div>")
@@ -660,6 +734,8 @@ def main(che_do_web=False):
     p.append("<nav>")
     if doc_ve() and not che_do_web:
         p.append('<a href="#ve">Vé của chị</a>')
+    if not che_do_web:
+        p.append('<a href="#so-ve">Sổ vé</a>')
     for ma in day_du:
         p.append('<a href="#' + ma + '">' + e(SAN_PHAM[ma]["ten"]) + "</a>")
     if (THU_MUC_BAO_CAO / "goi-so.json").exists():
@@ -673,6 +749,7 @@ def main(che_do_web=False):
 
     if not che_do_web:
         p.append(khoi_ve(du_lieu))
+        p.append(khoi_so_ve())
 
     for ma in day_du:
         p.append(khoi_san_pham(ma, du_lieu[ma]))
