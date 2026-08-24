@@ -71,12 +71,9 @@ align-items:center;gap:5px}
 @media (max-width:400px){.luoi-bd{grid-template-columns:1fr}}
 </style></head><body><div class='bao'>
 <header><h1>Thống kê Vietlott</h1>
-<<<<<<< Updated upstream
-<div class="mo">Dựng lúc 14:10 ngày 24/08/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
-=======
-<div class="mo">Dựng lúc 21:49 ngày 24/08/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
->>>>>>> Stashed changes
+<div class="mo">Dựng lúc 22:19 ngày 24/08/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
 <nav>
+<a href="#so-ve">Sổ vé</a>
 <a href="#power_655">Power 6/55</a>
 <a href="#power_645">Mega 6/45</a>
 <a href="#power_535">Lotto 5/35</a>
@@ -86,6 +83,9 @@ align-items:center;gap:5px}
 <a href="#kiem-thu">Chiến lược có ăn không?</a>
 <a href="#khac">Sản phẩm khác</a>
 </nav>
+<h2 id="so-ve">Sổ vé đã mua</h2>
+<div class="mo">Mỗi tờ vé gắn với đúng một kỳ quay. Nhập vé ngay bên dưới, hoặc trên máy tính thì bấm một bộ số gợi ý rồi bấm <code>11-GHI-VE-DA-MUA.bat</code>.</div>
+<div class="the nhap-ve"><div class="ten-bd">Ghi một tờ vé vào sổ</div><div class="mo" style="margin:4px 0 10px">Bấm vào bộ số ở mục <a href="#goi-so">Bộ số gợi ý</a> thì ô này tự điền hộ.</div><div class="hang-nhap"><label>Sản phẩm<select id="nv-sp"><option value="power_655">Power 6/55 &mdash; 6 số 1-55</option><option value="power_645">Mega 6/45 &mdash; 6 số 1-45</option><option value="power_535">Lotto 5/35 &mdash; 5 số 1-35 + số đặc biệt 1-12</option><option value="keno">Keno &mdash; 10 số 1-80</option></select></label><label>Các số<input id="nv-so" inputmode="numeric" placeholder="ví dụ 3 12 19 27 41 52"></label><label class="nv-db">Số đặc biệt<input id="nv-db" inputmode="numeric" placeholder="1-12"></label></div><div class="hang-nhap"><label>Ngày mua<input id="nv-ngay" type="date"></label><label>Ghi chú<input id="nv-ghi" placeholder="tuỳ ý"></label><label>Mật khẩu<input id="nv-mk" type="password" placeholder="nhớ sau lần đầu"></label></div><div style="margin-top:10px"><button id="nv-gui" class="nut">Ghi vào sổ</button><span id="nv-bao" class="nv-bao"></span></div></div>
 <h2 id="power_655">Power 6/55</h2>
 <div class="mo">Thứ 3 - Thứ 5 - Thứ 7, 18h00 &middot; 1388 kỳ &middot; 01/08/2017 &rarr; 22/08/2026</div>
 <div class="mo">Dữ liệu liền mạch: mã kỳ chạy đủ từ 1 đến 1388, không thiếu kỳ nào.</div>
@@ -864,6 +864,103 @@ document.querySelectorAll('.bo-so').forEach(function(el){
       try { document.execCommand('copy'); xong(); } catch(e) {}
       document.body.removeChild(ta);
     }
+    dienVaoO(t);
   });
 });
+
+// ----- Nhap ve ngay tren trang -----
+var KHUON = {"power_655": {"so_chon": 6, "dai_chon": 55, "db_dai": null, "ghi_chu": "Số đặc biệt do Vietlott quay, người chơi không chọn."}, "power_645": {"so_chon": 6, "dai_chon": 45, "db_dai": null, "ghi_chu": ""}, "power_535": {"so_chon": 5, "dai_chon": 35, "db_dai": 12, "ghi_chu": "Số sau dấu | là số đặc biệt, chọn trong 1–12."}, "keno": {"so_chon": 10, "dai_chon": 80, "db_dai": null, "ghi_chu": "Keno cho chọn từ 1 đến 10 số; đây là bộ 10 số, chị lấy bớt cũng được."}};
+
+function o(id){ return document.getElementById(id); }
+
+function capNhatODacBiet(){
+  var sp = o('nv-sp'); if(!sp) return;
+  var k = KHUON[sp.value] || {};
+  var oDb = document.querySelector('.nv-db');
+  if(oDb) oDb.classList.toggle('an', !k.db_dai);
+  var i = o('nv-so');
+  if(i) i.placeholder = 'chon ' + k.so_chon + ' so tu 1 den ' + k.dai_chon;
+  var d = o('nv-db');
+  if(d && k.db_dai) d.placeholder = '1-' + k.db_dai;
+}
+
+// Bam vao bo so goi y -> tu dien vao o nhap
+function dienVaoO(chuoi){
+  if(!o('nv-sp')) return;
+  var m = /^([a-z_0-9]+):\s*([\d\s]+?)(?:\|\s*(\d+))?\s*(?:#\s*(.*))?$/.exec(chuoi.trim());
+  if(!m) return;
+  var sp = o('nv-sp');
+  if([].some.call(sp.options, function(x){ return x.value === m[1]; })) sp.value = m[1];
+  capNhatODacBiet();
+  o('nv-so').value = m[2].trim();
+  if(m[3]) o('nv-db').value = m[3];
+  if(m[4]) o('nv-ghi').value = m[4].trim();
+  var t = o('nv-gui');
+  if(t) t.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+(function(){
+  var nut = o('nv-gui');
+  if(!nut) return;
+  var sp = o('nv-sp'), bao = o('nv-bao'), mk = o('nv-mk'), ngay = o('nv-ngay');
+  sp.addEventListener('change', capNhatODacBiet);
+  capNhatODacBiet();
+  try { mk.value = localStorage.getItem('vietlott_mk') || ''; } catch(e){}
+  if(!ngay.value) ngay.value = new Date().toISOString().slice(0,10);
+
+  function noi(t, lop){ bao.textContent = t; bao.className = 'nv-bao ' + (lop || ''); }
+
+  nut.addEventListener('click', function(){
+    var k = KHUON[sp.value] || {};
+    var so = (o('nv-so').value || '').trim().replace(/[,;]+/g, ' ').replace(/\s+/g, ' ');
+    var mang = so ? so.split(' ') : [];
+    if(mang.length !== k.so_chon){
+      noi('Can dung ' + k.so_chon + ' so, dang co ' + mang.length + '.', 'loi'); return;
+    }
+    for(var i = 0; i < mang.length; i++){
+      var v = parseInt(mang[i], 10);
+      if(!(v >= 1 && v <= k.dai_chon)){
+        noi('So ' + mang[i] + ' ngoai dai 1-' + k.dai_chon + '.', 'loi'); return;
+      }
+    }
+    var tap = {};
+    for(var q = 0; q < mang.length; q++){
+      if(tap[mang[q]]){ noi('Co so bi trung.', 'loi'); return; }
+      tap[mang[q]] = 1;
+    }
+    var db = (o('nv-db').value || '').trim();
+    if(k.db_dai){
+      var dv = parseInt(db, 10);
+      if(!(dv >= 1 && dv <= k.db_dai)){
+        noi('So dac biet phai tu 1 den ' + k.db_dai + '.', 'loi'); return;
+      }
+    }
+    var matKhau = (mk.value || '').trim();
+    if(!matKhau){ noi('Chua nhap mat khau.', 'loi'); return; }
+
+    var dong = ngay.value + ' | ' + sp.value + ': ' + so + (k.db_dai ? ' | ' + db : '');
+    var gc = (o('nv-ghi').value || '').trim().replace(/[#|\n\r]/g, ' ');
+    if(gc) dong += '   # ' + gc;
+
+    nut.disabled = true; noi('Dang ghi...', '');
+    fetch('/api/ghi-ve', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({matKhau: matKhau, dong: dong})
+    }).then(function(r){
+      return r.json().then(function(j){ return {ok: r.ok, ma: r.status, j: j}; });
+    }).then(function(kq){
+      if(kq.ok && kq.j.ok){
+        try { localStorage.setItem('vietlott_mk', matKhau); } catch(e){}
+        noi(kq.j.thong_bao || 'Da ghi vao so.', 'ok');
+        o('nv-so').value = ''; o('nv-db').value = ''; o('nv-ghi').value = '';
+      } else {
+        noi(kq.j.loi || ('Loi ' + kq.ma), 'loi');
+      }
+    }).catch(function(){
+      noi('Khong goi duoc may chu. Nhap ve chi chay tren trang vietlott-thongke.vercel.app, '
+        + 'khong chay khi mo file HTML tu may.', 'loi');
+    }).then(function(){ nut.disabled = false; });
+  });
+})();
 </script></body></html>

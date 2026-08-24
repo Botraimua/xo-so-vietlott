@@ -16,6 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from bieu_do import CSS_BIEU_DO, cot, khung  # noqa: E402
+from goi_so import KHUON as KHUON_NHAP  # noqa: E402
 from thu_vien import (  # noqa: E402
     SAN_PHAM, THU_MUC_BAO_CAO, bat_utf8, doc_du_lieu, doc_ve, do_mot_ve,
     kiem_lo, ngay_viet, tach_so, thong_ke,
@@ -124,8 +125,105 @@ document.querySelectorAll('.bo-so').forEach(function(el){
       try { document.execCommand('copy'); xong(); } catch(e) {}
       document.body.removeChild(ta);
     }
+    dienVaoO(t);
   });
 });
+
+// ----- Nhap ve ngay tren trang -----
+var KHUON = __KHUON_JSON__;
+
+function o(id){ return document.getElementById(id); }
+
+function capNhatODacBiet(){
+  var sp = o('nv-sp'); if(!sp) return;
+  var k = KHUON[sp.value] || {};
+  var oDb = document.querySelector('.nv-db');
+  if(oDb) oDb.classList.toggle('an', !k.db_dai);
+  var i = o('nv-so');
+  if(i) i.placeholder = 'chon ' + k.so_chon + ' so tu 1 den ' + k.dai_chon;
+  var d = o('nv-db');
+  if(d && k.db_dai) d.placeholder = '1-' + k.db_dai;
+}
+
+// Bam vao bo so goi y -> tu dien vao o nhap
+function dienVaoO(chuoi){
+  if(!o('nv-sp')) return;
+  var m = /^([a-z_0-9]+):\\s*([\\d\\s]+?)(?:\\|\\s*(\\d+))?\\s*(?:#\\s*(.*))?$/.exec(chuoi.trim());
+  if(!m) return;
+  var sp = o('nv-sp');
+  if([].some.call(sp.options, function(x){ return x.value === m[1]; })) sp.value = m[1];
+  capNhatODacBiet();
+  o('nv-so').value = m[2].trim();
+  if(m[3]) o('nv-db').value = m[3];
+  if(m[4]) o('nv-ghi').value = m[4].trim();
+  var t = o('nv-gui');
+  if(t) t.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+(function(){
+  var nut = o('nv-gui');
+  if(!nut) return;
+  var sp = o('nv-sp'), bao = o('nv-bao'), mk = o('nv-mk'), ngay = o('nv-ngay');
+  sp.addEventListener('change', capNhatODacBiet);
+  capNhatODacBiet();
+  try { mk.value = localStorage.getItem('vietlott_mk') || ''; } catch(e){}
+  if(!ngay.value) ngay.value = new Date().toISOString().slice(0,10);
+
+  function noi(t, lop){ bao.textContent = t; bao.className = 'nv-bao ' + (lop || ''); }
+
+  nut.addEventListener('click', function(){
+    var k = KHUON[sp.value] || {};
+    var so = (o('nv-so').value || '').trim().replace(/[,;]+/g, ' ').replace(/\\s+/g, ' ');
+    var mang = so ? so.split(' ') : [];
+    if(mang.length !== k.so_chon){
+      noi('Can dung ' + k.so_chon + ' so, dang co ' + mang.length + '.', 'loi'); return;
+    }
+    for(var i = 0; i < mang.length; i++){
+      var v = parseInt(mang[i], 10);
+      if(!(v >= 1 && v <= k.dai_chon)){
+        noi('So ' + mang[i] + ' ngoai dai 1-' + k.dai_chon + '.', 'loi'); return;
+      }
+    }
+    var tap = {};
+    for(var q = 0; q < mang.length; q++){
+      if(tap[mang[q]]){ noi('Co so bi trung.', 'loi'); return; }
+      tap[mang[q]] = 1;
+    }
+    var db = (o('nv-db').value || '').trim();
+    if(k.db_dai){
+      var dv = parseInt(db, 10);
+      if(!(dv >= 1 && dv <= k.db_dai)){
+        noi('So dac biet phai tu 1 den ' + k.db_dai + '.', 'loi'); return;
+      }
+    }
+    var matKhau = (mk.value || '').trim();
+    if(!matKhau){ noi('Chua nhap mat khau.', 'loi'); return; }
+
+    var dong = ngay.value + ' | ' + sp.value + ': ' + so + (k.db_dai ? ' | ' + db : '');
+    var gc = (o('nv-ghi').value || '').trim().replace(/[#|\\n\\r]/g, ' ');
+    if(gc) dong += '   # ' + gc;
+
+    nut.disabled = true; noi('Dang ghi...', '');
+    fetch('/api/ghi-ve', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({matKhau: matKhau, dong: dong})
+    }).then(function(r){
+      return r.json().then(function(j){ return {ok: r.ok, ma: r.status, j: j}; });
+    }).then(function(kq){
+      if(kq.ok && kq.j.ok){
+        try { localStorage.setItem('vietlott_mk', matKhau); } catch(e){}
+        noi(kq.j.thong_bao || 'Da ghi vao so.', 'ok');
+        o('nv-so').value = ''; o('nv-db').value = ''; o('nv-ghi').value = '';
+      } else {
+        noi(kq.j.loi || ('Loi ' + kq.ma), 'loi');
+      }
+    }).catch(function(){
+      noi('Khong goi duoc may chu. Nhap ve chi chay tren trang vietlott-thongke.vercel.app, '
+        + 'khong chay khi mo file HTML tu may.', 'loi');
+    }).then(function(){ nut.disabled = false; });
+  });
+})();
 """
 
 
@@ -236,18 +334,19 @@ def khoi_so_ve():
         from so_ve import FILE_SO, danh_gia
     except ImportError:
         return ""
-    if not FILE_SO.exists():
-        return ""
-    kq, tong, loi = danh_gia()
-    if not kq and not loi:
-        return ""
+    kq, tong, loi = ([], None, []) if not FILE_SO.exists() else danh_gia()
 
     def vnd(x):
         return format(x, ",").replace(",", ".") + "đ"
 
     p = ['<h2 id="so-ve">Sổ vé đã mua</h2>']
-    p.append('<div class="mo">Mỗi tờ vé gắn với đúng một kỳ quay. Ghi thêm vé: bấm vào một '
-             "bộ số gợi ý (nó tự chép) rồi bấm <code>11-GHI-VE-DA-MUA.bat</code>.</div>")
+    p.append('<div class="mo">Mỗi tờ vé gắn với đúng một kỳ quay. Nhập vé ngay bên dưới, '
+             "hoặc trên máy tính thì bấm một bộ số gợi ý rồi bấm "
+             "<code>11-GHI-VE-DA-MUA.bat</code>.</div>")
+    p.append(khung_nhap_ve())
+
+    if not kq and not loi:
+        return chr(10).join(p)
 
     lai = tong["lai_lo"]
     p.append('<div class="the"><div class="cuon"><table><thead><tr>'
@@ -437,6 +536,38 @@ def khoi_xac_suat():
              "công khai nào nói rõ, nên bảng trên chỉ ghi xác suất <strong>khớp số</strong>, "
              "không đặt tên hạng giải. Power 6/55 và Mega 6/45 thì có bảng giải đầy đủ.</div>")
     return chr(10).join(p)
+
+
+def khung_nhap_ve():
+    """Ô nhập vé ngay trên trang. Gửi lên /api/ghi-ve, cửa ghi phía máy chủ."""
+    chon = "".join(
+        '<option value="' + ma + '">' + e(SAN_PHAM[ma]["ten"]) + " &mdash; "
+        + str(c["so_chon"]) + " số 1-" + str(c["dai_chon"])
+        + (" + số đặc biệt 1-" + str(c["db_dai"]) if c["db_dai"] else "")
+        + "</option>"
+        for ma, c in KHUON_NHAP.items())
+    return (
+        '<div class="the nhap-ve">'
+        '<div class="ten-bd">Ghi một tờ vé vào sổ</div>'
+        '<div class="mo" style="margin:4px 0 10px">Bấm vào bộ số ở mục '
+        '<a href="#goi-so">Bộ số gợi ý</a> thì ô này tự điền hộ.</div>'
+        '<div class="hang-nhap">'
+        '<label>Sản phẩm<select id="nv-sp">' + chon + "</select></label>"
+        '<label>Các số<input id="nv-so" inputmode="numeric" '
+        'placeholder="ví dụ 3 12 19 27 41 52"></label>'
+        '<label class="nv-db">Số đặc biệt<input id="nv-db" inputmode="numeric" '
+        'placeholder="1-12"></label>'
+        "</div>"
+        '<div class="hang-nhap">'
+        '<label>Ngày mua<input id="nv-ngay" type="date"></label>'
+        '<label>Ghi chú<input id="nv-ghi" placeholder="tuỳ ý"></label>'
+        '<label>Mật khẩu<input id="nv-mk" type="password" '
+        'placeholder="nhớ sau lần đầu"></label>'
+        "</div>"
+        '<div style="margin-top:10px">'
+        '<button id="nv-gui" class="nut">Ghi vào sổ</button>'
+        '<span id="nv-bao" class="nv-bao"></span></div>'
+        "</div>")
 
 
 # ---------- Bàn kiểm thử chiến lược ----------
@@ -776,7 +907,9 @@ def main(che_do_web=False):
     p.append("<footer>Dữ liệu thô nằm trong thư mục <code>data/</code>, định dạng .jsonl. "
              "Bộ crawl gốc: dự án nguồn mở vietlott-data (giấy phép MIT). "
              "File báo cáo này tự chứa &mdash; copy đi đâu cũng mở được, không cần mạng.</footer>")
-    p.append("</div><script>" + JS + "</script></body></html>")
+    p.append("</div><script>"
+             + JS.replace("__KHUON_JSON__", json.dumps(KHUON_NHAP, ensure_ascii=False))
+             + "</script></body></html>")
 
     if che_do_web:
         thu_muc = THU_MUC_BAO_CAO.parent / "web"
