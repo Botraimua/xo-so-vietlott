@@ -179,8 +179,15 @@ vào dòng vé trong `cua-chi\so-ve.txt` (ví dụ `@843`).
 Lotto 5/35 và Keno chỉ báo số trùng, **không tính tiền** — cơ cấu giải hai sản phẩm này
 không có nguồn công khai đủ rõ, em không đoán bừa.
 
-Sổ nằm ở `cua-chi\so-ve.txt` — file chữ thường, sửa tay bằng Notepad được, và **không
-bao giờ lên mạng** (đã chặn trong .gitignore, giống ve-cua-chi.txt).
+Sổ nằm ở `cua-chi\so-ve.txt` — file chữ thường, sửa tay bằng Notepad được.
+
+**Sổ vé CÓ lên trang web** (chị chọn công khai 24/08/2026): sau khi ghi vé, nút 11 tự đẩy
+lên mạng — khoảng 1 phút sau mục "Sổ vé đã mua" hiện trên vietlott-thongke.vercel.app,
+xem được từ điện thoại, và bot tự chấm lại 3 lần mỗi ngày.
+
+Muốn gỡ sổ vé khỏi trang web (giữ lại chỉ trên máy) thì bảo Claude — sửa một dòng là xong.
+
+Bộ số **đang chơi** trong `ve-cua-chi.txt` thì vẫn chỉ nằm trên máy như cũ.
 
 Sổ này cũng là bàn thí nghiệm tốt: sau vài chục vé, chị sẽ thấy lãi/lỗ thật của mình
 bám đúng con số −70% mà bảng xác suất dự báo.
@@ -244,6 +251,27 @@ Muốn đăng lại sau khi có kỳ mới thì bấm lại nút 7 — vẫn gi�
 
 ---
 
+## Ai xem được gì
+
+Bộ công cụ có ba cánh cửa riêng biệt, đừng lẫn:
+
+| Cửa | Ai vào được | Có gì bên trong |
+|---|---|---|
+| Máy của chị | Chỉ chị | Tất cả — kể cả `ve-cua-chi.txt` |
+| Repo GitHub `Botraimua/xo-so-vietlott` | **Riêng tư — chỉ chị** | Mã nguồn, dữ liệu thô, `so-ve.txt` |
+| Trang vietlott-thongke.vercel.app | **Công khai** — ai có link | Thống kê, biểu đồ, bộ số gợi ý, **và Sổ vé** |
+
+Điều dễ hiểu nhầm: **repo riêng tư không làm trang web riêng tư.** Vercel đọc từ repo
+riêng tư rồi dựng ra một trang công khai. Chị đã chọn như vậy (24/08/2026) — biết và đồng ý.
+
+Riêng `ve-cua-chi.txt` (bộ số đang chơi) **không bao giờ rời khỏi máy** — chặn trong
+`.gitignore`, không lên repo, không lên web.
+
+Trang có đặt cờ `noindex` nên Google không đưa vào kết quả tìm kiếm; phải có đúng đường
+dẫn mới vào được.
+
+---
+
 ## Tự chạy mỗi ngày — GitHub Actions
 
 Mặc định bộ công cụ **không tự chạy**: máy tắt là mọi thứ đứng yên, trang web giữ nguyên
@@ -253,8 +281,10 @@ Muốn nó tự cập nhật kể cả khi máy chị tắt thì để GitHub ch
 
 ### Đã xong hết — không còn việc gì phải làm
 
-- ✅ Repo: **https://github.com/Botraimua/xo-so-vietlott** (công khai).
-  Bộ số riêng trong `ve-cua-chi.txt` **không** lên mạng — đã chặn và đã kiểm chứng.
+- ✅ Repo: **https://github.com/Botraimua/xo-so-vietlott** (**riêng tư** từ 24/08/2026).
+  Actions vẫn chạy miễn phí: workflow tốn ~42 giây/lần, khoảng 62 phút/tháng trên
+  hạn mức 2.000 phút. Vercel vẫn tự đăng trang bình thường.
+  Bộ số đang chơi trong `ve-cua-chi.txt` **không** lên mạng — đã chặn và đã kiểm chứng.
 - ✅ **GitHub Actions đã chạy thật** (00h20 ngày 24/08/2026): tự tải kỳ mới, dựng lại trang,
   ghi vào repo.
 - ✅ **Vercel đã nối với repo** (chị nối đêm 23/08).
