@@ -210,29 +210,23 @@ Muốn đăng lại sau khi có kỳ mới thì bấm lại nút 7 — vẫn gi�
 Mặc định bộ công cụ **không tự chạy**: máy tắt là mọi thứ đứng yên, trang web giữ nguyên
 số liệu của lần đăng cuối.
 
-Muốn nó tự cập nhật kể cả khi máy chị tắt, thì để GitHub chạy hộ.
+Muốn nó tự cập nhật kể cả khi máy chị tắt thì để GitHub chạy hộ — **và việc này đã bật rồi.**
 
-### Đã xong
+### Đã xong hết — không còn việc gì phải làm
 
 - ✅ Repo: **https://github.com/Botraimua/xo-so-vietlott** (công khai).
   Bộ số riêng trong `ve-cua-chi.txt` **không** lên mạng — đã chặn và đã kiểm chứng.
-- ✅ **Workflow đã chạy thật** lúc 00h20 ngày 24/08/2026: tự tải kỳ mới, dựng lại trang,
-  ghi vào repo. Không cần chạy thử nữa.
-- ✅ **Root Directory** trên Vercel đã đặt là `web`.
+- ✅ **GitHub Actions đã chạy thật** (00h20 ngày 24/08/2026): tự tải kỳ mới, dựng lại trang,
+  ghi vào repo.
+- ✅ **Vercel đã nối với repo** (chị nối đêm 23/08).
+- ✅ **Root Directory** = `web`.
+- ✅ Đã kiểm cả dây chuyền: đẩy lên GitHub → Vercel tự đăng lại trang trong vòng 1 phút.
 
-### Còn một bước: nối Vercel với GitHub
-
-Hiện Vercel **chưa** biết tới repo, nên nó chưa tự đăng lại trang khi GitHub có bản mới.
-Trong lúc chưa nối, chị vẫn đăng được bằng `7-DUA-LEN-MANG.bat`.
-
-Nối như sau:
-
-1. Mở https://vercel.com/psd6/vietlott-thongke/settings/git
-2. Bấm **Connect Git Repository** → chọn **GitHub** → chọn `Botraimua/xo-so-vietlott`
-3. Xong. Không phải sửa gì thêm — Root Directory đã đúng rồi.
-
-Sau bước này, mỗi lần GitHub cập nhật dữ liệu thì Vercel tự đăng lại trang trong khoảng
-1 phút, hoàn toàn không cần chị đụng tay.
+> **Một lỗi đã xảy ra và đã chữa:** lúc đặt Root Directory bị gõ thành `wed`.
+> Suốt 12 tiếng sau đó, mọi lần Vercel tự đăng đều thất bại — kể cả lần bot GitHub
+> cập nhật dữ liệu — mà nhìn bên ngoài không biết, vì trang vẫn hiện bản cũ.
+> Bài học: nếu thấy trang không đổi dù GitHub đã có bản mới, vào
+> https://vercel.com/psd6/vietlott-thongke/deployments xem có dòng nào **Error** không.
 
 ---
 
