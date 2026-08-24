@@ -732,7 +732,7 @@ def main(che_do_web=False):
     p.append('<div class="mo">Dựng lúc ' + e(bay_gio) + " &middot; dữ liệu lấy từ vietlott.vn</div></header>")
 
     p.append("<nav>")
-    if doc_ve() and not che_do_web:
+    if doc_ve():
         p.append('<a href="#ve">Vé của chị</a>')
     so_ve_html = khoi_so_ve()
     if so_ve_html:
@@ -748,8 +748,8 @@ def main(che_do_web=False):
         p.append('<a href="#khac">Sản phẩm khác</a>')
     p.append("</nav>")
 
-    if not che_do_web:
-        p.append(khoi_ve(du_lieu))
+    # Cả hai mục vé lên web — chị chọn công khai (24/08/2026)
+    p.append(khoi_ve(du_lieu))
     # Sổ vé lên cả bản web — chị chọn công khai (24/08/2026)
     p.append(so_ve_html)
 

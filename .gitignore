@@ -317,8 +317,7 @@ pyrightconfig.json
 **/.DS_Store
 
 # --- cua chi ---
-# Bo so rieng cua chi -> KHONG day len GitHub
-cua-chi/ve-cua-chi.txt
+# Bo so cua chi: chi chon cong khai 24/08/2026 -> theo repo va len web
 
 # File sinh ra, dung lai luc nao cung duoc
 bao-cao/

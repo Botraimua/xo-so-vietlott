@@ -1,0 +1,21 @@
+# =====================================================================
+#  VÉ CỦA CHỊ
+#  Mỗi dòng là một bộ số. Ghi xong thì lưu file lại (Ctrl+S) rồi chạy
+#  4-DO-VE-CUA-CHI.bat hoặc 3-XEM-BAO-CAO.bat.
+#
+#  CÚ PHÁP:
+#     <sản phẩm>: <các số cách nhau bởi dấu cách>   # ghi chú tuỳ ý
+#
+#  Sản phẩm gõ sao cũng được:
+#     power / 655 / power_655        -> Power 6/55   (6 số, 1..55)
+#     mega  / 645 / power_645        -> Mega 6/45    (6 số, 1..45)
+#     lotto / 535 / power_535        -> Lotto 5/35   (5 số, 1..35)
+#
+#  Có số đặc biệt thì ngăn bằng dấu gạch đứng |
+#     power: 3 12 19 27 41 52 | 8
+#     lotto: 2 6 12 15 24 | 9
+#
+#  Dòng bắt đầu bằng dấu # là ghi chú, chương trình bỏ qua.
+# =====================================================================
+
+# --- Chị ghi bộ số đang chơi vào đây (xoá dòng này đi) ---
