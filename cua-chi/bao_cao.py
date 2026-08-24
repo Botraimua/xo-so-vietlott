@@ -278,6 +278,93 @@ def khoi_goi_so():
     return "\n".join(p)
 
 
+def khoi_xac_suat():
+    """Xác suất trúng của MỘT bộ số. Tính thẳng từ tổ hợp, không phải ước lượng."""
+    C = math.comb
+
+    def n(x):
+        return format(x, ",").replace(",", ".")
+
+    def hang(ten, cach, tong):
+        return ("<tr><td>" + e(ten) + '</td><td class="so">1 trên <strong>'
+                + n(round(tong / cach)) + "</strong></td>"
+                + '<td class="so">' + format(cach / tong * 100, ".7f").rstrip("0").rstrip(".")
+                + "%</td></tr>")
+
+    sp = []
+
+    # Power 6/55
+    T = C(55, 6)
+    d = [("Jackpot 1 — trùng 6 số", 1),
+         ("Jackpot 2 — trùng 5 số + số đặc biệt", C(6, 5)),
+         ("Giải nhất — trùng 5 số", C(6, 5) * 48),
+         ("Giải nhì — trùng 4 số", C(6, 4) * C(49, 2)),
+         ("Giải ba — trùng 3 số", C(6, 3) * C(49, 3))]
+    sp.append(("Power 6/55", "chọn 6 số trong 55 &middot; " + n(T) + " bộ khác nhau",
+               d, sum(x for _, x in d), T, "Có giải bất kỳ"))
+
+    # Mega 6/45
+    T = C(45, 6)
+    d = [("Jackpot — trùng 6 số", 1),
+         ("Giải nhất — trùng 5 số", C(6, 5) * C(39, 1)),
+         ("Giải nhì — trùng 4 số", C(6, 4) * C(39, 2)),
+         ("Giải ba — trùng 3 số", C(6, 3) * C(39, 3))]
+    sp.append(("Mega 6/45", "chọn 6 số trong 45 &middot; " + n(T) + " bộ khác nhau",
+               d, sum(x for _, x in d), T, "Có giải bất kỳ"))
+
+    # Lotto 5/35 — chỉ nói xác suất KHỚP SỐ, vì cơ cấu giải không có nguồn công khai
+    T = C(35, 5)
+    d = [("Trùng 5 số chính + số đặc biệt", T / (T * 12) * T),
+         ("Trùng 5 số chính", 1),
+         ("Trùng 4 số chính", C(5, 4) * C(30, 1)),
+         ("Trùng 3 số chính", C(5, 3) * C(30, 2))]
+    sp.append(("Lotto 5/35", "chọn 5 số trong 35 + 1 số đặc biệt trong 12",
+               d, 1 + C(5, 4) * C(30, 1) + C(5, 3) * C(30, 2), T, "Trùng từ 3 số trở lên"))
+
+    # Keno bộ 10 số
+    T = C(80, 20)
+    d = [("Trùng " + str(k) + "/10 số", C(10, k) * C(70, 20 - k)) for k in range(10, 4, -1)]
+    sp.append(("Keno — bộ 10 số", "mỗi kỳ quay 20 số trong 80", d, None, T, None))
+
+    p = ['<h2 id="xac-suat">Xác suất trúng của một bộ số</h2>']
+    p.append('<div class="mo">Tính thẳng từ tổ hợp, không phải ước lượng. '
+             "Con số này đúng cho <strong>mọi</strong> bộ số &mdash; bộ gợi ý, bộ chị tự nghĩ, "
+             "hay bộ bốc bừa đều y hệt nhau.</div>")
+    p.append('<div class="luoi luoi-bd">')
+    for ten, mo, d, co_giai, T, nhan_tong in sp:
+        p.append('<div class="the"><div class="ten-bd">' + e(ten) + "</div>")
+        p.append('<div class="mo" style="margin-bottom:6px">' + mo + "</div>")
+        p.append('<div class="cuon"><table><thead><tr><th>Mức trúng</th>'
+                 '<th class="so">Cơ hội</th><th class="so">Tỷ lệ</th></tr></thead><tbody>')
+        for ten_h, cach in d:
+            p.append(hang(ten_h, cach, T))
+        if co_giai:
+            p.append('<tr style="font-weight:600"><td>' + e(nhan_tong)
+                     + '</td><td class="so">1 trên <strong>' + n(round(T / co_giai))
+                     + "</strong></td>" + '<td class="so">'
+                     + format(co_giai / T * 100, ".3f") + "%</td></tr>")
+        p.append("</tbody></table></div></div>")
+    p.append("</div>")
+
+    p.append('<div class="the"><div class="ten-bd">Mua mỗi kỳ thì bao lâu mới trúng?</div>'
+             '<div class="cuon" style="margin-top:8px"><table><thead><tr><th></th>'
+             '<th class="so">Jackpot</th><th class="so">Giải bất kỳ</th>'
+             "</tr></thead><tbody>"
+             '<tr><td>Power 6/55 <span class="mo">(156 kỳ/năm)</span></td>'
+             '<td class="so">185.831 năm</td><td class="so">2,1 lần/năm</td></tr>'
+             '<tr><td>Mega 6/45 <span class="mo">(156 kỳ/năm)</span></td>'
+             '<td class="so">52.212 năm</td><td class="so">3,7 lần/năm</td></tr>'
+             "</tbody></table></div>"
+             '<div class="mo" style="margin-top:8px">Mua mỗi kỳ một tờ, tính trung bình. '
+             "Mua 10 bộ thì cơ hội nhân 10 &mdash; và tiền bỏ ra cũng nhân 10, nên giá trị "
+             "kỳ vọng mỗi đồng vẫn y nguyên.</div></div>")
+
+    p.append('<div class="canh">Cơ cấu giải của Lotto 5/35 theo số con trùng không có nguồn '
+             "công khai nào nói rõ, nên bảng trên chỉ ghi xác suất <strong>khớp số</strong>, "
+             "không đặt tên hạng giải. Power 6/55 và Mega 6/45 thì có bảng giải đầy đủ.</div>")
+    return chr(10).join(p)
+
+
 # ---------- Bàn kiểm thử chiến lược ----------
 
 def khoi_kiem_thu():
@@ -577,6 +664,7 @@ def main(che_do_web=False):
         p.append('<a href="#' + ma + '">' + e(SAN_PHAM[ma]["ten"]) + "</a>")
     if (THU_MUC_BAO_CAO / "goi-so.json").exists():
         p.append('<a href="#goi-so">Bộ số gợi ý</a>')
+    p.append('<a href="#xac-suat">Xác suất trúng</a>')
     if (THU_MUC_BAO_CAO / "kiem-thu.json").exists():
         p.append('<a href="#kiem-thu">Chiến lược có ăn không?</a>')
     if gon:
@@ -590,6 +678,7 @@ def main(che_do_web=False):
         p.append(khoi_san_pham(ma, du_lieu[ma]))
 
     p.append(khoi_goi_so())
+    p.append(khoi_xac_suat())
     p.append(khoi_kiem_thu())
 
     if gon:
