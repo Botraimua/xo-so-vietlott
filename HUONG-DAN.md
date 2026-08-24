@@ -18,7 +18,7 @@ Mất khoảng 20 giây. Xong là chị có mọi thứ.
 
 ---
 
-## Mười hai nút bấm
+## Mười ba nút bấm
 
 | Nút | Làm gì | Khi nào bấm |
 |---|---|---|
@@ -34,6 +34,7 @@ Mất khoảng 20 giây. Xong là chị có mọi thứ.
 | `9-GOI-BO-SO.bat` | In bộ số gợi ý ra cửa sổ đen | Khi muốn xem nhanh, khỏi mở báo cáo |
 | `10-DAY-LEN-GITHUB.bat` | Đẩy thay đổi mã nguồn lên GitHub | Khi sửa mã trên máy. Dữ liệu thì GitHub tự lo |
 | `11-GHI-VE-DA-MUA.bat` | Ghi vé vừa mua vào sổ | Ngay sau khi bấm chép một bộ số gợi ý |
+| `12-CAI-CUA-GHI-VE.bat` | Cài để nhập vé được trên web | **Một lần duy nhất** |
 
 > Máy chị đã cài sẵn rồi, `1-CAI-DAT.bat` không cần chạy lại.
 > Nút 6 mất khoảng 20 giây, chạy xong thì kết quả tự hiện trong báo cáo HTML.
@@ -172,28 +173,41 @@ Mật khẩu chỉ phải gõ lần đầu trên mỗi thiết bị, sau đó tr
 
 ### Cài đặt — làm một lần
 
-Ô nhập chưa chạy được cho tới khi chị làm 2 việc sau. Bấm thử bây giờ sẽ báo
+Ô nhập chưa chạy được cho tới khi cài xong. Bấm thử bây giờ sẽ báo
 *"Máy chủ chưa được cài đặt"* — đúng như vậy.
 
-**Bước 1 — Tạo chìa khoá GitHub**
+**Bước 1 — Tạo chìa khoá GitHub** (làm trên web, khoảng 1 phút)
 
 1. Mở https://github.com/settings/personal-access-tokens/new
 2. **Token name**: `vietlott-ghi-ve`
-3. **Expiration**: chọn `No expiration` (hoặc 1 năm, hết hạn thì tạo lại)
-4. **Repository access** → chọn **Only select repositories** → chọn `xo-so-vietlott`
-5. **Permissions → Repository permissions**, đặt đúng 2 mục này:
+3. **Expiration**: `No expiration`
+4. **Repository access** → **Only select repositories** → chọn `xo-so-vietlott`
+5. **Permissions → Repository permissions**, đặt đúng 2 mục:
    - **Contents**: `Read and write`
    - **Actions**: `Read and write`
-6. Bấm **Generate token**, rồi **copy** chuỗi hiện ra (chỉ hiện một lần)
+6. Bấm **Generate token**, rồi **copy** chuỗi hiện ra
+   (bắt đầu bằng `github_pat_...`, chỉ hiện một lần — copy ngay)
 
-**Bước 2 — Dán vào Vercel**
+**Bước 2 — Bấm `12-CAI-CUA-GHI-VE.bat`**
 
-1. Mở https://vercel.com/psd6/vietlott-thongke/settings/environment-variables
-2. Thêm biến thứ nhất: Key = `GITHUB_TOKEN`, Value = chuỗi vừa copy → **Save**
-3. Thêm biến thứ hai: Key = `MAT_KHAU`, Value = mật khẩu chị tự nghĩ → **Save**
-4. Bấm `7-DUA-LEN-MANG.bat` một lần để trang nhận biến mới
+Nút này hỏi chị hai câu rồi tự lo hết phần còn lại:
 
-Xong. Từ đó nhập vé trên trang là chạy.
+1. *Chia khoa GitHub:* → bấm chuột phải vào cửa sổ đen để **dán** chuỗi vừa copy, Enter
+2. *Mat khau chi tu nghi:* → gõ một mật khẩu dễ nhớ, Enter
+   *(nên dùng chữ và số thôi, tránh ký tự lạ như `&` `|` `^` `!`)*
+
+Rồi nó tự lưu lên Vercel, kiểm lại, đăng lại trang, và **thử gõ sai mật khẩu một lần**
+để chứng minh cửa ghi đã sống. Dòng cuối cùng hiện ra sẽ nói cho chị biết:
+
+| Dòng cuối hiện gì | Nghĩa là |
+|---|---|
+| `Mật khẩu không đúng` | ✅ **Cài xong.** Cửa ghi đang chạy, chỉ là vừa cố tình gõ sai |
+| `Máy chủ chưa được cài đặt` | Chưa nhận biến. Đợi 1 phút rồi bấm `7-DUA-LEN-MANG.bat` |
+
+Chìa khoá và mật khẩu đi thẳng từ cửa sổ đen lên Vercel, Vercel lưu ở dạng **Sensitive**
+(ẩn, không xem lại được). Không lưu xuống file nào trên máy, không lọt vào trang web.
+
+Muốn đổi mật khẩu sau này thì bấm lại nút 12, nhập lại cả hai giá trị.
 
 ### Chạy như thế nào
 
