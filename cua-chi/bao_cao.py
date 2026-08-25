@@ -814,13 +814,23 @@ def khoi_cham_goi_y():
                  + "</tr></tbody></table></div>"
                  + ('<div class="mo" style="margin-top:8px">Chưa bộ nào tới kỳ quay. '
                     "Bảng dưới là kết quả dựng lại từ quá khứ, để có số ngay.</div>"
-                    if not t["da_cham"] else "")
+                    if not t["da_cham"] else
+                    ('<div class="mo" style="margin-top:8px">Lý thuyết nói với '
+                     + n(t["da_cham"]) + " bộ này thì kỳ vọng khoảng <strong>"
+                     + format(t["ky_vong_co_giai"], ".1f") + " bộ</strong> trúng ("
+                     + format(t["ty_le_ky_vong"], ".2f") + "%). "
+                     + ("Kho còn nhỏ nên chưa kết luận được gì — con số chỉ có ý nghĩa "
+                        "khi kỳ vọng lên khoảng 10 bộ trở lên, tức là vài tháng nữa."
+                        if not t.get("du_mau") else
+                        "Lệch " + format(t["lech_sai_so"], "+.1f")
+                        + " lần sai số chuẩn &mdash; " + e(t.get("nhan_xet", "")) + ".")
+                     + "</div>"))
                  + "</div>")
         p.append(bang_chi_tiet_that(that))
 
     if nap:
         t = nap["tong"]
-        trong_nhieu = abs(t["lech_sai_so"]) <= 2
+        trong_nhieu = t.get("nhan_xet") == "trong mức nhiễu bình thường"
         p.append('<div class="the"><div class="ten-bd">Dựng lại quá khứ &mdash; '
                  + n(t["da_cham"]) + " bộ</div>"
                  '<div class="mo" style="margin:4px 0 10px">Cho chương trình xem đúng phần '
@@ -859,8 +869,7 @@ def khoi_cham_goi_y():
                  + "%</strong>, lý thuyết nói phải là <strong>"
                  + format(t["ty_le_ky_vong"], ".2f") + "%</strong>, lệch "
                  + format(t["lech_sai_so"], "+.1f") + " lần sai số chuẩn"
-                 + (" &mdash; nằm trong mức nhiễu bình thường." if trong_nhieu
-                    else " &mdash; đáng để ý.") + "</div></div>")
+                 + " &mdash; " + e(t.get("nhan_xet", "")) + "." + "</div></div>")
         p.append(bang_bo_trung(nap))
         p.append(bang_theo_ngay(nap))
 

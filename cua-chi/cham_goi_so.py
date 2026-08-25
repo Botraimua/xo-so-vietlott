@@ -36,6 +36,19 @@ XS_CO_GIAI = {
 }
 
 
+# Dưới ngưỡng này thì sai số chuẩn không dùng được — mẫu còn quá nhỏ,
+# nói "lệch bao nhiêu sigma" là gán ý nghĩa cho thứ chưa có ý nghĩa.
+NGUONG_DU_MAU = 10.0
+
+
+def nhan_xet(ky_vong, lech):
+    if ky_vong < NGUONG_DU_MAU:
+        return "mẫu còn quá nhỏ để kết luận"
+    if abs(lech) <= 2:
+        return "trong mức nhiễu bình thường"
+    return "đáng để ý"
+
+
 def _so_ky(x):
     """Mã kỳ về dạng số để so sánh. Keno có dạng #0293043."""
     t = str(x).lstrip("#").lstrip("0")
@@ -149,6 +162,8 @@ def cham():
         d["sai_so"] = sqrt(max(d["ky_vong_co_giai"], 1e-9))
         d["lech_sai_so"] = ((d["co_giai"] - d["ky_vong_co_giai"]) / d["sai_so"]
                             if d["sai_so"] > 0 else 0.0)
+        d["du_mau"] = d["ky_vong_co_giai"] >= NGUONG_DU_MAU
+        d["nhan_xet"] = nhan_xet(d["ky_vong_co_giai"], d["lech_sai_so"])
         return d
 
     for d in list(theo_cl.values()) + list(theo_sp.values()):
@@ -266,6 +281,8 @@ def cham_nap(kho):
         x["roi"] = (x["tien_trung"] - x["tien_ve"]) / (x["tien_ve"] or 1) * 100
         ss = sqrt(max(x["ky_vong_co_giai"], 1e-9))
         x["lech_sai_so"] = (x["co_giai"] - x["ky_vong_co_giai"]) / ss if ss > 0 else 0.0
+        x["du_mau"] = x["ky_vong_co_giai"] >= NGUONG_DU_MAU
+        x["nhan_xet"] = nhan_xet(x["ky_vong_co_giai"], x["lech_sai_so"])
         return x
 
     for x in theo_cl.values():
@@ -304,9 +321,14 @@ def in_ra(kq):
           + format(t["ty_le_co_giai"], ".2f") + "%)")
     print("  Lý thuyết nói phải là : " + format(t["ky_vong_co_giai"], ".1f") + " bộ  ("
           + format(t["ty_le_ky_vong"], ".2f") + "%)")
-    print("  Lệch                  : " + format(t["lech_sai_so"], "+.1f")
-          + " lần sai số chuẩn" + ("   <- trong mức nhiễu bình thường"
-                                   if abs(t["lech_sai_so"]) <= 2 else "   <- đáng để ý"))
+    du_mau = t["ky_vong_co_giai"] >= NGUONG_DU_MAU
+    print("  Lệch                  : "
+          + ((format(t["lech_sai_so"], "+.1f") + " lần sai số chuẩn") if du_mau else "—")
+          + "   <- " + nhan_xet(t["ky_vong_co_giai"], t["lech_sai_so"]))
+    if not du_mau:
+        print("  (Kỳ vọng mới " + format(t["ky_vong_co_giai"], ".1f")
+              + " bộ. Phải quanh " + str(int(NGUONG_DU_MAU))
+              + " bộ trở lên thì con số 'lệch' mới nói được điều gì.)")
     print()
     print("  Nếu mua hết: bỏ ra " + vnd(t["tien_ve"]) + ", thu về " + vnd(t["tien_trung"])
           + "  ->  ROI " + format(t["roi"], "+.1f") + "%")
@@ -340,7 +362,7 @@ def in_nap(kq):
     print("  Lý thuyết nói phải là : " + format(t["ky_vong_co_giai"], ".1f") + " bộ  ("
           + format(t["ty_le_ky_vong"], ".2f") + "%)")
     print("  Lệch                  : " + format(t["lech_sai_so"], "+.1f") + " lần sai số chuẩn"
-          + ("   <- trong mức nhiễu" if abs(t["lech_sai_so"]) <= 2 else "   <- đáng để ý"))
+          + "   <- " + nhan_xet(t["ky_vong_co_giai"], t["lech_sai_so"]))
     print("  Mua hết thì ROI       : " + format(t["roi"], "+.1f") + "%")
     print()
     print("  " + "Chiến lược".ljust(15) + "đã chấm".rjust(9) + "có giải".rjust(9)
