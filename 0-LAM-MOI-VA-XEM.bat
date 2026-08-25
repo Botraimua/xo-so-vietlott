@@ -13,6 +13,7 @@ git pull --rebase --autostash >nul 2>&1
 ".venv\Scripts\python.exe" "cua-chi\cap_nhat.py"
 ".venv\Scripts\python.exe" "cua-chi\do_ve.py"
 ".venv\Scripts\python.exe" "cua-chi\goi_so.py" >nul
+".venv\Scripts\python.exe" "cua-chi\cham_goi_so.py" >nul
 ".venv\Scripts\python.exe" "cua-chi\bao_cao.py"
 if errorlevel 1 goto loi
 

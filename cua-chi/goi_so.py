@@ -81,7 +81,8 @@ def goi_cho_san_pham(ma, so_bo, ngay_hom_nay):
 
     ra = {"ma": ma, "ten": SAN_PHAM[ma]["ten"], "lich": SAN_PHAM[ma]["lich"],
           "ghi_chu": k["ghi_chu"], "so_chon": k["so_chon"],
-          "ky_cuoi": rows[-1].get("date"), "chien_luoc": []}
+          "ky_cuoi": rows[-1].get("date"),
+          "ky_cuoi_id": str(rows[-1].get("id", "")), "chien_luoc": []}
 
     for ten, ham, mo_ta in CHIEN_LUOC:
         # hạt giống cố định theo ngày + sản phẩm + chiến lược
@@ -112,6 +113,50 @@ def goi_cho_san_pham(ma, so_bo, ngay_hom_nay):
             bo.append(mot)
         ra["chien_luoc"].append({"ten": ten, "mo_ta": mo_ta, "bo": bo})
     return ra
+
+
+FILE_KHO = Path(__file__).resolve().parent / "kho-goi-so.jsonl"
+
+
+def luu_kho(tat_ca, hom_nay):
+    """
+    Cất mọi bộ số đã đề xuất vào kho, để sau này dò lại xem tỉ lệ trúng thật ra sao.
+
+    Mỗi bộ được neo vào MÃ KỲ CUỐI CÙNG mà nó biết lúc sinh ra ("sau_ky").
+    Nhờ vậy biết chính xác nó nhắm vào kỳ nào: kỳ kế tiếp sau mã đó.
+    Chạy lại cùng ngày với cùng dữ liệu -> trùng khoá -> không ghi thêm.
+    """
+    da_co = set()
+    if FILE_KHO.exists():
+        with open(FILE_KHO, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    r = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                da_co.add((r.get("ma"), r.get("chien_luoc"), r.get("sau_ky"),
+                           tuple(r.get("so") or []), r.get("so_db")))
+
+    them = 0
+    with open(FILE_KHO, "a", encoding="utf-8") as f:
+        for sp in tat_ca:
+            for cl in sp["chien_luoc"]:
+                for b in cl["bo"]:
+                    khoa = (sp["ma"], cl["ten"], sp["ky_cuoi_id"],
+                            tuple(b["so"]), b.get("so_db"))
+                    if khoa in da_co:
+                        continue
+                    da_co.add(khoa)
+                    json.dump({"ngay": hom_nay, "ma": sp["ma"],
+                               "chien_luoc": cl["ten"], "so": b["so"],
+                               "so_db": b.get("so_db"), "sau_ky": sp["ky_cuoi_id"]},
+                              f, ensure_ascii=False)
+                    f.write(chr(10))
+                    them += 1
+    return them
 
 
 def in_ra(kq):
@@ -169,6 +214,10 @@ def main():
     print("  cả 9 chiến lược đều lỗ 78–92%. Đây là công cụ khỏi phải nghĩ số,")
     print("  không phải công cụ dự đoán.")
     print()
+
+    them = luu_kho(tat_ca, hom_nay)
+    print("  Đã cất " + str(them) + " bộ mới vào kho để sau dò lại"
+          + " (kho: " + str(FILE_KHO.name) + ")")
 
     THU_MUC_BAO_CAO.mkdir(parents=True, exist_ok=True)
     dich = THU_MUC_BAO_CAO / "goi-so.json"

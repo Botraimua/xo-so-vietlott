@@ -619,6 +619,106 @@ def khung_nhap_ve():
         "</div>")
 
 
+def khoi_cham_goi_y():
+    """Mục gợi ý tự chấm chính nó: đã đề xuất bao nhiêu bộ, trúng thật ra sao."""
+    f1 = THU_MUC_BAO_CAO / "cham-goi-so.json"
+    f2 = THU_MUC_BAO_CAO / "cham-goi-so-nap.json"
+    that = nap = None
+    for f, ten in ((f1, "that"), (f2, "nap")):
+        if f.exists():
+            try:
+                with open(f, "r", encoding="utf-8") as fh:
+                    d = json.load(fh)
+                if ten == "that":
+                    that = d
+                else:
+                    nap = d
+            except (json.JSONDecodeError, OSError):
+                pass
+    if not that and not nap:
+        return ""
+
+    def n(x):
+        return format(int(x), ",").replace(",", ".")
+
+    p = ['<h2 id="cham-goi-y">Mục gợi ý trúng thật ra sao</h2>']
+    p.append('<div class="mo">Mọi bộ số từng đề xuất đều được cất lại, neo vào đúng kỳ nó '
+             "nhắm tới. Kỳ quay xong thì tự chấm. Đây là bàn cân cho chính mục gợi ý — "
+             "nó tự kiểm chứng mình, không tự khen.</div>")
+
+    if that:
+        t = that["tong"]
+        p.append('<div class="the"><div class="ten-bd">Đề xuất thật, tính tới hôm nay</div>'
+                 '<div class="cuon" style="margin-top:8px"><table><thead><tr>'
+                 '<th class="so">Đã cất</th><th class="so">Đã chấm</th>'
+                 '<th class="so">Chờ quay</th><th class="so">Trúng ≥3 số</th>'
+                 "</tr></thead><tbody><tr>"
+                 + '<td class="so">' + n(that.get("tong_bo_trong_kho", 0)) + "</td>"
+                 + '<td class="so">' + n(t["da_cham"]) + "</td>"
+                 + '<td class="so">' + n(t["cho_quay"]) + "</td>"
+                 + '<td class="so">' + (n(t["co_giai"]) + " ("
+                                        + format(t["ty_le_co_giai"], ".2f") + "%)"
+                                        if t["da_cham"] else "&mdash;") + "</td>"
+                 + "</tr></tbody></table></div>"
+                 + ('<div class="mo" style="margin-top:8px">Chưa bộ nào tới kỳ quay. '
+                    "Bảng dưới là kết quả dựng lại từ quá khứ, để có số ngay.</div>"
+                    if not t["da_cham"] else "")
+                 + "</div>")
+
+    if nap:
+        t = nap["tong"]
+        trong_nhieu = abs(t["lech_sai_so"]) <= 2
+        p.append('<div class="the"><div class="ten-bd">Dựng lại quá khứ &mdash; '
+                 + n(t["da_cham"]) + " bộ</div>"
+                 '<div class="mo" style="margin:4px 0 10px">Cho chương trình xem đúng phần '
+                 "lịch sử trước mỗi kỳ rồi hỏi nó gợi ý gì, y như nó đã chạy hôm ấy, "
+                 "rồi chấm với chính kỳ đó.</div>"
+                 '<div class="cuon"><table class="sapxep"><thead><tr>'
+                 '<th class="sx" data-chieu="">Cách chọn số</th>'
+                 '<th class="sx so" data-chieu="">Số bộ</th>'
+                 '<th class="sx so" data-chieu="">Trúng ≥3 số</th>'
+                 '<th class="sx so" data-chieu="">Tỉ lệ thật</th>'
+                 '<th class="so">Lý thuyết</th>'
+                 '<th class="sx so" data-chieu="">Lệch</th>'
+                 '<th class="sx so" data-chieu="">Giải nhất+</th>'
+                 '<th class="sx so" data-chieu="">ROI</th>'
+                 "</tr></thead><tbody>")
+        for ten, d in nap["theo_chien_luoc"].items():
+            if not d["da_cham"]:
+                continue
+            lech = d["lech_sai_so"]
+            p.append("<tr>"
+                     + '<td data-v="' + e(ten) + '">' + e(ten) + "</td>"
+                     + '<td class="so" data-v="' + str(d["da_cham"]) + '">' + n(d["da_cham"]) + "</td>"
+                     + '<td class="so" data-v="' + str(d["co_giai"]) + '">' + n(d["co_giai"]) + "</td>"
+                     + '<td class="so" data-v="' + format(d["ty_le_co_giai"], ".3f") + '"><strong>'
+                     + format(d["ty_le_co_giai"], ".2f") + "%</strong></td>"
+                     + '<td class="so mo">' + format(d["ty_le_ky_vong"], ".2f") + "%</td>"
+                     + '<td class="so" data-v="' + format(lech, ".2f") + '">'
+                     + format(lech, "+.1f") + "</td>"
+                     + '<td class="so" data-v="' + str(d.get("giai_lon", 0)) + '">'
+                     + str(d.get("giai_lon", 0)) + "</td>"
+                     + '<td class="so" data-v="' + format(d["roi"], ".1f") + '">'
+                     + format(d["roi"], "+.0f") + "%</td></tr>")
+        p.append("</tbody></table></div>")
+        p.append('<div class="mo" style="margin-top:10px">Gộp cả '
+                 + n(t["da_cham"]) + " bộ: trúng <strong>" + format(t["ty_le_co_giai"], ".2f")
+                 + "%</strong>, lý thuyết nói phải là <strong>"
+                 + format(t["ty_le_ky_vong"], ".2f") + "%</strong>, lệch "
+                 + format(t["lech_sai_so"], "+.1f") + " lần sai số chuẩn"
+                 + (" &mdash; nằm trong mức nhiễu bình thường." if trong_nhieu
+                    else " &mdash; đáng để ý.") + "</div></div>")
+
+        p.append('<div class="canh"><strong>Đọc bảng này cho đúng.</strong> '
+                 "Cột <em>tỉ lệ thật</em> và <em>lệch</em> mới là thứ đáng tin: mọi chiến lược "
+                 "đều bám quanh mức lý thuyết, chênh nhau trong khoảng &plusmn;2 sai số chuẩn "
+                 "&mdash; tức là nhiễu, không phải tài. "
+                 "Cột <em>ROI</em> thì bị cột <em>giải nhất+</em> chi phối: chỉ một tờ giải nhất "
+                 "40 triệu là đủ kéo ROI của cả mấy nghìn tờ lên hàng chục điểm phần trăm. "
+                 "Thấy một chiến lược ROI đẹp hơn hẳn, nhìn sang cột giải nhất+ là hiểu ngay.</div>")
+    return chr(10).join(p)
+
+
 # ---------- Bàn kiểm thử chiến lược ----------
 
 def khoi_kiem_thu():
@@ -923,6 +1023,8 @@ def main(che_do_web=False):
         p.append('<a href="#' + ma + '">' + e(SAN_PHAM[ma]["ten"]) + "</a>")
     if (THU_MUC_BAO_CAO / "goi-so.json").exists():
         p.append('<a href="#goi-so">Bộ số gợi ý</a>')
+    if (THU_MUC_BAO_CAO / "cham-goi-so-nap.json").exists() or (THU_MUC_BAO_CAO / "cham-goi-so.json").exists():
+        p.append('<a href="#cham-goi-y">Gợi ý trúng ra sao</a>')
     p.append('<a href="#xac-suat">Xác suất trúng</a>')
     if (THU_MUC_BAO_CAO / "kiem-thu.json").exists():
         p.append('<a href="#kiem-thu">Chiến lược có ăn không?</a>')
@@ -939,6 +1041,7 @@ def main(che_do_web=False):
         p.append(khoi_san_pham(ma, du_lieu[ma]))
 
     p.append(khoi_goi_so())
+    p.append(khoi_cham_goi_y())
     p.append(khoi_xac_suat())
     p.append(khoi_kiem_thu())
 

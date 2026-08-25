@@ -47,6 +47,11 @@ jobs:
       - name: Sinh bộ số gợi ý cho hôm nay
         run: uv run python cua-chi/goi_so.py
 
+      - name: Chấm lại mục gợi ý
+        run: |
+          uv run python cua-chi/cham_goi_so.py
+          uv run python cua-chi/cham_goi_so.py nap 400
+
       - name: Dựng trang công khai (không kèm vé riêng)
         run: uv run python cua-chi/bao_cao.py web
 
@@ -54,7 +59,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data web/index.html
+          git add data web/index.html cua-chi/kho-goi-so.jsonl
           if git diff --staged --quiet; then
             echo "Không có gì thay đổi, bỏ qua."
           else

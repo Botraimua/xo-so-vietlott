@@ -18,7 +18,7 @@ Mất khoảng 20 giây. Xong là chị có mọi thứ.
 
 ---
 
-## Mười ba nút bấm
+## Mười bốn nút bấm
 
 | Nút | Làm gì | Khi nào bấm |
 |---|---|---|
@@ -35,6 +35,7 @@ Mất khoảng 20 giây. Xong là chị có mọi thứ.
 | `10-DAY-LEN-GITHUB.bat` | Đẩy thay đổi mã nguồn lên GitHub | Khi sửa mã trên máy. Dữ liệu thì GitHub tự lo |
 | `11-GHI-VE-DA-MUA.bat` | Ghi vé vừa mua vào sổ | Ngay sau khi bấm chép một bộ số gợi ý |
 | `12-CAI-CUA-GHI-VE.bat` | Cài để nhập vé được trên web | **Một lần duy nhất** |
+| `13-DO-LAI-MUC-GOI-Y.bat` | Chấm lại mọi bộ số đã đề xuất | Khi muốn biết mục gợi ý trúng ra sao |
 
 > Máy chị đã cài sẵn rồi, `1-CAI-DAT.bat` không cần chạy lại.
 > Nút 6 mất khoảng 20 giây, chạy xong thì kết quả tự hiện trong báo cáo HTML.
@@ -282,6 +283,49 @@ Bộ số **đang chơi** trong `ve-cua-chi.txt` thì vẫn chỉ nằm trên m�
 
 Sổ này cũng là bàn thí nghiệm tốt: sau vài chục vé, chị sẽ thấy lãi/lỗ thật của mình
 bám đúng con số −70% mà bảng xác suất dự báo.
+
+---
+
+## Mục gợi ý trúng thật ra sao (nút 13)
+
+Mỗi bộ số đề xuất đều được **cất lại** trong `cua-chi\kho-goi-so.jsonl`, neo vào đúng
+mã kỳ mà nó biết lúc sinh ra. Kỳ nào quay xong thì bộ nhắm vào kỳ đó tự được chấm.
+
+Nút 13 làm hai việc:
+
+1. **Chấm những bộ đã đề xuất thật** — kho này lớn dần mỗi ngày, càng để lâu càng đáng tin
+2. **Dựng lại quá khứ** — cho chương trình xem đúng phần lịch sử trước mỗi kỳ rồi hỏi nó
+   gợi ý gì, y như nó đã chạy hôm ấy, rồi chấm với chính kỳ đó. Nhờ vậy có số **ngay**,
+   khỏi đợi vài tháng
+
+Phần dựng lại quá khứ **không cất vào kho** — nó tính lại được bất cứ lúc nào từ dữ liệu,
+cất vào chỉ tổ phình repo và chạy hai lần là đếm trùng. Kho chỉ giữ đề xuất thật.
+
+### Kết quả hiện tại (43.200 bộ dựng lại từ quá khứ)
+
+| Cách chọn số | Trúng ≥3 số | Lý thuyết | Lệch |
+|---|---:|---:|---:|
+| Chuỗi Markov | 2,00% | 1,70% | +1,6 |
+| Mẫu hình | 1,90% | 1,70% | +1,0 |
+| Lâu chưa về | 1,88% | 1,70% | +0,9 |
+| Không lặp lại | 1,83% | 1,70% | +0,7 |
+| Số lạnh | 1,73% | 1,70% | +0,1 |
+| Suy giảm mũ | 1,71% | 1,70% | +0,0 |
+| Số nóng | 1,60% | 1,70% | −0,5 |
+| Tần suất cặp | 1,54% | 1,70% | −0,8 |
+| Ngẫu nhiên | 1,52% | 1,70% | −1,0 |
+
+Gộp cả 43.200 bộ: trúng **1,75%**, lý thuyết nói **1,70%** — lệch +0,7 lần sai số chuẩn,
+tức là nhiễu bình thường.
+
+**Cách đọc:** cột *lệch* tính theo lần sai số chuẩn. Trong khoảng ±2 là dao động ngẫu nhiên,
+không có ý nghĩa gì. Cả 9 cách đều nằm trong khoảng đó → **không cách nào giỏi hơn cách nào**,
+đúng như lý thuyết xác suất nói.
+
+**Đừng đọc cột ROI theo kiểu xếp hạng.** Trong lần chạy này, Chuỗi Markov ra ROI −10% trong
+khi mọi cách khác quanh −93%. Nhìn cột *giải nhất+* là hiểu: Markov trúng **đúng một tờ**
+giải nhất 40 triệu, còn lại đều 0 tờ. Một tờ đó kéo ROI của cả 4.800 tờ lên hơn 80 điểm
+phần trăm. Đó là may, không phải tài.
 
 ---
 
