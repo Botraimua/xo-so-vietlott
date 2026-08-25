@@ -80,6 +80,7 @@ def cham():
         cap = [(_so_ky(r.get("id")), r) for r in rows]
         bo_nho[ma] = sorted([(s, r) for s, r in cap if s is not None], key=lambda t: t[0])
 
+    chi_tiet = []      # từng bộ một, để chị soi tận nơi
     theo_cl = {}       # chiến lược -> thống kê gộp mọi sản phẩm
     theo_sp = {}       # sản phẩm  -> thống kê gộp mọi chiến lược
     tong = {"da_cham": 0, "cho_quay": 0, "co_giai": 0, "tien_ve": 0, "tien_trung": 0,
@@ -105,6 +106,9 @@ def cham():
             a["cho_quay"] += 1
             b["cho_quay"] += 1
             tong["cho_quay"] += 1
+            chi_tiet.append({"ngay": r.get("ngay"), "ma": ma,
+                             "chien_luoc": r.get("chien_luoc"), "so": r.get("so"),
+                             "so_db": r.get("so_db"), "trang_thai": "cho"})
             continue
 
         chinh, db = tach_so(ky, ma)
@@ -128,6 +132,13 @@ def cham():
         for x in (a, b):
             if hang:
                 x["hang"][hang] = x["hang"].get(hang, 0) + 1
+        chi_tiet.append({"ngay": r.get("ngay"), "ma": ma,
+                         "chien_luoc": r.get("chien_luoc"), "so": r.get("so"),
+                         "so_db": r.get("so_db"), "trang_thai": "xong",
+                         "ky_id": str(ky.get("id")), "ky_ngay": str(ky.get("date")),
+                         "so_ky": sorted(chinh), "db_ky": db,
+                         "trung": trung, "trung_db": trung_db,
+                         "hang": hang, "tien": tien})
 
     def don(d):
         n = d["da_cham"] or 1
@@ -151,6 +162,8 @@ def cham():
         "tu_ngay": min((r.get("ngay") or "") for r in kho) or None,
         "den_ngay": max((r.get("ngay") or "") for r in kho) or None,
         "tong_bo_trong_kho": len(kho),
+        "chi_tiet": sorted(chi_tiet, key=lambda x: (x.get("ngay") or "", x.get("ma") or ""),
+                           reverse=True),
     }
 
 
@@ -200,6 +213,8 @@ def cham_nap(kho):
         bo_nho[ma] = sorted([(s, r) for s, r in cap if s is not None], key=lambda t: t[0])
 
     theo_cl = {}
+    theo_ngay = {}     # (ngày, sản phẩm) -> số bộ / số trúng / tiền
+    bo_trung = []      # từng bộ đã trúng, để soi tận nơi
     tong = {"da_cham": 0, "co_giai": 0, "tien_ve": 0, "tien_trung": 0,
             "ky_vong_co_giai": 0.0, "giai_lon": 0}
     for r in kho:
@@ -219,6 +234,20 @@ def cham_nap(kho):
         trung_db = (r.get("so_db") is not None and db is not None and r["so_db"] == db)
         hang = xep_hang(ma, trung, trung_db)
         tien = GIAI[ma][hang][1] if (hang and ma in GIAI) else 0
+
+        khoa_ngay = (str(ky.get("date")), ma)
+        n = theo_ngay.setdefault(khoa_ngay, {"ngay": khoa_ngay[0], "ma": ma,
+                                             "so_bo": 0, "trung": 0, "tien": 0})
+        n["so_bo"] += 1
+        n["tien"] += tien
+        if trung >= 3:
+            n["trung"] += 1
+            bo_trung.append({"ngay": str(ky.get("date")), "ma": ma,
+                             "chien_luoc": ten, "so": r.get("so"),
+                             "so_db": r.get("so_db"), "ky_id": str(ky.get("id")),
+                             "so_ky": sorted(chinh), "db_ky": db,
+                             "trung": trung, "trung_db": trung_db,
+                             "hang": hang, "tien": tien})
         for x in (d, tong):
             x["da_cham"] += 1
             x["tien_ve"] += GIA_VE
@@ -244,7 +273,11 @@ def cham_nap(kho):
     don(tong)
     return {"tong": tong,
             "theo_chien_luoc": dict(sorted(theo_cl.items(),
-                                           key=lambda kv: -kv[1]["ty_le_co_giai"]))}
+                                           key=lambda kv: -kv[1]["ty_le_co_giai"])),
+            "theo_ngay": sorted(theo_ngay.values(),
+                                key=lambda x: (x["ngay"], x["ma"]), reverse=True),
+            "bo_trung": sorted(bo_trung,
+                               key=lambda x: (x["ngay"], -x["tien"]), reverse=True)}
 
 
 def vnd(x):

@@ -619,6 +619,158 @@ def khung_nhap_ve():
         "</div>")
 
 
+def _ten_hang(h, ma):
+    if h:
+        from so_ve import GIAI as _G
+        if ma in _G and h in _G[ma]:
+            return _G[ma][h][0]
+    return ""
+
+
+def _o_bo(so, so_db, so_ky=None, db_ky=None):
+    """
+    Bộ số dạng chữ, số trúng in đậm xanh. Bảng chi tiết có hàng nghìn dòng nên
+    dùng viên bi tròn thì trang phình lên gần 1 MB — chữ thường vừa đủ đọc.
+    """
+    tap = set(so_ky or [])
+    ra = []
+    for x in (so or []):
+        t = str(x).zfill(2)
+        ra.append('<b class="tr">' + t + "</b>" if x in tap else t)
+    out = " ".join(ra)
+    if so_db is not None:
+        d = str(so_db).zfill(2)
+        out += " | " + ('<b class="tr">' + d + "</b>" if db_ky == so_db else d)
+    return '<span class="so-gon">' + out + "</span>"
+
+
+def bang_chi_tiet_that(that):
+    """Từng bộ đề xuất THẬT: ngày, sản phẩm, bộ số, kỳ nhắm tới, trúng bao nhiêu."""
+    ct = (that or {}).get("chi_tiet") or []
+    if not ct:
+        return ""
+    p = ['<details class="the gap"><summary>Chi tiết từng bộ đã đề xuất thật ('
+         + format(len(ct), ",").replace(",", ".") + " bộ)</summary>"]
+    p.append('<div class="cuon" style="margin-top:10px"><table class="sapxep"><thead><tr>'
+             '<th class="sx" data-chieu="">Ngày</th>'
+             '<th class="sx" data-chieu="">Sản phẩm</th>'
+             '<th class="sx" data-chieu="">Cách chọn</th>'
+             "<th>Bộ số</th><th>Kỳ nhắm tới</th>"
+             '<th class="sx so" data-chieu="">Trúng</th>'
+             '<th class="sx so" data-chieu="">Được</th></tr></thead><tbody>')
+    for x in ct:
+        ma = x.get("ma")
+        ten_sp = SAN_PHAM.get(ma, {}).get("ten", ma)
+        cho = x.get("trang_thai") == "cho"
+        p.append("<tr>"
+                 + '<td data-v="' + e(x.get("ngay")) + '">'
+                 + e(ngay_viet(x.get("ngay"), kem_thu=False)) + "</td>"
+                 + '<td data-v="' + e(ten_sp) + '">' + e(ten_sp) + "</td>"
+                 + '<td data-v="' + e(x.get("chien_luoc")) + '">' + e(x.get("chien_luoc")) + "</td>"
+                 + "<td>" + _o_bo(x.get("so") or [], x.get("so_db"),
+                                  x.get("so_ky"), x.get("db_ky")) + "</td>")
+        if cho:
+            p.append('<td class="mo">chưa quay</td>'
+                     '<td class="so mo" data-v="-1">&mdash;</td>'
+                     '<td class="so mo">&mdash;</td></tr>')
+            continue
+        giai = _ten_hang(x.get("hang"), ma)
+        duoc = (vnd_(x["tien"]) if x.get("tien") else
+                ('<span class="mo">không tính tiền</span>' if ma not in ("power_655", "power_645")
+                 else '<span class="mo">0đ</span>'))
+        p.append("<td>" + e(ngay_viet(x.get("ky_ngay"), kem_thu=False))
+                 + '<div class="mo">kỳ ' + e(x.get("ky_id")) + "</div></td>"
+                 + '<td class="so" data-v="' + str(x.get("trung", 0)) + '"><strong>'
+                 + str(x.get("trung", 0)) + "</strong>"
+                 + (" +ĐB" if x.get("trung_db") else "")
+                 + (' <div class="mo">' + e(giai) + "</div>" if giai else "") + "</td>"
+                 + '<td class="so">' + duoc + "</td></tr>")
+    p.append("</tbody></table></div></details>")
+    return chr(10).join(p)
+
+
+def bang_theo_ngay(nap):
+    """Từng ngày, từng sản phẩm: đề xuất mấy bộ, trúng mấy, được bao nhiêu."""
+    dn = (nap or {}).get("theo_ngay") or []
+    if not dn:
+        return ""
+    tong_dong = len(dn)
+    dn = dn[:250]          # 250 ngày gần nhất; cũ hơn thì bảng gộp đã nói đủ
+    p = ['<details class="the gap"><summary>Tách theo từng ngày và từng loại ('
+         + format(len(dn), ",").replace(",", ".")
+         + (" dòng gần nhất trong " + format(tong_dong, ",").replace(",", ".")
+            if tong_dong > len(dn) else " dòng") + ")</summary>"]
+    p.append('<div class="mo" style="margin-top:8px">Mỗi dòng là một ngày quay của một sản '
+             "phẩm: hôm đó mục gợi ý đưa ra mấy bộ, trúng mấy bộ, được bao nhiêu tiền.</div>")
+    p.append('<div class="cuon" style="margin-top:8px"><table class="sapxep"><thead><tr>'
+             '<th class="sx" data-chieu="">Ngày quay</th>'
+             '<th class="sx" data-chieu="">Sản phẩm</th>'
+             '<th class="sx so" data-chieu="">Số bộ</th>'
+             '<th class="sx so" data-chieu="">Trúng ≥3 số</th>'
+             '<th class="sx so" data-chieu="">Tiền trúng</th></tr></thead><tbody>')
+    for x in dn:
+        ma = x.get("ma")
+        ten_sp = SAN_PHAM.get(ma, {}).get("ten", ma)
+        p.append("<tr>"
+                 + '<td data-v="' + e(x.get("ngay")) + '">'
+                 + e(ngay_viet(x.get("ngay"), kem_thu=False)) + "</td>"
+                 + '<td data-v="' + e(ten_sp) + '">' + e(ten_sp) + "</td>"
+                 + '<td class="so" data-v="' + str(x["so_bo"]) + '">' + str(x["so_bo"]) + "</td>"
+                 + '<td class="so" data-v="' + str(x["trung"]) + '">'
+                 + (("<strong>" + str(x["trung"]) + "</strong>") if x["trung"] else
+                    '<span class="mo">0</span>') + "</td>"
+                 + '<td class="so" data-v="' + str(x["tien"]) + '">'
+                 + (vnd_(x["tien"]) if x["tien"] else '<span class="mo">0đ</span>')
+                 + "</td></tr>")
+    p.append("</tbody></table></div></details>")
+    return chr(10).join(p)
+
+
+def bang_bo_trung(nap):
+    """Danh sách từng bộ đã trúng, kèm kỳ nào và được bao nhiêu."""
+    bt = (nap or {}).get("bo_trung") or []
+    if not bt:
+        return ""
+    tong_bo = len(bt)
+    bt = bt[:400]          # 400 bộ trúng gần nhất
+    p = ['<details class="the gap"><summary>Những bộ đã trúng ('
+         + format(len(bt), ",").replace(",", ".")
+         + (" bộ gần nhất trong " + format(tong_bo, ",").replace(",", ".")
+            if tong_bo > len(bt) else " bộ") + ")</summary>"]
+    p.append('<div class="cuon" style="margin-top:10px"><table class="sapxep"><thead><tr>'
+             '<th class="sx" data-chieu="">Ngày quay</th>'
+             '<th class="sx" data-chieu="">Sản phẩm</th>'
+             '<th class="sx" data-chieu="">Cách chọn</th>'
+             "<th>Bộ số &mdash; xanh là trúng</th>"
+             '<th class="sx so" data-chieu="">Trúng</th>'
+             '<th class="sx so" data-chieu="">Được</th></tr></thead><tbody>')
+    for x in bt:
+        ma = x.get("ma")
+        ten_sp = SAN_PHAM.get(ma, {}).get("ten", ma)
+        giai = _ten_hang(x.get("hang"), ma)
+        duoc = (vnd_(x["tien"]) if x.get("tien") else
+                '<span class="mo">không tính tiền</span>')
+        p.append("<tr>"
+                 + '<td data-v="' + e(x.get("ngay")) + '">'
+                 + e(ngay_viet(x.get("ngay"), kem_thu=False))
+                 + '<div class="mo">kỳ ' + e(x.get("ky_id")) + "</div></td>"
+                 + '<td data-v="' + e(ten_sp) + '">' + e(ten_sp) + "</td>"
+                 + '<td data-v="' + e(x.get("chien_luoc")) + '">' + e(x.get("chien_luoc")) + "</td>"
+                 + "<td>" + _o_bo(x.get("so") or [], x.get("so_db"),
+                                  x.get("so_ky"), x.get("db_ky")) + "</td>"
+                 + '<td class="so" data-v="' + str(x.get("trung", 0)) + '"><strong>'
+                 + str(x.get("trung", 0)) + "</strong>"
+                 + (" +ĐB" if x.get("trung_db") else "")
+                 + (' <div class="mo">' + e(giai) + "</div>" if giai else "") + "</td>"
+                 + '<td class="so" data-v="' + str(x.get("tien", 0)) + '">' + duoc + "</td></tr>")
+    p.append("</tbody></table></div></details>")
+    return chr(10).join(p)
+
+
+def vnd_(x):
+    return format(int(x), ",").replace(",", ".") + "đ"
+
+
 def khoi_cham_goi_y():
     """Mục gợi ý tự chấm chính nó: đã đề xuất bao nhiêu bộ, trúng thật ra sao."""
     f1 = THU_MUC_BAO_CAO / "cham-goi-so.json"
@@ -664,6 +816,7 @@ def khoi_cham_goi_y():
                     "Bảng dưới là kết quả dựng lại từ quá khứ, để có số ngay.</div>"
                     if not t["da_cham"] else "")
                  + "</div>")
+        p.append(bang_chi_tiet_that(that))
 
     if nap:
         t = nap["tong"]
@@ -708,6 +861,8 @@ def khoi_cham_goi_y():
                  + format(t["lech_sai_so"], "+.1f") + " lần sai số chuẩn"
                  + (" &mdash; nằm trong mức nhiễu bình thường." if trong_nhieu
                     else " &mdash; đáng để ý.") + "</div></div>")
+        p.append(bang_bo_trung(nap))
+        p.append(bang_theo_ngay(nap))
 
         p.append('<div class="canh"><strong>Đọc bảng này cho đúng.</strong> '
                  "Cột <em>tỉ lệ thật</em> và <em>lệch</em> mới là thứ đáng tin: mọi chiến lược "
