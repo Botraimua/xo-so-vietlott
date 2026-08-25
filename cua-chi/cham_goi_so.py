@@ -108,7 +108,9 @@ def cham():
 
     for r in kho:
         ma = r.get("ma")
-        if ma not in bo_nho:
+        # Bỏ qua sản phẩm không có mức kỳ vọng để đối chiếu (vd Keno) — gộp vào
+        # thì tỉ lệ chung sai lệch hẳn. Chặn ở đây phòng khi kho cũ còn sót.
+        if ma not in bo_nho or ma not in XS_CO_GIAI:
             continue
         a = o(theo_cl, r.get("chien_luoc", "?"))
         b = o(theo_sp, ma)

@@ -795,8 +795,13 @@ def khoi_cham_goi_y():
 
     p = ['<h2 id="cham-goi-y">Mục gợi ý trúng thật ra sao</h2>']
     p.append('<div class="mo">Mọi bộ số từng đề xuất đều được cất lại, neo vào đúng kỳ nó '
-             "nhắm tới. Kỳ quay xong thì tự chấm. Đây là bàn cân cho chính mục gợi ý — "
-             "nó tự kiểm chứng mình, không tự khen.</div>")
+             "nhắm tới. Kỳ quay xong thì tự chấm, mỗi ngày kho một lớn. Đây là bàn cân cho "
+             "chính mục gợi ý &mdash; nó tự kiểm chứng mình, không tự khen.</div>")
+    p.append('<div class="mo" style="margin-top:4px">Chỉ theo dõi <strong>Power 6/55, '
+             "Mega 6/45 và Lotto 5/35</strong>. Keno không đưa vào đây: chọn 10 số trong 80 "
+             "mà quay tới 20 số nên trúng ≥3 số xảy ra tới <strong>47,9%</strong> "
+             "&mdash; gộp chung với Power (1,33%) thì con số tổng thành vô nghĩa. "
+             "Keno vẫn được gợi số bình thường ở mục trên.</div>")
 
     if that:
         t = that["tong"]

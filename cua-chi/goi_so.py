@@ -117,6 +117,12 @@ def goi_cho_san_pham(ma, so_bo, ngay_hom_nay):
 
 FILE_KHO = Path(__file__).resolve().parent / "kho-goi-so.jsonl"
 
+# Chỉ theo dõi tỉ lệ trúng của 3 sản phẩm này. KHÔNG gồm Keno: chọn 10 số trong 80
+# mà quay tới 20 số nên "trúng ≥3 số" xảy ra tới 47,9% — gộp chung với Power (1,33%)
+# thì con số tổng thành vô nghĩa, nhìn như mục gợi ý có phép. Keno vẫn được gợi số
+# bình thường, chỉ là không đem vào bàn cân này.
+THEO_DOI = ("power_655", "power_645", "power_535")
+
 
 def luu_kho(tat_ca, hom_nay):
     """
@@ -143,6 +149,8 @@ def luu_kho(tat_ca, hom_nay):
     them = 0
     with open(FILE_KHO, "a", encoding="utf-8") as f:
         for sp in tat_ca:
+            if sp["ma"] not in THEO_DOI:
+                continue
             for cl in sp["chien_luoc"]:
                 for b in cl["bo"]:
                     khoa = (sp["ma"], cl["ten"], sp["ky_cuoi_id"],
