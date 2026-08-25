@@ -322,6 +322,23 @@ tức là nhiễu bình thường.
 không có ý nghĩa gì. Cả 9 cách đều nằm trong khoảng đó → **không cách nào giỏi hơn cách nào**,
 đúng như lý thuyết xác suất nói.
 
+### Ba bảng chi tiết, gấp lại được
+
+Ngay dưới bảng gộp có ba khối bấm vào là mở ra:
+
+| Khối | Có gì |
+|---|---|
+| **Chi tiết từng bộ đã đề xuất thật** | Mọi bộ trong kho: ngày, sản phẩm, cách chọn, bộ số, kỳ nó nhắm tới, trúng mấy con, được bao nhiêu. Chưa quay thì ghi *chưa quay* |
+| **Những bộ đã trúng** | Chỉ những bộ trúng ≥3 số — số nào trúng in **xanh đậm**, kèm hạng giải và tiền |
+| **Tách theo từng ngày và từng loại** | Mỗi dòng = một ngày quay của một sản phẩm: hôm đó gợi ý mấy bộ, trúng mấy bộ, được bao nhiêu |
+
+Cả ba bảng đều **bấm tiêu đề cột để sắp xếp**. Muốn xem hôm nào trúng nhiều nhất thì bấm
+cột "Trúng ≥3 số"; muốn xem cách chọn nào hay trúng thì bấm cột "Cách chọn".
+
+Hai bảng lấy từ phần dựng lại quá khứ có cắt bớt (400 bộ trúng gần nhất trong 754, và
+250 ngày gần nhất trong 1.000) — nếu để đủ thì trang nặng gần 1 MB, mở trên điện thoại
+sẽ ì. Con số tổng ở bảng gộp vẫn tính trên **toàn bộ** 43.200 bộ.
+
 **Đừng đọc cột ROI theo kiểu xếp hạng.** Trong lần chạy này, Chuỗi Markov ra ROI −10% trong
 khi mọi cách khác quanh −93%. Nhìn cột *giải nhất+* là hiểu: Markov trúng **đúng một tờ**
 giải nhất 40 triệu, còn lại đều 0 tờ. Một tờ đó kéo ROI của cả 4.800 tờ lên hơn 80 điểm
