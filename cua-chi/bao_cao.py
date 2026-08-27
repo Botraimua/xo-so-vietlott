@@ -771,8 +771,38 @@ def vnd_(x):
     return format(int(x), ",").replace(",", ".") + "đ"
 
 
+def pt(x, n=2):
+    """Phần trăm kiểu Việt: 1,74% chứ không phải 1.74%"""
+    return format(x, "." + str(n) + "f").replace(".", ",") + "%"
+
+
+def _thanh_so_sanh(that, ky_vong, nhan_trai="", nhan_phai=""):
+    """
+    Thanh so sánh: vạch giữa là mức may rủi, thanh màu là kết quả thật.
+    Bám giữa nghĩa là ngang may rủi. Đọc bằng mắt, khỏi cần hiểu sai số chuẩn.
+    """
+    if ky_vong <= 0:
+        return ""
+    ty = min(1.0, that / (ky_vong * 2)) * 100
+    return ('<div class="thanh-ss"><div class="thanh-ss-nen"></div>'
+            '<div class="thanh-ss-day" style="width:' + format(ty, ".1f") + '%"></div>'
+            '<div class="thanh-ss-moc"></div></div>'
+            + ('<div class="thanh-ss-nhan"><span>' + nhan_trai + "</span><span>"
+               + nhan_phai + "</span></div>" if (nhan_trai or nhan_phai) else ""))
+
+
+def _loi_phan(d):
+    """Một cụm từ thay cho con số sigma."""
+    if not d.get("du_mau"):
+        return ("cho", "chưa đủ dữ liệu")
+    l = d.get("lech_sai_so", 0)
+    if abs(l) <= 2:
+        return ("ngang", "ngang mức may rủi")
+    return ("lech", "cao hơn may rủi" if l > 0 else "thấp hơn may rủi")
+
+
 def khoi_cham_goi_y():
-    """Mục gợi ý tự chấm chính nó: đã đề xuất bao nhiêu bộ, trúng thật ra sao."""
+    """Mục gợi ý tự chấm chính nó — trả lời trước, số liệu sau."""
     f1 = THU_MUC_BAO_CAO / "cham-goi-so.json"
     f2 = THU_MUC_BAO_CAO / "cham-goi-so-nap.json"
     that = nap = None
@@ -793,98 +823,109 @@ def khoi_cham_goi_y():
     def n(x):
         return format(int(x), ",").replace(",", ".")
 
-    p = ['<h2 id="cham-goi-y">Mục gợi ý trúng thật ra sao</h2>']
-    p.append('<div class="mo">Mọi bộ số từng đề xuất đều được cất lại, neo vào đúng kỳ nó '
-             "nhắm tới. Kỳ quay xong thì tự chấm, mỗi ngày kho một lớn. Đây là bàn cân cho "
-             "chính mục gợi ý &mdash; nó tự kiểm chứng mình, không tự khen.</div>")
-    p.append('<div class="mo" style="margin-top:4px">Chỉ theo dõi <strong>Power 6/55, '
-             "Mega 6/45 và Lotto 5/35</strong>. Keno không đưa vào đây: chọn 10 số trong 80 "
-             "mà quay tới 20 số nên trúng ≥3 số xảy ra tới <strong>47,9%</strong> "
-             "&mdash; gộp chung với Power (1,33%) thì con số tổng thành vô nghĩa. "
-             "Keno vẫn được gợi số bình thường ở mục trên.</div>")
+    p = ['<h2 id="cham-goi-y">Mục gợi ý có ăn không?</h2>']
 
-    if that:
-        t = that["tong"]
-        p.append('<div class="the"><div class="ten-bd">Đề xuất thật, tính tới hôm nay</div>'
-                 '<div class="cuon" style="margin-top:8px"><table><thead><tr>'
-                 '<th class="so">Đã cất</th><th class="so">Đã chấm</th>'
-                 '<th class="so">Chờ quay</th><th class="so">Trúng ≥3 số</th>'
-                 "</tr></thead><tbody><tr>"
-                 + '<td class="so">' + n(that.get("tong_bo_trong_kho", 0)) + "</td>"
-                 + '<td class="so">' + n(t["da_cham"]) + "</td>"
-                 + '<td class="so">' + n(t["cho_quay"]) + "</td>"
-                 + '<td class="so">' + (n(t["co_giai"]) + " ("
-                                        + format(t["ty_le_co_giai"], ".2f") + "%)"
-                                        if t["da_cham"] else "&mdash;") + "</td>"
-                 + "</tr></tbody></table></div>"
-                 + ('<div class="mo" style="margin-top:8px">Chưa bộ nào tới kỳ quay. '
-                    "Bảng dưới là kết quả dựng lại từ quá khứ, để có số ngay.</div>"
-                    if not t["da_cham"] else
-                    ('<div class="mo" style="margin-top:8px">Lý thuyết nói với '
-                     + n(t["da_cham"]) + " bộ này thì kỳ vọng khoảng <strong>"
-                     + format(t["ky_vong_co_giai"], ".1f") + " bộ</strong> trúng ("
-                     + format(t["ty_le_ky_vong"], ".2f") + "%). "
-                     + ("Kho còn nhỏ nên chưa kết luận được gì — con số chỉ có ý nghĩa "
-                        "khi kỳ vọng lên khoảng 10 bộ trở lên, tức là vài tháng nữa."
-                        if not t.get("du_mau") else
-                        "Lệch " + format(t["lech_sai_so"], "+.1f")
-                        + " lần sai số chuẩn &mdash; " + e(t.get("nhan_xet", "")) + ".")
-                     + "</div>"))
-                 + "</div>")
-        p.append(bang_chi_tiet_that(that))
-
+    # ---------- 1. Câu trả lời, to và rõ ----------
     if nap:
         t = nap["tong"]
-        trong_nhieu = t.get("nhan_xet") == "trong mức nhiễu bình thường"
-        p.append('<div class="the"><div class="ten-bd">Dựng lại quá khứ &mdash; '
-                 + n(t["da_cham"]) + " bộ</div>"
-                 '<div class="mo" style="margin:4px 0 10px">Cho chương trình xem đúng phần '
-                 "lịch sử trước mỗi kỳ rồi hỏi nó gợi ý gì, y như nó đã chạy hôm ấy, "
-                 "rồi chấm với chính kỳ đó.</div>"
-                 '<div class="cuon"><table class="sapxep"><thead><tr>'
-                 '<th class="sx" data-chieu="">Cách chọn số</th>'
-                 '<th class="sx so" data-chieu="">Số bộ</th>'
-                 '<th class="sx so" data-chieu="">Trúng ≥3 số</th>'
-                 '<th class="sx so" data-chieu="">Tỉ lệ thật</th>'
-                 '<th class="so">Lý thuyết</th>'
-                 '<th class="sx so" data-chieu="">Lệch</th>'
-                 '<th class="sx so" data-chieu="">Giải nhất+</th>'
-                 '<th class="sx so" data-chieu="">ROI</th>'
-                 "</tr></thead><tbody>")
+        _, cum = _loi_phan(t)
+        ngang = cum == "ngang mức may rủi"
+        p.append('<div class="the tra-loi">')
+        p.append('<div class="tl-to">' + ("Không." if ngang else "Có dấu hiệu lệch.")
+                 + '</div><div class="tl-phu">'
+                 + ("Chọn số kiểu gì cũng trúng ngang nhau, và ngang cả bốc bừa."
+                    if ngang else "Kết quả lệch khỏi mức may rủi, xem bảng bên dưới.")
+                 + "</div>")
+        p.append('<div class="tl-so">'
+                 '<div><span class="tl-nhan">Đã thử</span>'
+                 '<span class="tl-lon">' + n(t["da_cham"]) + "</span>"
+                 '<span class="tl-nhan">bộ số</span></div>'
+                 '<div><span class="tl-nhan">Trúng ≥3 số</span>'
+                 '<span class="tl-lon">' + n(t["co_giai"]) + "</span>"
+                 '<span class="tl-nhan">bộ &middot; ' + pt(t["ty_le_co_giai"])
+                 + "</span></div>"
+                 '<div><span class="tl-nhan">Nếu bốc bừa thì khoảng</span>'
+                 '<span class="tl-lon mo">' + n(round(t["ky_vong_co_giai"])) + "</span>"
+                 '<span class="tl-nhan">bộ &middot; ' + pt(t["ty_le_ky_vong"])
+                 + "</span></div></div>")
+        p.append(_thanh_so_sanh(t["ty_le_co_giai"], t["ty_le_ky_vong"],
+                                "trúng ít hơn", "trúng nhiều hơn"))
+        p.append('<div class="mo" style="margin-top:6px">Vạch đứng ở giữa là mức may rủi. '
+                 "Thanh dừng ngay giữa nghĩa là kết quả đúng bằng may rủi.</div>")
+        p.append("</div>")
+
+    # ---------- 2. Từng cách chọn số ----------
+    if nap:
+        p.append("<h3>Từng cách chọn số</h3>")
+        p.append('<div class="the"><div class="cuon"><table><thead><tr>'
+                 "<th>Cách chọn số</th>"
+                 '<th class="so">Trúng</th>'
+                 "<th>So với may rủi</th>"
+                 "<th></th></tr></thead><tbody>")
         for ten, d in nap["theo_chien_luoc"].items():
             if not d["da_cham"]:
                 continue
-            lech = d["lech_sai_so"]
+            lop, cum = _loi_phan(d)
             p.append("<tr>"
-                     + '<td data-v="' + e(ten) + '">' + e(ten) + "</td>"
-                     + '<td class="so" data-v="' + str(d["da_cham"]) + '">' + n(d["da_cham"]) + "</td>"
-                     + '<td class="so" data-v="' + str(d["co_giai"]) + '">' + n(d["co_giai"]) + "</td>"
-                     + '<td class="so" data-v="' + format(d["ty_le_co_giai"], ".3f") + '"><strong>'
-                     + format(d["ty_le_co_giai"], ".2f") + "%</strong></td>"
-                     + '<td class="so mo">' + format(d["ty_le_ky_vong"], ".2f") + "%</td>"
-                     + '<td class="so" data-v="' + format(lech, ".2f") + '">'
-                     + format(lech, "+.1f") + "</td>"
-                     + '<td class="so" data-v="' + str(d.get("giai_lon", 0)) + '">'
-                     + str(d.get("giai_lon", 0)) + "</td>"
-                     + '<td class="so" data-v="' + format(d["roi"], ".1f") + '">'
-                     + format(d["roi"], "+.0f") + "%</td></tr>")
+                     + "<td><strong>" + e(ten) + "</strong></td>"
+                     + '<td class="so">' + n(d["co_giai"]) + "/" + n(d["da_cham"])
+                     + '<div class="mo">' + pt(d["ty_le_co_giai"]) + "</div></td>"
+                     + '<td style="min-width:170px">'
+                     + _thanh_so_sanh(d["ty_le_co_giai"], d["ty_le_ky_vong"]) + "</td>"
+                     + '<td><span class="cum ' + lop + '">' + cum + "</span></td></tr>")
         p.append("</tbody></table></div>")
-        p.append('<div class="mo" style="margin-top:10px">Gộp cả '
-                 + n(t["da_cham"]) + " bộ: trúng <strong>" + format(t["ty_le_co_giai"], ".2f")
-                 + "%</strong>, lý thuyết nói phải là <strong>"
-                 + format(t["ty_le_ky_vong"], ".2f") + "%</strong>, lệch "
-                 + format(t["lech_sai_so"], "+.1f") + " lần sai số chuẩn"
-                 + " &mdash; " + e(t.get("nhan_xet", "")) + "." + "</div></div>")
+        p.append('<div class="mo" style="margin-top:10px">Cả '
+                 + str(len(nap["theo_chien_luoc"])) + " cách đều bám vạch giữa. "
+                 "Không cách nào giỏi hơn cách nào &mdash; chênh lệch là dao động ngẫu nhiên, "
+                 "không phải tài.</div></div>")
+
+    # ---------- 3. Kho đề xuất thật ----------
+    if that:
+        t = that["tong"]
+        p.append("<h3>Kho đề xuất thật đang tới đâu</h3>")
+        p.append('<div class="the"><div class="tl-so">'
+                 '<div><span class="tl-nhan">Đã cất</span><span class="tl-lon">'
+                 + n(that.get("tong_bo_trong_kho", 0)) + '</span><span class="tl-nhan">bộ</span></div>'
+                 '<div><span class="tl-nhan">Đã chấm</span><span class="tl-lon">'
+                 + n(t["da_cham"]) + '</span><span class="tl-nhan">bộ</span></div>'
+                 '<div><span class="tl-nhan">Chờ quay</span><span class="tl-lon mo">'
+                 + n(t["cho_quay"]) + '</span><span class="tl-nhan">bộ</span></div>'
+                 + ('<div><span class="tl-nhan">Trúng ≥3 số</span><span class="tl-lon">'
+                    + n(t["co_giai"]) + '</span><span class="tl-nhan">bộ</span></div>'
+                    if t["da_cham"] else "")
+                 + "</div>")
+        if not t["da_cham"]:
+            p.append('<div class="mo" style="margin-top:8px">Chưa bộ nào tới kỳ quay. '
+                     "Bảng phía trên là kết quả dựng lại từ quá khứ, để có số ngay.</div>")
+        elif not t.get("du_mau"):
+            p.append('<div class="mo" style="margin-top:8px">Kho còn nhỏ nên chưa kết luận '
+                     "được gì. Mỗi ngày kho một lớn; khoảng vài tháng nữa mới đủ để so.</div>")
+        else:
+            _, cum = _loi_phan(t)
+            p.append('<div style="margin-top:8px">Kết quả từ đề xuất thật: <strong>'
+                     + cum + "</strong>.</div>")
+        p.append("</div>")
+
+    # ---------- 4. Chi tiết, gói lại ----------
+    p.append(bang_chi_tiet_that(that))
+    if nap:
         p.append(bang_bo_trung(nap))
         p.append(bang_theo_ngay(nap))
 
-        p.append('<div class="canh"><strong>Đọc bảng này cho đúng.</strong> '
-                 "Cột <em>tỉ lệ thật</em> và <em>lệch</em> mới là thứ đáng tin: mọi chiến lược "
-                 "đều bám quanh mức lý thuyết, chênh nhau trong khoảng &plusmn;2 sai số chuẩn "
-                 "&mdash; tức là nhiễu, không phải tài. "
-                 "Cột <em>ROI</em> thì bị cột <em>giải nhất+</em> chi phối: chỉ một tờ giải nhất "
-                 "40 triệu là đủ kéo ROI của cả mấy nghìn tờ lên hàng chục điểm phần trăm. "
-                 "Thấy một chiến lược ROI đẹp hơn hẳn, nhìn sang cột giải nhất+ là hiểu ngay.</div>")
+    # ---------- 5. Ghi chú ----------
+    p.append('<div class="canh">'
+             "<strong>Vài điều để đọc cho đúng.</strong> "
+             '<div style="margin-top:6px">&middot; "Trúng" ở đây là trùng từ <strong>3 số '
+             "chính trở lên</strong> &mdash; mức thấp nhất có giải của Power 6/55 và Mega 6/45."
+             "</div>"
+             '<div style="margin-top:4px">&middot; Chỉ theo dõi Power 6/55, Mega 6/45 và '
+             "Lotto 5/35. <strong>Keno không tính</strong>: chọn 10 số trong 80 mà quay tới "
+             "20 số nên trúng ≥3 số xảy ra tới 47,9%, gộp chung thì con số tổng vô nghĩa."
+             "</div>"
+             '<div style="margin-top:4px">&middot; Bảng lớn lấy từ phần <strong>dựng lại quá '
+             "khứ</strong>: cho chương trình xem đúng phần lịch sử trước mỗi kỳ rồi hỏi nó gợi "
+             "ý gì, y như nó đã chạy hôm ấy. Nhờ vậy có số ngay thay vì đợi vài tháng.</div>"
+             "</div>")
     return chr(10).join(p)
 
 
