@@ -30,8 +30,11 @@ jobs:
       - name: Lấy mã nguồn
         uses: actions/checkout@v5
 
+      # PHẢI ghi đủ v10.0.1, KHÔNG được viết tắt là @v10: từ bản 8 trở đi
+      # astral-sh không phát hành thẻ nổi theo số lớn nữa (v6, v7 có; v8, v9,
+      # v10 không có). Viết @v10 thì lần chạy hỏng ngay ở bước cài uv.
       - name: Cài uv
-        uses: astral-sh/setup-uv@v10
+        uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
 
