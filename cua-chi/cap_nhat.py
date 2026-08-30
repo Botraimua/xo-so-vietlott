@@ -118,6 +118,18 @@ def main():
             print("đã đủ    (tổng " + str(sau) + ", mới nhất "
                   + ngay_viet(ky_cuoi(ma), kem_thu=False) + ")")
 
+    # Máy ở Việt Nam thì hiếm khi cần, nhưng nếu vietlott.vn có trục trặc
+    # thì vẫn còn đường khác. Chạy im lặng, chỉ nói khi bù được kỳ nào.
+    if not tong_moi or co_loi:
+        try:
+            import lay_du_phong
+            bu = sum(lay_du_phong.gop_mot(m)[0] for m in lay_du_phong.LAY)
+            if bu:
+                print("  Bù thêm " + str(bu) + " kỳ từ đường dự phòng trên GitHub.")
+                tong_moi += bu
+        except Exception as e:
+            print("  (đường dự phòng cũng không dùng được: " + str(e)[:60] + ")")
+
     print()
     if tong_moi:
         print("  Xong. Có " + str(tong_moi) + " kỳ mới về máy.")

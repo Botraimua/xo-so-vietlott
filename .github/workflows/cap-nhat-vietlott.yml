@@ -41,6 +41,12 @@ jobs:
       - name: Tải kết quả mới từ vietlott.vn
         run: uv run python cua-chi/cap_nhat.py
 
+      # vietlott.vn không trả dữ liệu cho máy chủ GitHub (đã đo 30/08/2026).
+      # Bước này lấy bù từ kho của tác giả gốc ngay trên GitHub — chậm 1-2 ngày
+      # nhưng luôn gọi được. Chỉ thêm kỳ chưa có, không xoá gì.
+      - name: Bù từ đường dự phòng trên GitHub
+        run: uv run python cua-chi/lay_du_phong.py
+
       - name: Chạy bàn kiểm thử chiến lược
         run: uv run python cua-chi/kiem_thu.py 30
 

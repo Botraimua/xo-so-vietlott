@@ -27,12 +27,15 @@ bat_utf8()
 
 # Cách nhau mấy ngày thì coi là cũ. Tính theo lịch quay, cộng 1 ngày phòng
 # Vietlott công bố muộn hoặc bot chạy trễ.
+# Đã cộng thêm 1-2 ngày cho đường dự phòng: kho của tác giả gốc thường
+# chậm hơn vietlott.vn chừng đó. Trần này vẫn đủ chặt để bắt kiểu hỏng
+# 8 ngày liền như lần trước.
 TRAN_NGAY_CU = {
-    "power_655": 4,    # quay Thứ 3-5-7, cách nhau nhiều nhất 3 ngày
-    "power_645": 4,    # quay Thứ 4-6-CN
-    "power_535": 2,    # quay hằng ngày, 2 kỳ
-    "3d": 4,           # quay Thứ 2-4-6
-    "3d_pro": 4,       # quay Thứ 3-5-7
+    "power_655": 5,    # quay Thứ 3-5-7, cách nhau nhiều nhất 3 ngày
+    "power_645": 5,    # quay Thứ 4-6-CN
+    "power_535": 3,    # quay hằng ngày, 2 kỳ
+    "3d": 5,           # quay Thứ 2-4-6
+    "3d_pro": 5,       # quay Thứ 3-5-7
 }
 
 
@@ -99,9 +102,9 @@ def main():
     print()
     do_mang()
     print()
-    print("  Nếu chạy trên máy chủ GitHub mà dòng trên báo không gọi được,")
-    print("  thì Vietlott chặn máy chủ nước ngoài. Cách chữa: để MÁY CỦA CHỊ")
-    print("  tải dữ liệu (bấm nút 0 hoặc nút 7), bot chỉ lo dựng trang.")
+    print("  Bot đã có đường dự phòng (kho vietvudanh trên GitHub). Cũ tới mức này")
+    print("  nghĩa là CẢ HAI đường đều tắc. Chữa nhanh: bấm nút 0 trên máy chị —")
+    print("  máy ở Việt Nam gọi vietlott.vn bình thường.")
     print()
     for ten, cach, tran in cu:
         print("  - " + ten + ": " + (("cách " + str(cach) + " ngày") if cach else "không có dữ liệu")
