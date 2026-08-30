@@ -66,3 +66,9 @@ jobs:
             git commit -m "Cập nhật dữ liệu Vietlott $(TZ=Asia/Ho_Chi_Minh date '+%d/%m/%Y %H:%M')"
             git push
           fi
+
+      # Đặt CUỐI CÙNG, sau khi đã ghi và đẩy: trang vẫn được dựng lại bình thường,
+      # nhưng lần chạy bị đánh dấu hỏng để GitHub gửi mail báo. Hỏng mà im lặng
+      # còn tệ hơn hỏng mà kêu — đã mất 8 ngày mới phát hiện một lần rồi.
+      - name: Canh dữ liệu có cũ không
+        run: uv run python cua-chi/kiem_du_lieu.py
