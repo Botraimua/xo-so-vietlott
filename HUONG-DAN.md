@@ -453,26 +453,57 @@ Muốn nó tự cập nhật kể cả khi máy chị tắt thì để GitHub ch
 
 ## Bot lấy dữ liệu ở đâu
 
-Có **hai đường**, thử lần lượt:
+Có **ba đường**, chạy lần lượt theo đúng thứ tự này:
 
-1. **vietlott.vn** — nguồn gốc, mới nhất. Máy chị ở Việt Nam gọi bình thường
-2. **Kho `vietvudanh/vietlott-data` trên GitHub** — chậm hơn 1–2 ngày, nhưng máy chủ
-   GitHub luôn gọi được. Chỉ thêm kỳ chưa có, không xoá gì
+| | Đường | Có gì | Độ trễ |
+|---|---|---|---|
+| 1 | **vietlott.vn** | đủ mọi sản phẩm, mã kỳ thật | mới nhất |
+| 2 | **kqxs.vn** | chỉ Power 6/55 và Mega 6/45 | **trong ngày** |
+| 3 | **kho `vietvudanh` trên GitHub** | đủ 5 sản phẩm, mã kỳ thật | chậm 1–2 ngày |
 
-Vì sao cần đường thứ hai: cuối tháng 8/2026 phát hiện **vietlott.vn không trả dữ liệu cho
-máy chủ GitHub** (chặn máy nước ngoài). Bot chạy 8 ngày liền báo "thành công" mà mỗi lần
-chỉ đổi đúng một dòng đồng hồ trong trang — không có kỳ nào mới. Chỉ lộ ra khi chị hỏi
-"vé mua không tự dò".
+Máy chị ở Việt Nam thì đường 1 luôn chạy, hai đường kia không cần tới.
 
-Giờ nếu đường 1 tắc thì đường 2 gánh, chị vẫn có dữ liệu mà không phải bật máy.
+**Máy chủ GitHub thì đường 1 luôn tắc.** Đo tận nơi ngày 30/08/2026: vietlott.vn nấp sau
+dịch vụ chống bot, trả **403 ở mọi đường**. Không phải chặn theo nước — IP nhà dân Việt Nam
+vẫn qua, còn máy chủ trung tâm dữ liệu thì bị chặn. Nhờ trung gian gọi hộ cũng tắc nốt.
 
-### Nếu cả hai đường cùng tắc
+Vì sao chuyện này quan trọng: bot từng chạy **8 ngày liền báo "thành công"** mà mỗi lần chỉ
+đổi đúng một dòng đồng hồ trong trang — không có kỳ nào mới. Chỉ lộ ra khi chị hỏi "vé mua
+không tự dò".
+
+### Đường 2 có một chỗ phải cẩn thận
+
+kqxs.vn **không in mã kỳ**, nên bot phải tự suy bằng *kỳ cuối cộng một*. Sai một cái là dò
+vé sai mà nhìn vẫn như thật.
+
+Nên mỗi kỳ lấy từ đó đều đóng dấu `"nguon": "kqxs"` trong file dữ liệu. Một hai ngày sau,
+khi đường 3 bắt kịp, nó **đối chiếu lại**: lệch thì ghi đè bằng số của kho gốc và kêu lên.
+Kỳ nào lệch mà *không* phải mã tự suy thì nó giữ nguyên bản của mình và cảnh báo to — vì
+đó là chuyện không nên xảy ra.
+
+### Ba sản phẩm vẫn chậm 1–2 ngày
+
+**Lotto 5/35, Max 3D, Max 3D Pro** — không nguồn nào máy chủ GitHub gọi được có chúng.
+kqxs.vn chỉ có 4 sản phẩm, minhngoc chỉ có 2. Muốn ba cái đó cũng có trong ngày thì bấm
+`0-LAM-MOI-VA-XEM.bat` trên máy chị.
+
+### Nếu cả ba đường cùng tắc
 
 Bước cuối của bot canh chừng: dữ liệu cũ quá trần ngày (Power/Mega 5 ngày, Lotto 3 ngày)
 thì lần chạy bị **đánh dấu hỏng** và GitHub gửi mail cho chị. Lúc đó bấm
 `0-LAM-MOI-VA-XEM.bat` là xong — máy chị vẫn gọi được vietlott.vn.
 
 Trang vẫn được dựng bình thường kể cả khi bước canh này báo đỏ, nên không sợ mất trang.
+
+### Muốn tự kiểm nguồn nào còn sống
+
+Mỗi lần bot chạy, nó đo lại mọi nguồn và ghi kết quả vào `cua-chi/ket-qua-do-nguon.md`
+ngay trong kho — mở file đó ra là thấy máy chủ GitHub gọi được cái gì, không gọi được cái
+gì, kèm mã HTTP và ngày mới nhất từng nguồn. Chạy trên máy chị thì gõ:
+
+```
+.venv\Scripts\python.exe cua-chi\do_nguon.py
+```
 
 ---
 
