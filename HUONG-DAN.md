@@ -451,6 +451,31 @@ Muốn nó tự cập nhật kể cả khi máy chị tắt thì để GitHub ch
 
 ---
 
+## Bot lấy dữ liệu ở đâu
+
+Có **hai đường**, thử lần lượt:
+
+1. **vietlott.vn** — nguồn gốc, mới nhất. Máy chị ở Việt Nam gọi bình thường
+2. **Kho `vietvudanh/vietlott-data` trên GitHub** — chậm hơn 1–2 ngày, nhưng máy chủ
+   GitHub luôn gọi được. Chỉ thêm kỳ chưa có, không xoá gì
+
+Vì sao cần đường thứ hai: cuối tháng 8/2026 phát hiện **vietlott.vn không trả dữ liệu cho
+máy chủ GitHub** (chặn máy nước ngoài). Bot chạy 8 ngày liền báo "thành công" mà mỗi lần
+chỉ đổi đúng một dòng đồng hồ trong trang — không có kỳ nào mới. Chỉ lộ ra khi chị hỏi
+"vé mua không tự dò".
+
+Giờ nếu đường 1 tắc thì đường 2 gánh, chị vẫn có dữ liệu mà không phải bật máy.
+
+### Nếu cả hai đường cùng tắc
+
+Bước cuối của bot canh chừng: dữ liệu cũ quá trần ngày (Power/Mega 5 ngày, Lotto 3 ngày)
+thì lần chạy bị **đánh dấu hỏng** và GitHub gửi mail cho chị. Lúc đó bấm
+`0-LAM-MOI-VA-XEM.bat` là xong — máy chị vẫn gọi được vietlott.vn.
+
+Trang vẫn được dựng bình thường kể cả khi bước canh này báo đỏ, nên không sợ mất trang.
+
+---
+
 ## Lịch tự chạy
 
 Từ đó GitHub tự chạy **3 lần mỗi ngày**:
