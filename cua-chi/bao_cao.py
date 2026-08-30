@@ -27,10 +27,10 @@ bat_utf8()
 CSS = """
 :root{--nen:#f6f7f9;--the:#fff;--chu:#1b1f26;--mo:#6b7280;--vien:#e3e6ea;
 --nhan:#c81e1e;--nhandiu:#fdecec;--lanh:#1d4ed8;--lanhdiu:#e8eefc;
---gan:#b45309;--gandiu:#fdf1e0;--xanh:#047857;--xanhdiu:#e6f4ef}
+--gan:#b45309;--gandiu:#fdf1e0;--xanh:#047857;--xanhdiu:#e6f4ef;--chinh:#2563eb}
 @media (prefers-color-scheme:dark){:root{--nen:#14161a;--the:#1c1f25;--chu:#e8eaed;
 --mo:#9aa1ab;--vien:#2b2f36;--nhandiu:#3a1c1c;--nhan:#f87171;--lanhdiu:#1a2436;
---lanh:#93b4fb;--gandiu:#33260f;--gan:#f0b45f;--xanhdiu:#12291f;--xanh:#5ad6a4}}
+--lanh:#93b4fb;--gandiu:#33260f;--gan:#f0b45f;--xanhdiu:#12291f;--xanh:#5ad6a4;--chinh:#3b82f6}}
 *{box-sizing:border-box}
 body{margin:0;padding:0 16px 64px;background:var(--nen);color:var(--chu);
 font-family:"Segoe UI",Roboto,system-ui,sans-serif;line-height:1.55;font-size:15px}
@@ -84,6 +84,56 @@ font-weight:600;vertical-align:middle}
 border-radius:0 8px 8px 0;margin:24px 0;font-size:13.5px}
 footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--vien);
 color:var(--mo);font-size:12.5px}
+
+/* ---------- khối nhập vé ---------- */
+/* Trước 30/08/2026 khối này không có lấy một dòng CSS nào — trình duyệt vẽ bằng
+   kiểu mặc định nên trông thô hẳn so với phần còn lại của trang. Class .an cũng
+   chưa có, nên lệnh giấu ô "Số đặc biệt" của Power 6/55 không hề chạy. */
+.an{display:none !important}
+.nhap-ve input,.nhap-ve select{font:inherit;width:100%;padding:9px 11px;border-radius:8px;
+border:1px solid var(--vien);background:var(--nen);color:var(--chu);
+transition:border-color .12s,box-shadow .12s}
+.nhap-ve input::placeholder{color:var(--mo);opacity:.75}
+.nhap-ve input:focus,.nhap-ve select:focus{outline:none;border-color:var(--chinh);
+box-shadow:0 0 0 3px rgba(37,99,235,.22)}
+.luoi-nv{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.o-nv{display:flex;flex-direction:column;gap:5px;min-width:0}
+.o-nv>.nhan{font-size:11px;text-transform:uppercase;letter-spacing:.5px;
+color:var(--mo);font-weight:650}
+.rong2{grid-column:span 2}
+.nut{font:inherit;font-weight:650;padding:10px 22px;border-radius:8px;
+border:1px solid transparent;background:var(--chinh);color:#fff;cursor:pointer;
+transition:filter .12s}
+.nut:hover{filter:brightness(1.08)}
+.nut:disabled{opacity:.55;cursor:progress}
+.nut.phu{background:transparent;color:var(--chu);border-color:var(--vien);
+font-weight:600;padding:9px 14px}
+.nut.phu:hover{border-color:var(--mo);filter:none}
+.nut-xoa{font:inherit;font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:6px;
+border:1px solid var(--vien);background:transparent;color:var(--mo);cursor:pointer}
+.nut-xoa:hover{border-color:var(--nhan);color:var(--nhan);background:var(--nhandiu)}
+.nut-xoa:disabled{opacity:.5;cursor:default}
+.hang-nut{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;
+padding-top:14px;border-top:1px solid var(--vien)}
+.nv-bao{font-size:13px;color:var(--mo)}
+.nv-bao.ok{color:var(--xanh);font-weight:600}
+.nv-bao.loi{color:var(--nhan);font-weight:600}
+.pad{border:1px solid var(--vien);border-radius:10px;padding:12px;
+background:var(--nen);margin-top:12px}
+.pad-dau{display:flex;align-items:center;justify-content:space-between;gap:10px;
+margin-bottom:10px}
+.pad-ten{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--mo);
+font-weight:650}
+.dem{font-variant-numeric:tabular-nums;font-weight:700;font-size:13px;padding:2px 10px;
+border-radius:20px;background:var(--the);border:1px solid var(--vien);color:var(--mo)}
+.dem.du{background:var(--xanhdiu);color:var(--xanh);border-color:var(--xanh)}
+.o-so{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:6px}
+.vien-so{font:inherit;font-weight:650;font-size:13.5px;height:38px;border-radius:8px;
+border:1px solid var(--vien);background:var(--the);color:var(--chu);cursor:pointer;
+font-variant-numeric:tabular-nums;transition:background .1s,border-color .1s,color .1s}
+.vien-so:hover{border-color:var(--chinh)}
+.vien-so.chon{background:var(--chinh);border-color:var(--chinh);color:#fff}
+.vien-so:disabled{opacity:.32;cursor:not-allowed}
 """ + CSS_BIEU_DO
 
 JS = """
@@ -134,15 +184,76 @@ var KHUON = __KHUON_JSON__;
 
 function o(id){ return document.getElementById(id); }
 
+// Cac so dang duoc chon. Go tay va bam bang so luon khop nhau qua bien nay.
+var CHON = [];
+
+function viDuSo(k){
+  var con = [], ra = [];
+  for(var i = 1; i <= k.dai_chon; i++) con.push(i);
+  for(var j = 0; j < k.so_chon; j++)
+    ra.push(con.splice(Math.floor(con.length * (j + 1) / (k.so_chon + 1)), 1)[0]);
+  return ra.sort(function(x, y){ return x - y; }).join(' ');
+}
+
+function veBangSo(){
+  var sp = o('nv-sp'), khung = o('nv-oso');
+  if(!sp || !khung) return;
+  var k = KHUON[sp.value] || {};
+  var ten = o('nv-padten');
+  if(ten) ten.textContent = 'Chọn ' + k.so_chon + ' số  (1-' + k.dai_chon + ')';
+  khung.innerHTML = '';
+  for(var i = 1; i <= k.dai_chon; i++){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'vien-so'; b.textContent = i; b.dataset.v = i;
+    b.addEventListener('click', bamVienSo);
+    khung.appendChild(b);
+  }
+}
+
+function bamVienSo(e){
+  var k = KHUON[o('nv-sp').value] || {};
+  var v = +e.currentTarget.dataset.v, i = CHON.indexOf(v);
+  if(i >= 0) CHON.splice(i, 1);
+  else if(CHON.length < k.so_chon) CHON.push(v);
+  else return;
+  dongBoSo(false);
+}
+
+// tuO = true  : doc so tu o go tay, KHONG ghi de lai o (con de chi go tiep)
+// tuO = false : doc so tu CHON, ghi nguoc ra o
+function dongBoSo(tuO){
+  var sp = o('nv-sp'); if(!sp) return;
+  var k = KHUON[sp.value] || {};
+  if(tuO){
+    var raw = (o('nv-so').value.match(/[0-9]+/g) || []).map(Number);
+    CHON = raw.filter(function(v, i, a){
+      return v >= 1 && v <= k.dai_chon && a.indexOf(v) === i;
+    }).slice(0, k.so_chon);
+  }
+  CHON.sort(function(a, b){ return a - b; });
+  var du = CHON.length === k.so_chon, khung = o('nv-oso');
+  if(khung) khung.querySelectorAll('.vien-so').forEach(function(b){
+    var c = CHON.indexOf(+b.dataset.v) >= 0;
+    b.classList.toggle('chon', c);
+    b.disabled = (!c && du);
+  });
+  var dm = o('nv-dem');
+  if(dm){ dm.textContent = CHON.length + '/' + k.so_chon; dm.classList.toggle('du', du); }
+  if(!tuO) o('nv-so').value = CHON.join(' ');
+}
+
 function capNhatODacBiet(){
   var sp = o('nv-sp'); if(!sp) return;
   var k = KHUON[sp.value] || {};
+  // Power 6/55 va Mega 6/45 khong cho nguoi choi chon so dac biet - Vietlott tu quay.
   var oDb = document.querySelector('.nv-db');
   if(oDb) oDb.classList.toggle('an', !k.db_dai);
   var i = o('nv-so');
-  if(i) i.placeholder = 'chon ' + k.so_chon + ' so tu 1 den ' + k.dai_chon;
+  if(i) i.placeholder = 'ví dụ  ' + viDuSo(k);
   var d = o('nv-db');
   if(d && k.db_dai) d.placeholder = '1-' + k.db_dai;
+  veBangSo();
+  dongBoSo(true);
 }
 
 // Bam vao bo so goi y -> tu dien vao o nhap
@@ -154,6 +265,7 @@ function dienVaoO(chuoi){
   if([].some.call(sp.options, function(x){ return x.value === m[1]; })) sp.value = m[1];
   capNhatODacBiet();
   o('nv-so').value = m[2].trim();
+  dongBoSo(true);
   if(m[3]) o('nv-db').value = m[3];
   if(m[4]) o('nv-ghi').value = m[4].trim();
   var t = o('nv-gui');
@@ -164,7 +276,23 @@ function dienVaoO(chuoi){
   var nut = o('nv-gui');
   if(!nut) return;
   var sp = o('nv-sp'), bao = o('nv-bao'), mk = o('nv-mk'), ngay = o('nv-ngay');
-  sp.addEventListener('change', capNhatODacBiet);
+  sp.addEventListener('change', function(){
+    o('nv-so').value = '';
+    if(o('nv-db')) o('nv-db').value = '';
+    CHON = [];
+    capNhatODacBiet();
+  });
+  o('nv-so').addEventListener('input', function(){ dongBoSo(true); });
+  var mopad = o('nv-mopad');
+  if(mopad) mopad.addEventListener('click', function(){
+    var dangAn = o('nv-pad').classList.toggle('an');
+    mopad.textContent = dangAn ? 'Bảng số' : 'Đóng bảng';
+    if(!dangAn) o('nv-pad').scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
+  var xoahet = o('nv-xoahet');
+  if(xoahet) xoahet.addEventListener('click', function(){
+    CHON = []; dongBoSo(false); o('nv-so').focus();
+  });
   capNhatODacBiet();
   try { mk.value = localStorage.getItem('vietlott_mk') || ''; } catch(e){}
   if(!ngay.value) ngay.value = new Date().toISOString().slice(0,10);
@@ -176,34 +304,34 @@ function dienVaoO(chuoi){
     var so = (o('nv-so').value || '').trim().replace(/[,;]+/g, ' ').replace(/\\s+/g, ' ');
     var mang = so ? so.split(' ') : [];
     if(mang.length !== k.so_chon){
-      noi('Can dung ' + k.so_chon + ' so, dang co ' + mang.length + '.', 'loi'); return;
+      noi('Cần đúng ' + k.so_chon + ' số, đang có ' + mang.length + '.', 'loi'); return;
     }
     for(var i = 0; i < mang.length; i++){
       var v = parseInt(mang[i], 10);
       if(!(v >= 1 && v <= k.dai_chon)){
-        noi('So ' + mang[i] + ' ngoai dai 1-' + k.dai_chon + '.', 'loi'); return;
+        noi('Số ' + mang[i] + ' ngoài dải 1-' + k.dai_chon + '.', 'loi'); return;
       }
     }
     var tap = {};
     for(var q = 0; q < mang.length; q++){
-      if(tap[mang[q]]){ noi('Co so bi trung.', 'loi'); return; }
+      if(tap[mang[q]]){ noi('Có số bị trùng.', 'loi'); return; }
       tap[mang[q]] = 1;
     }
     var db = (o('nv-db').value || '').trim();
     if(k.db_dai){
       var dv = parseInt(db, 10);
       if(!(dv >= 1 && dv <= k.db_dai)){
-        noi('So dac biet phai tu 1 den ' + k.db_dai + '.', 'loi'); return;
+        noi('Số đặc biệt phải từ 1 đến ' + k.db_dai + '.', 'loi'); return;
       }
     }
     var matKhau = (mk.value || '').trim();
-    if(!matKhau){ noi('Chua nhap mat khau.', 'loi'); return; }
+    if(!matKhau){ noi('Chưa nhập mật khẩu.', 'loi'); return; }
 
     var dong = ngay.value + ' | ' + sp.value + ': ' + so + (k.db_dai ? ' | ' + db : '');
     var gc = (o('nv-ghi').value || '').trim().replace(/[#|\\n\\r]/g, ' ');
     if(gc) dong += '   # ' + gc;
 
-    nut.disabled = true; noi('Dang ghi...', '');
+    nut.disabled = true; noi('Đang ghi...', '');
     fetch('/api/ghi-ve', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -213,13 +341,14 @@ function dienVaoO(chuoi){
     }).then(function(kq){
       if(kq.ok && kq.j.ok){
         try { localStorage.setItem('vietlott_mk', matKhau); } catch(e){}
-        noi(kq.j.thong_bao || 'Da ghi vao so.', 'ok');
+        noi(kq.j.thong_bao || 'Đã ghi vào sổ.', 'ok');
         o('nv-so').value = ''; o('nv-db').value = ''; o('nv-ghi').value = '';
+        CHON = []; dongBoSo(false);
       } else {
-        noi(kq.j.loi || ('Loi ' + kq.ma), 'loi');
+        noi(kq.j.loi || ('Lỗi ' + kq.ma), 'loi');
       }
     }).catch(function(){
-      noi('Khong goi duoc may chu. Nhap ve chi chay tren trang vietlott-thongke.vercel.app, '
+      noi('Không gọi được máy chủ. Nhap ve chi chay tren trang vietlott-thongke.vercel.app, '
         + 'khong chay khi mo file HTML tu may.', 'loi');
     }).then(function(){ nut.disabled = false; });
   });
@@ -230,17 +359,17 @@ document.querySelectorAll('.nut-xoa').forEach(function(nut){
   nut.addEventListener('click', function(){
     var dong = nut.dataset.dong || '';
     if(!dong) return;
-    if(!confirm('Xoa to ve nay khoi so?   [ ' + dong + ' ]   Xoa roi khong lay lai duoc.')) return;
+    if(!confirm('Xoá tờ vé này khỏi sổ?   [ ' + dong + ' ]   Xoá rồi không lấy lại được.')) return;
 
     var mk = '';
     try { mk = localStorage.getItem('vietlott_mk') || ''; } catch(e){}
     if(!mk){
-      mk = prompt('Nhap mat khau de xoa ve:') || '';
+      mk = prompt('Nhập mật khẩu để xoá vé:') || '';
       if(!mk) return;
     }
 
     var cu = nut.textContent;
-    nut.disabled = true; nut.textContent = 'Dang xoa...';
+    nut.disabled = true; nut.textContent = 'Đang xoá...';
     fetch('/api/ghi-ve', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -252,15 +381,15 @@ document.querySelectorAll('.nut-xoa').forEach(function(nut){
         try { localStorage.setItem('vietlott_mk', mk); } catch(e){}
         var tr = nut.closest('tr');
         if(tr){ tr.style.opacity = '.35'; tr.style.textDecoration = 'line-through'; }
-        nut.textContent = 'Da xoa';
-        alert(kq.j.thong_bao || 'Da xoa khoi so.');
+        nut.textContent = 'Đã xoá';
+        alert(kq.j.thong_bao || 'Đã xoá khỏi sổ.');
       } else {
         nut.disabled = false; nut.textContent = cu;
-        alert(kq.j.loi || ('Loi ' + kq.ma));
+        alert(kq.j.loi || ('Lỗi ' + kq.ma));
       }
     }).catch(function(){
       nut.disabled = false; nut.textContent = cu;
-      alert('Khong goi duoc may chu. Xoa ve chi chay tren trang vietlott-thongke.vercel.app, '
+      alert('Không gọi được máy chủ. Xoa ve chi chay tren trang vietlott-thongke.vercel.app, '
         + 'khong chay khi mo file HTML tu may.');
     });
   });
@@ -598,22 +727,34 @@ def khung_nhap_ve():
     return (
         '<div class="the nhap-ve">'
         '<div class="ten-bd">Ghi một tờ vé vào sổ</div>'
-        '<div class="mo" style="margin:4px 0 10px">Bấm vào bộ số ở mục '
+        '<div class="mo" style="margin:4px 0 14px">Gõ số vào ô, hoặc bấm '
+        '<b>Bảng số</b> để chọn bằng cách bấm. Bấm vào bộ số ở mục '
         '<a href="#goi-so">Bộ số gợi ý</a> thì ô này tự điền hộ.</div>'
-        '<div class="hang-nhap">'
-        '<label>Sản phẩm<select id="nv-sp">' + chon + "</select></label>"
-        '<label>Các số<input id="nv-so" inputmode="numeric" '
-        'placeholder="ví dụ 3 12 19 27 41 52"></label>'
-        '<label class="nv-db">Số đặc biệt<input id="nv-db" inputmode="numeric" '
-        'placeholder="1-12"></label>'
+        '<div class="luoi-nv">'
+        '<div class="o-nv rong2"><label class="nhan" for="nv-sp">Sản phẩm</label>'
+        '<select id="nv-sp">' + chon + "</select></div>"
+        '<div class="o-nv rong2"><label class="nhan" for="nv-so">Các số</label>'
+        '<span style="display:flex;gap:8px">'
+        '<input id="nv-so" inputmode="numeric" style="flex:1">'
+        '<button type="button" id="nv-mopad" class="nut phu" '
+        'style="white-space:nowrap">Bảng số</button></span></div>'
+        '<div class="o-nv nv-db"><label class="nhan" for="nv-db">Số đặc biệt</label>'
+        '<input id="nv-db" inputmode="numeric"></div>'
+        '<div class="o-nv"><label class="nhan" for="nv-ngay">Ngày mua</label>'
+        '<input id="nv-ngay" type="date"></div>'
+        '<div class="o-nv"><label class="nhan" for="nv-ghi">Ghi chú</label>'
+        '<input id="nv-ghi" placeholder="tuỳ ý"></div>'
+        '<div class="o-nv"><label class="nhan" for="nv-mk">Mật khẩu</label>'
+        '<input id="nv-mk" type="password" placeholder="nhớ sau lần đầu"></div>'
         "</div>"
-        '<div class="hang-nhap">'
-        '<label>Ngày mua<input id="nv-ngay" type="date"></label>'
-        '<label>Ghi chú<input id="nv-ghi" placeholder="tuỳ ý"></label>'
-        '<label>Mật khẩu<input id="nv-mk" type="password" '
-        'placeholder="nhớ sau lần đầu"></label>'
+        '<div class="pad an" id="nv-pad">'
+        '<div class="pad-dau"><span class="pad-ten" id="nv-padten">Chọn số</span>'
+        '<span><span class="dem" id="nv-dem">0/6</span>'
+        '<button type="button" class="nut phu" id="nv-xoahet" '
+        'style="margin-left:6px">Xoá hết</button></span></div>'
+        '<div class="o-so" id="nv-oso"></div>'
         "</div>"
-        '<div style="margin-top:10px">'
+        '<div class="hang-nut">'
         '<button id="nv-gui" class="nut">Ghi vào sổ</button>'
         '<span id="nv-bao" class="nv-bao"></span></div>'
         "</div>")
