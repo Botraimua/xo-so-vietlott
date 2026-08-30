@@ -25,11 +25,13 @@ jobs:
     timeout-minutes: 20
 
     steps:
+      # Hai bản này chạy trên Node 24. Bản cũ (checkout@v4, setup-uv@v5) chạy
+      # Node 20 — GitHub đã ngừng đỡ, mỗi lần chạy lại kêu một dòng cảnh báo.
       - name: Lấy mã nguồn
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Cài uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v10
         with:
           enable-cache: true
 
