@@ -70,7 +70,11 @@ def gop_mot(ma):
     except Exception as e:
         return 0, "không tải được (" + str(e)[:60] + ")"
 
-    them = []
+    # Tra cứu theo mã kỳ và theo ngày, để bắt được kỳ mà lay_kqxs.py TỰ SUY mã.
+    theo_ma = {_ma(r): r for r in cu if _ma(r)}
+    theo_ngay = {str(r.get("date"))[:10]: r for r in cu}
+
+    them, sua, keu = [], [], []
     for line in noi_dung.splitlines():
         line = line.strip()
         if not line:
@@ -79,9 +83,47 @@ def gop_mot(ma):
             r = json.loads(line)
         except json.JSONDecodeError:
             continue
-        if _ma(r) and _ma(r) not in da_co:
+        if not _ma(r):
+            continue
+        ngay = str(r.get("date"))[:10]
+        cua_minh = theo_ma.get(_ma(r)) or theo_ngay.get(ngay)
+
+        if cua_minh is None:
             da_co.add(_ma(r))
             them.append(r)
+            continue
+
+        # Đã có kỳ này rồi. Nếu khớp cả ngày lẫn số thì thôi.
+        if (str(cua_minh.get("date"))[:10] == ngay
+                and list(cua_minh.get("result") or []) == list(r.get("result") or [])
+                and _ma(cua_minh) == _ma(r)):
+            continue
+
+        # Lệch. Kho gốc là chuẩn — kỳ nào mình TỰ SUY mã thì sửa lại theo họ.
+        if cua_minh.get("nguon") == "kqxs":
+            sua.append((cua_minh, r))
+        else:
+            keu.append((cua_minh, r))
+
+    if sua:
+        print()
+        print("  !! Có " + str(len(sua)) + " kỳ mã tự suy bị lệch — đang sửa theo kho gốc:")
+        for a, b in sua:
+            print("     ngày " + str(a.get("date"))[:10]
+                  + "   mình: mã " + _ma(a) + " " + str(a.get("result"))
+                  + "   ->  kho gốc: mã " + _ma(b) + " " + str(b.get("result")))
+        bo = {id(a) for a, _ in sua}
+        cu = [r for r in cu if id(r) not in bo]
+        them.extend(b for _, b in sua)
+
+    if keu:
+        print()
+        print("  !! CẢNH BÁO: " + str(len(keu)) + " kỳ lệch mà KHÔNG phải mã tự suy.")
+        print("     Đây là chuyện không nên xảy ra — giữ nguyên bản của mình, chị xem lại:")
+        for a, b in keu:
+            print("     ngày " + str(a.get("date"))[:10]
+                  + "   mình: mã " + _ma(a) + " " + str(a.get("result"))
+                  + "   kho gốc: mã " + _ma(b) + " " + str(b.get("result")))
 
     if not them:
         return 0, "đã đủ"

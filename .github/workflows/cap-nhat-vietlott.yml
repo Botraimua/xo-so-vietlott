@@ -54,6 +54,13 @@ jobs:
       - name: Tải kết quả mới từ vietlott.vn
         run: uv run python cua-chi/cap_nhat.py
 
+      # Đo tận nơi 30/08/2026: vietlott.vn nấp sau dịch vụ chống bot, trả 403
+      # cho máy chủ GitHub ở MỌI đường. kqxs.vn thì gọi được và có kết quả ngay
+      # trong ngày — nhưng chỉ Power 6/55 và Mega 6/45, và mã kỳ phải tự suy.
+      # Chạy TRƯỚC bước dự phòng để bước đó còn đối chiếu và sửa lại mã tự suy.
+      - name: Lấy kết quả trong ngày từ kqxs.vn
+        run: uv run python cua-chi/lay_kqxs.py
+
       # vietlott.vn không trả dữ liệu cho máy chủ GitHub (đã đo 30/08/2026).
       # Bước này lấy bù từ kho của tác giả gốc ngay trên GitHub — chậm 1-2 ngày
       # nhưng luôn gọi được. Chỉ thêm kỳ chưa có, không xoá gì.

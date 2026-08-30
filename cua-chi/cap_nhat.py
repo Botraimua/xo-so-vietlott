@@ -119,8 +119,22 @@ def main():
                   + ngay_viet(ky_cuoi(ma), kem_thu=False) + ")")
 
     # Máy ở Việt Nam thì hiếm khi cần, nhưng nếu vietlott.vn có trục trặc
-    # thì vẫn còn đường khác. Chạy im lặng, chỉ nói khi bù được kỳ nào.
+    # thì vẫn còn hai đường khác. Chạy im lặng, chỉ nói khi bù được kỳ nào.
+    #
+    # Thứ tự có chủ ý:
+    #   1. kqxs.vn      — có kết quả TRONG NGÀY, nhưng chỉ 6/55 và 6/45,
+    #                     và mã kỳ phải tự suy
+    #   2. kho GitHub   — đủ 5 sản phẩm, mã kỳ thật, nhưng chậm 1-2 ngày;
+    #                     chạy sau để còn đối chiếu và sửa lại mã tự suy ở trên
     if not tong_moi or co_loi:
+        try:
+            import lay_kqxs
+            bu = sum(lay_kqxs.gop_mot(m)[0] for m in lay_kqxs.NGUON)
+            if bu:
+                print("  Lấy thêm " + str(bu) + " kỳ trong ngày từ kqxs.vn.")
+                tong_moi += bu
+        except Exception as e:
+            print("  (kqxs.vn không dùng được: " + str(e)[:60] + ")")
         try:
             import lay_du_phong
             bu = sum(lay_du_phong.gop_mot(m)[0] for m in lay_du_phong.LAY)
