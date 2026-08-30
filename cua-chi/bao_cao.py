@@ -501,7 +501,7 @@ def dong_chat_luong(rows):
 def khoi_so_ve():
     """Sổ vé đã mua — nhật ký lãi/lỗ thật. Chỉ có ở bản trên máy."""
     try:
-        from so_ve import FILE_SO, danh_gia
+        from so_ve import GIA_VE, GIAI, FILE_SO, danh_gia
     except ImportError:
         return ""
     kq, tong, loi = ([], None, []) if not FILE_SO.exists() else danh_gia()
@@ -519,16 +519,63 @@ def khoi_so_ve():
         return chr(10).join(p)
 
     lai = tong["lai_lo"]
-    p.append('<div class="the"><div class="cuon"><table><thead><tr>'
-             '<th class="so">Số vé</th><th class="so">Tiền mua vé</th>'
-             '<th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody>'
-             '<tr><td class="so">' + str(tong["so_ve"])
-             + ('<span class="mo"> (' + str(tong["cho_quay"]) + " chờ quay)</span>" if tong["cho_quay"] else "")
-             + '</td><td class="so">' + vnd(tong["tien_ve"])
-             + '</td><td class="so">' + vnd(tong["tien_trung"])
-             + '</td><td class="so"><strong style="color:var(--' + ("xanh" if lai >= 0 else "nhan")
-             + ')">' + ("+" if lai >= 0 else "") + vnd(lai) + "</strong></td></tr>"
-             "</tbody></table></div></div>")
+
+    # Gom theo sản phẩm để biết lỗ ở loại nào, chứ một dòng gộp thì không nói
+    # được gì khi chị mua nhiều loại.
+    nhom = {}
+    for k in kq:
+        ma = k["ve"]["ma"]
+        o = nhom.setdefault(ma, {"so_ve": 0, "cho_quay": 0, "tien_ve": 0,
+                                 "tien_trung": 0, "tinh_tien": ma in GIAI})
+        o["so_ve"] += 1
+        o["tien_ve"] += GIA_VE
+        if k["trang_thai"] != "xong":
+            o["cho_quay"] += 1
+        elif o["tinh_tien"]:
+            o["tien_trung"] += k["tien"]
+
+    def o_so(x):
+        return '<td class="so">' + x + "</td>"
+
+    def o_lai(x, dam=False):
+        mau = "xanh" if x >= 0 else "nhan"
+        t = ("+" if x >= 0 else "") + vnd(x)
+        t = "<strong>" + t + "</strong>" if dam else t
+        return '<td class="so" style="color:var(--' + mau + ')">' + t + "</td>"
+
+    def hang(ten, o, dam=False):
+        dem = str(o["so_ve"])
+        if o["cho_quay"]:
+            dem += '<span class="mo"> (' + str(o["cho_quay"]) + " chờ quay)</span>"
+        r = "<tr><td>" + ("<strong>" + ten + "</strong>" if dam else ten) + "</td>"
+        r += o_so(dem) + o_so(vnd(o["tien_ve"]))
+        r += o_so(vnd(o["tien_trung"]) if o["tinh_tien"]
+                  else '<span class="mo">không tính</span>')
+        r += o_lai(o["tien_trung"] - o["tien_ve"], dam)
+        return r + "</tr>"
+
+    # Câu trả lời trước, số liệu sau — nhìn một dòng là biết đang lãi hay lỗ.
+    p.append('<div class="the">')
+    p.append("<div style='font-size:17px;margin-bottom:2px'>Tới giờ chị "
+             + ("<strong style='color:var(--xanh)'>lãi " if lai >= 0
+                else "<strong style='color:var(--nhan)'>lỗ ")
+             + vnd(abs(lai)) + "</strong> trên " + str(tong["so_ve"]) + " tờ vé.</div>")
+    if tong["ve_khong_tinh_tien"]:
+        p.append('<div class="mo">' + str(tong["ve_khong_tinh_tien"])
+                 + " tờ thuộc sản phẩm chỉ báo số trùng, không tính tiền thưởng — "
+                 "tiền mua vẫn tính đủ, nên nếu có trúng thì con số trên đang thiệt cho chị.</div>")
+    p.append('<div class="cuon" style="margin-top:12px"><table><thead><tr>'
+             '<th>Sản phẩm</th><th class="so">Số vé</th><th class="so">Tiền mua vé</th>'
+             '<th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody>')
+    if len(nhom) > 1:
+        for ma in sorted(nhom, key=lambda m: -nhom[m]["so_ve"]):
+            p.append(hang(e(SAN_PHAM[ma]["ten"]), nhom[ma]))
+    tong_o = {"so_ve": tong["so_ve"], "cho_quay": tong["cho_quay"],
+              "tien_ve": tong["tien_ve"], "tien_trung": tong["tien_trung"],
+              "tinh_tien": True}
+    p.append(hang("Tổng" if len(nhom) > 1 else e(SAN_PHAM[next(iter(nhom))]["ten"]),
+                  tong_o, dam=len(nhom) > 1))
+    p.append("</tbody></table></div></div>")
 
     p.append('<div class="the"><div class="cuon"><table><thead><tr>'
              "<th>Ngày mua</th><th>Vé</th><th>Kỳ quay</th><th>Kết quả</th>"
