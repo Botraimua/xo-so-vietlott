@@ -43,6 +43,14 @@ jobs:
           uv venv --python 3.13
           uv pip install -e .
 
+      # Chạy TRƯỚC khi tải, và ghi kết quả ra file trong kho. Lý do phải ghi ra
+      # file: nhật ký lần chạy trên GitHub không đọc được nếu không đăng nhập
+      # (403), nên không còn cách nào khác để biết máy chủ này gọi được nguồn
+      # nào. Không được để bước này làm hỏng cả lần chạy.
+      - name: Dò xem máy chủ GitHub gọi được nguồn nào
+        continue-on-error: true
+        run: uv run python cua-chi/do_nguon.py
+
       - name: Tải kết quả mới từ vietlott.vn
         run: uv run python cua-chi/cap_nhat.py
 
@@ -70,7 +78,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data web/index.html cua-chi/kho-goi-so.jsonl
+          git add data web/index.html cua-chi/kho-goi-so.jsonl cua-chi/ket-qua-do-nguon.md
           if git diff --staged --quiet; then
             echo "Không có gì thay đổi, bỏ qua."
           else
