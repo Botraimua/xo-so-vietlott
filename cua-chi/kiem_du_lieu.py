@@ -39,6 +39,56 @@ TRAN_NGAY_CU = {
 }
 
 
+# Số con số mà một kỳ PHẢI có (số chính + số đặc biệt). Sản phẩm 3D trả về
+# dict các mức giải nên không tính ở đây.
+SO_PHAI_CO = {"power_655": 7, "power_645": 6, "power_535": 6}
+
+
+def kiem_toan_ven():
+    """
+    Bắt bản ghi hỏng: thiếu số, số ngoài dải, hoặc mã kỳ và ngày đi ngược nhau.
+
+    Vì sao có: ngày 02/09/2026 phát hiện kỳ 00944 của Power 6/55 ghi ngày
+    23/09/2022 (đúng ra là 14/10/2023) và chỉ có 6 số thay vì 7 — sai từ repo
+    gốc, nằm im suốt. Hai kho dự phòng cũng sai y hệt vì đều là nhánh của nó.
+    Chỉ lộ ra khi đối chiếu với một kho dựng độc lập.
+
+    Kiểu hỏng này nguy hơn hỏng-không-lấy-được-dữ-liệu: nó làm dò vé và thống kê
+    sai mà nhìn vẫn như thật.
+    """
+    loi = []
+    for ma in list(SO_PHAI_CO) + ["3d", "3d_pro"]:
+        rows = doc_du_lieu(ma)
+        if not rows:
+            continue
+        ten = SAN_PHAM[ma]["ten"]
+        n = SO_PHAI_CO.get(ma)
+        for r in rows:
+            kq = r.get("result")
+            if n is None:
+                if not isinstance(kq, dict) or not kq:
+                    loi.append(ten + " kỳ " + str(r.get("id")) + ": không có bảng giải")
+                continue
+            if not isinstance(kq, list) or len(kq) != n:
+                loi.append(ten + " kỳ " + str(r.get("id")) + " ngày " + str(r.get("date"))[:10]
+                           + ": có " + str(len(kq) if isinstance(kq, list) else 0)
+                           + " số, phải có " + str(n))
+            elif any(not (1 <= x <= SAN_PHAM[ma]["max_chinh"]) for x in kq[:6]):
+                loi.append(ten + " kỳ " + str(r.get("id")) + ": có số ngoài dải 1-"
+                           + str(SAN_PHAM[ma]["max_chinh"]))
+        # mã kỳ tăng thì ngày cũng phải tăng
+        try:
+            sap = sorted(rows, key=lambda r: int(str(r.get("id", "0")).lstrip("#") or 0))
+        except ValueError:
+            continue
+        for a, b in zip(sap, sap[1:]):
+            if str(a.get("date"))[:10] > str(b.get("date"))[:10]:
+                loi.append(ten + ": kỳ " + str(a.get("id")) + " (" + str(a.get("date"))[:10]
+                           + ") lại đứng sau kỳ " + str(b.get("id"))
+                           + " (" + str(b.get("date"))[:10] + ") — ngày đi ngược")
+    return loi
+
+
 def hom_nay():
     return datetime.now(timezone(timedelta(hours=7))).date()
 
@@ -92,10 +142,25 @@ def main():
             print(dau)
 
     print()
-    if not cu:
+    hong = kiem_toan_ven()
+    if hong:
+        print("-" * 66)
+        print("  BẢN GHI HỎNG — dò vé và thống kê sẽ sai mà nhìn vẫn như thật:")
+        for x in hong[:12]:
+            print("   - " + x)
+        if len(hong) > 12:
+            print("   ... còn " + str(len(hong) - 12) + " chỗ nữa")
+        print()
+    else:
+        print("  Toàn vẹn: mọi kỳ đều đủ số, mã kỳ và ngày đi cùng chiều.")
+        print()
+
+    if not cu and not hong:
         print("  Mọi sản phẩm đều mới. Không có gì phải lo.")
         print()
         return 0
+    if not cu:
+        return 1
 
     print("-" * 66)
     print("  DỮ LIỆU ĐANG CŨ — nhiều khả năng không lấy được từ vietlott.vn.")
