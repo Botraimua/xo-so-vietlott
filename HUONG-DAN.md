@@ -459,7 +459,11 @@ Có **ba đường**, chạy lần lượt theo đúng thứ tự này:
 |---|---|---|---|
 | 1 | **vietlott.vn** | đủ mọi sản phẩm, mã kỳ thật | mới nhất |
 | 2 | **kqxs.vn** | chỉ Power 6/55 và Mega 6/45 | **trong ngày** |
-| 3 | **kho `vietvudanh` trên GitHub** | đủ 5 sản phẩm, mã kỳ thật | chậm 1–2 ngày |
+| 3 | **ba kho trên GitHub** | đủ 5 sản phẩm, mã kỳ thật | chậm 1–2 ngày |
+
+Đường 3 thử lần lượt **pqminh-4 → googlesky → vietvudanh**. Trước 02/09/2026 chỉ có một kho
+(vietvudanh) và nó **ngừng cập nhật từ 29/08** — Lotto 5/35, Max 3D, Max 3D Pro mất sạch nguồn,
+chuông báo phải kêu. Một kho là một điểm chết, nên giờ có ba.
 
 Máy chị ở Việt Nam thì đường 1 luôn chạy, hai đường kia không cần tới.
 
@@ -486,6 +490,20 @@ Kỳ nào lệch mà *không* phải mã tự suy thì nó giữ nguyên bản c
 **Lotto 5/35, Max 3D, Max 3D Pro** — không nguồn nào máy chủ GitHub gọi được có chúng.
 kqxs.vn chỉ có 4 sản phẩm, minhngoc chỉ có 2. Muốn ba cái đó cũng có trong ngày thì bấm
 `0-LAM-MOI-VA-XEM.bat` trên máy chị.
+
+### Bản ghi hỏng còn nguy hơn không lấy được dữ liệu
+
+Ngày 02/09/2026 phát hiện **kỳ 00944 của Power 6/55 sai suốt từ đầu**: ghi ngày 23/09/2022 với
+6 số, đúng ra là 14/10/2023 với `08 23 30 34 38 47 | 10`. Sai từ repo gốc. Hai kho dự phòng cũng
+sai y hệt vì đều là nhánh của nó — **chỉ lộ ra khi đối chiếu với một kho dựng độc lập**, rồi hỏi
+thẳng vietlott.vn để xác nhận.
+
+Kiểu hỏng này nguy hơn hỏng-không-lấy-được: nó làm **dò vé và thống kê sai mà nhìn vẫn như thật**.
+
+Nên bước canh cuối giờ kiểm thêm ba thứ, hỏng là thoát mã lỗi và GitHub gửi mail:
+- kỳ nào thiếu số (Power 6/55 phải đủ 7, Mega 6/45 đủ 6, Lotto 5/35 đủ 6)
+- số nào ngoài dải cho phép
+- mã kỳ tăng mà ngày lại giảm
 
 ### Nếu cả ba đường cùng tắc
 
