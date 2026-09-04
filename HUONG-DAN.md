@@ -451,6 +451,26 @@ Muốn nó tự cập nhật kể cả khi máy chị tắt thì để GitHub ch
 
 ---
 
+## Nhập nhiều vé một lượt
+
+Trong khối **Ghi một tờ vé vào sổ**, chọn xong bộ số thì có hai nút:
+
+| Nút | Làm gì |
+|---|---|
+| **Thêm vé nữa** | Xếp vé đang chọn vào danh sách chờ, dọn ô để chọn bộ tiếp theo |
+| **Ghi vào sổ** | Gửi tất cả — nhãn tự đổi thành "Ghi 3 vé vào sổ" |
+
+Mỗi vé trong danh sách chờ có nút **Bỏ** riêng. Tối đa 20 vé một lượt.
+
+Vì sao nên dùng: mỗi lần gửi là **một** commit và **một** lần bot chạy. Ngày
+04/09/2026 nhập 5 vé liên tiếp theo kiểu cũ làm 5 lần chạy giẫm chân nhau, hai
+lần hỏng ở bước đẩy lên và GitHub gửi mail báo hỏng — dù vé vẫn vào sổ đủ.
+
+Đã chặn ở hai lớp: gom nhiều vé vào một lần gửi, và workflow đặt
+`cancel-in-progress: true` kèm vòng thử-lại cho bước đẩy.
+
+---
+
 ## Bot lấy dữ liệu ở đâu
 
 Có **ba đường**, chạy lần lượt theo đúng thứ tự này:
