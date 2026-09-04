@@ -148,6 +148,11 @@ padding:6px 0;border-bottom:1px solid var(--vien);font-size:13.5px}
   .bang-the td::before{content:attr(data-nhan);display:block;font-size:10.5px;
     text-transform:uppercase;letter-spacing:.4px;color:var(--mo);
     font-weight:650;margin-bottom:1px}
+  /* Bảng tóm tắt chỉ toàn số ngắn — để nhãn và số cùng một dòng thì mỗi
+     sản phẩm còn 5 dòng thay vì 10, đỡ đẩy phần vé xuống quá sâu. */
+  .bang-tom td{display:flex;justify-content:space-between;align-items:baseline;
+    gap:14px;padding:4px 0}
+  .bang-tom td::before{margin-bottom:0;flex:0 0 auto}
   .bang-the td[data-nhan=""]{padding-top:8px}
   .bang-the td[data-nhan=""]::before{display:none}
   /* KHÔNG đặt .cuon{overflow-x:visible}: trang còn nhiều bảng khác vẫn là
@@ -172,7 +177,7 @@ align-items:center;gap:5px}
 @media (max-width:400px){.luoi-bd{grid-template-columns:1fr}}
 </style></head><body><div class='bao'>
 <header><h1>Thống kê Vietlott</h1>
-<div class="mo">Dựng lúc 06:48 ngày 05/09/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
+<div class="mo">Dựng lúc 06:55 ngày 05/09/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
 <nav>
 <a href="#so-ve">Sổ vé</a>
 <a href="#power_655">Power 6/55</a>
@@ -190,7 +195,7 @@ align-items:center;gap:5px}
 <div class="the nhap-ve"><div class="ten-bd">Ghi một tờ vé vào sổ</div><div class="mo" style="margin:4px 0 14px">Gõ số vào ô, hoặc bấm <b>Bảng số</b> để chọn bằng cách bấm. Bấm vào bộ số ở mục <a href="#goi-so">Bộ số gợi ý</a> thì ô này tự điền hộ.</div><div class="luoi-nv"><div class="o-nv rong2"><label class="nhan" for="nv-sp">Sản phẩm</label><select id="nv-sp"><option value="power_655">Power 6/55 &mdash; 6 số 1-55</option><option value="power_645">Mega 6/45 &mdash; 6 số 1-45</option><option value="power_535">Lotto 5/35 &mdash; 5 số 1-35 + số đặc biệt 1-12</option><option value="keno">Keno &mdash; 10 số 1-80</option></select></div><div class="o-nv rong2"><label class="nhan" for="nv-so">Các số</label><span style="display:flex;gap:8px"><input id="nv-so" inputmode="numeric" style="flex:1"><button type="button" id="nv-mopad" class="nut phu" style="white-space:nowrap">Bảng số</button></span></div><div class="o-nv nv-db"><label class="nhan" for="nv-db">Số đặc biệt</label><input id="nv-db" inputmode="numeric"></div><div class="o-nv"><label class="nhan" for="nv-ngay">Ngày mua</label><input id="nv-ngay" type="date"></div><div class="o-nv"><label class="nhan" for="nv-ghi">Ghi chú</label><input id="nv-ghi" placeholder="tuỳ ý"></div><div class="o-nv"><label class="nhan" for="nv-mk">Mật khẩu</label><input id="nv-mk" type="password" placeholder="nhớ sau lần đầu"></div></div><div class="pad an" id="nv-pad"><div class="pad-dau"><span class="pad-ten" id="nv-padten">Chọn số</span><span><span class="dem" id="nv-dem">0/6</span><button type="button" class="nut phu" id="nv-xoahet" style="margin-left:6px">Xoá hết</button></span></div><div class="o-so" id="nv-oso"></div></div><div class="hang-cho an" id="nv-hang"></div><div class="hang-nut"><button id="nv-gui" class="nut">Ghi vào sổ</button><button type="button" id="nv-them" class="nut phu">Thêm vé nữa</button><span id="nv-bao" class="nv-bao"></span></div></div>
 <div class="the">
 <div style='font-size:17px;margin-bottom:2px'>Tới giờ Sếp <strong style='color:var(--nhan)'>lỗ 30.000đ</strong> trên 6 tờ vé.</div>
-<div class="cuon" style="margin-top:12px"><table class="bang-the"><thead><tr><th>Sản phẩm</th><th class="so">Số vé</th><th class="so">Tiền mua vé</th><th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody>
+<div class="cuon" style="margin-top:12px"><table class="bang-the bang-tom"><thead><tr><th>Sản phẩm</th><th class="so">Số vé</th><th class="so">Tiền mua vé</th><th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody>
 <tr><td data-nhan="Sản phẩm">Mega 6/45</td><td class="so" data-nhan="Số vé">5</td><td class="so" data-nhan="Tiền mua vé">50.000đ</td><td class="so" data-nhan="Tiền trúng">30.000đ</td><td class="so" data-nhan="Lãi / lỗ" style="color:var(--nhan)">-20.000đ</td></tr>
 <tr><td data-nhan="Sản phẩm">Power 6/55</td><td class="so" data-nhan="Số vé">1</td><td class="so" data-nhan="Tiền mua vé">10.000đ</td><td class="so" data-nhan="Tiền trúng">0đ</td><td class="so" data-nhan="Lãi / lỗ" style="color:var(--nhan)">-10.000đ</td></tr>
 <tr><td data-nhan="Sản phẩm"><strong>Tổng</strong></td><td class="so" data-nhan="Số vé">6</td><td class="so" data-nhan="Tiền mua vé">60.000đ</td><td class="so" data-nhan="Tiền trúng">30.000đ</td><td class="so" data-nhan="Lãi / lỗ" style="color:var(--nhan)"><strong>-30.000đ</strong></td></tr>

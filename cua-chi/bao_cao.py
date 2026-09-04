@@ -172,6 +172,11 @@ padding:6px 0;border-bottom:1px solid var(--vien);font-size:13.5px}
   .bang-the td::before{content:attr(data-nhan);display:block;font-size:10.5px;
     text-transform:uppercase;letter-spacing:.4px;color:var(--mo);
     font-weight:650;margin-bottom:1px}
+  /* Bảng tóm tắt chỉ toàn số ngắn — để nhãn và số cùng một dòng thì mỗi
+     sản phẩm còn 5 dòng thay vì 10, đỡ đẩy phần vé xuống quá sâu. */
+  .bang-tom td{display:flex;justify-content:space-between;align-items:baseline;
+    gap:14px;padding:4px 0}
+  .bang-tom td::before{margin-bottom:0;flex:0 0 auto}
   .bang-the td[data-nhan=""]{padding-top:8px}
   .bang-the td[data-nhan=""]::before{display:none}
   /* KHÔNG đặt .cuon{overflow-x:visible}: trang còn nhiều bảng khác vẫn là
@@ -682,7 +687,7 @@ def khoi_so_ve():
                  + " tờ thuộc sản phẩm chỉ báo số trùng, không tính tiền thưởng — "
                  "tiền mua vẫn tính đủ, nên nếu có trúng thì con số trên đang thiệt cho Sếp.</div>")
     p.append('<div class="cuon" style="margin-top:12px">'
-             '<table class="bang-the"><thead><tr>'
+             '<table class="bang-the bang-tom"><thead><tr>'
              '<th>Sản phẩm</th><th class="so">Số vé</th><th class="so">Tiền mua vé</th>'
              '<th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody>')
     if len(nhom) > 1:
