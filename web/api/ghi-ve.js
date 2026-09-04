@@ -52,15 +52,34 @@ export default async function handler(req, res) {
     return res.status(401).json({ loi: "Mật khẩu không đúng." });
   }
 
-  if (typeof dong !== "string" || !dong.trim()) {
+  // `dong` nhận CẢ chuỗi lẫn mảng. Nhận mảng để ghi nhiều vé trong MỘT lần gọi
+  // = một commit = một lần bot chạy. Trước đây mỗi vé một lần gọi: ngày
+  // 04/09/2026 nhập 5 vé trong 90 giây làm 5 lần chạy giẫm chân nhau, hai lần
+  // hỏng ở bước đẩy lên. Xoá thì vẫn từng vé một.
+  const cacDong = (Array.isArray(dong) ? dong : [dong])
+    .filter((d) => typeof d === "string")
+    .map((d) => d.trim())
+    .filter(Boolean);
+
+  if (!cacDong.length) {
     return res.status(400).json({ loi: "Thiếu dòng vé." });
   }
-  const dongSach = dong.trim();
+  if (laXoa && cacDong.length > 1) {
+    return res.status(400).json({ loi: "Xoá thì mỗi lần một vé thôi." });
+  }
+  if (cacDong.length > 20) {
+    return res.status(400).json({ loi: "Nhiều nhất 20 vé một lần." });
+  }
+  const dongSach = cacDong[0];
   // Khi ghi thêm thì phải đúng khuôn. Khi xoá thì chỉ cần khớp nguyên văn dòng đã có.
-  if (!laXoa && !MAU_DONG.test(dongSach)) {
-    return res.status(400).json({
-      loi: "Dòng vé không đúng khuôn. Mẫu: 2026-08-24 | power: 3 12 19 27 41 52",
-    });
+  if (!laXoa) {
+    const hong = cacDong.find((d) => !MAU_DONG.test(d));
+    if (hong) {
+      return res.status(400).json({
+        loi: "Dòng vé không đúng khuôn: " + hong.slice(0, 60)
+          + "  — mẫu: 2026-08-24 | power: 3 12 19 27 41 52",
+      });
+    }
   }
 
   try {
@@ -80,28 +99,43 @@ export default async function handler(req, res) {
     const noiDungCu = Buffer.from(jsDoc.content, "base64").toString("utf-8");
 
     let noiDungMoi;
+    let soDaGhi = 0;
+    let soTrung = 0;
     if (laXoa) {
       // Xoá đúng MỘT dòng khớp nguyên văn (nếu có dòng trùng nhau thì bỏ dòng đầu tiên)
-      const cacDong = noiDungCu.split(/\r?\n/);
-      const vt = cacDong.findIndex((d) => d.trim() === dongSach);
+      const dongCu = noiDungCu.split(/\r?\n/);
+      const vt = dongCu.findIndex((d) => d.trim() === dongSach);
       if (vt < 0) {
         return res.status(404).json({
           loi: "Không tìm thấy vé này trong sổ. Trang có thể đang cũ — tải lại rồi thử lại.",
         });
       }
-      cacDong.splice(vt, 1);
-      noiDungMoi = cacDong.join("\n");
+      dongCu.splice(vt, 1);
+      noiDungMoi = dongCu.join("\n");
       if (!noiDungMoi.endsWith("\n")) noiDungMoi += "\n";
     } else {
-      // Đã có dòng y hệt thì thôi, khỏi ghi trùng
-      if (noiDungCu.split(/\r?\n/).some((d) => d.trim() === dongSach)) {
+      // Bỏ dòng đã có y hệt (kể cả trùng nhau trong chính lần gửi này)
+      const daCo = new Set(
+        noiDungCu.split(/\r?\n/).map((d) => d.trim()).filter(Boolean)
+      );
+      const themVao = [];
+      for (const d of cacDong) {
+        if (daCo.has(d)) { soTrung++; continue; }
+        daCo.add(d);
+        themVao.push(d);
+      }
+      if (!themVao.length) {
         return res.status(200).json({
-          ok: true, trung: true, thong_bao: "Vé này đã có trong sổ rồi.",
+          ok: true, trung: true, so_da_ghi: 0, so_trung: soTrung,
+          thong_bao: cacDong.length > 1
+            ? "Cả " + cacDong.length + " vé đều đã có trong sổ rồi."
+            : "Vé này đã có trong sổ rồi.",
         });
       }
+      soDaGhi = themVao.length;
       noiDungMoi =
         (noiDungCu.endsWith("\n") || noiDungCu === "" ? noiDungCu : noiDungCu + "\n") +
-        dongSach + "\n";
+        themVao.join("\n") + "\n";
     }
 
     // 2. Ghi vào sổ
@@ -109,7 +143,9 @@ export default async function handler(req, res) {
       method: "PUT",
       headers: dauGh(token),
       body: JSON.stringify({
-        message: laXoa ? "Xoa ve tu trang web" : "Ghi ve tu trang web",
+        message: laXoa
+          ? "Xoa ve tu trang web"
+          : "Ghi " + soDaGhi + " ve tu trang web",
         content: Buffer.from(noiDungMoi, "utf-8").toString("base64"),
         sha: jsDoc.sha,
         branch: NHANH,
@@ -134,16 +170,21 @@ export default async function handler(req, res) {
       daKich = kich.ok;
     } catch { /* bỏ qua */ }
 
+    const dem = soDaGhi > 1 ? soDaGhi + " vé" : "vé";
+    const bo = soTrung ? "  (" + soTrung + " vé đã có sẵn nên bỏ qua)" : "";
     return res.status(200).json({
       ok: true,
       da_kich_workflow: daKich,
+      so_da_ghi: soDaGhi,
+      so_trung: soTrung,
       thong_bao: laXoa
         ? (daKich
             ? "Đã xoá khỏi sổ. Khoảng 2 phút nữa trang cập nhật."
             : "Đã xoá khỏi sổ. Trang sẽ cập nhật ở lần chạy tự động kế tiếp.")
         : (daKich
-            ? "Đã ghi vào sổ. Khoảng 2 phút nữa trang sẽ hiện vé này."
-            : "Đã ghi vào sổ. Trang sẽ hiện vé ở lần cập nhật tự động kế tiếp."),
+            ? "Đã ghi " + dem + " vào sổ." + bo + " Khoảng 2 phút nữa trang sẽ hiện."
+            : "Đã ghi " + dem + " vào sổ." + bo
+              + " Trang sẽ hiện ở lần cập nhật tự động kế tiếp."),
     });
   } catch (e) {
     return res.status(500).json({ loi: "Lỗi máy chủ: " + String(e).slice(0, 200) });

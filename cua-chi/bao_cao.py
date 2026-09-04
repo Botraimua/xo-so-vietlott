@@ -134,6 +134,50 @@ font-variant-numeric:tabular-nums;transition:background .1s,border-color .1s,col
 .vien-so:hover{border-color:var(--chinh)}
 .vien-so.chon{background:var(--chinh);border-color:var(--chinh);color:#fff}
 .vien-so:disabled{opacity:.32;cursor:not-allowed}
+/* Danh sách vé đang xếp chờ, ghi một lượt */
+.hang-cho{margin-top:12px;border:1px dashed var(--vien);border-radius:10px;padding:8px 10px}
+.ve-cho{display:flex;align-items:center;justify-content:space-between;gap:10px;
+padding:6px 0;border-bottom:1px solid var(--vien);font-size:13.5px}
+.ve-cho:last-child{border-bottom:0}
+.ve-cho b{font-weight:650}
+/* ================= MÀN HÌNH HẸP (điện thoại) =================
+   Trước 05/09/2026 trang KHÔNG có lấy một dòng CSS nào cho điện thoại, nên
+   trên iPhone: bảng bị cắt cụt cột cuối, sáu viên số xếp DỌC từng hàng một
+   (cột quá hẹp), mỗi tờ vé ăn gần trọn màn hình. Ảnh chụp của Sếp 05/09.
+
+   Cách chữa: bảng nào có class .bang-the thì bỏ hẳn kiểu bảng, xếp lại thành
+   thẻ dọc — mỗi hàng một thẻ, nhãn cột thành nhãn nhỏ trên từng dòng. */
+@media (max-width:600px){
+  body{padding:0 10px 48px;font-size:14.5px}
+  h1{font-size:21px}
+  h2{font-size:17px;margin:26px 0 10px}
+  .the{padding:12px 13px;border-radius:10px}
+  nav{padding:8px 0}
+  nav a{padding:5px 10px;font-size:12px;margin:2px 3px 2px 0}
+  .bi{min-width:30px;height:30px;font-size:13px;margin:2px 4px 2px 0}
+  .bi.nho{min-width:25px;height:25px;font-size:11px}
+  table{font-size:13px}
+  th,td{padding:6px 7px}
+
+  .bang-the,.bang-the tbody,.bang-the tr,.bang-the td{display:block;width:100%}
+  .bang-the thead{display:none}
+  .bang-the tr{border:1px solid var(--vien);border-radius:10px;
+    padding:10px 12px;margin-bottom:10px;background:var(--nen)}
+  .bang-the td{border:0;padding:5px 0;text-align:left}
+  .bang-the td.so{text-align:left}
+  .bang-the td::before{content:attr(data-nhan);display:block;font-size:10.5px;
+    text-transform:uppercase;letter-spacing:.4px;color:var(--mo);
+    font-weight:650;margin-bottom:1px}
+  .bang-the td[data-nhan=""]{padding-top:8px}
+  .bang-the td[data-nhan=""]::before{display:none}
+  .cuon{overflow-x:visible}
+
+  .luoi,.luoi-goi{grid-template-columns:1fr}
+  .o-so{grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:5px}
+  .vien-so{height:40px}
+  .rong2{grid-column:span 2}
+}
+
 """ + CSS_BIEU_DO
 
 JS = """
@@ -299,59 +343,121 @@ function dienVaoO(chuoi){
 
   function noi(t, lop){ bao.textContent = t; bao.className = 'nv-bao ' + (lop || ''); }
 
-  nut.addEventListener('click', function(){
+  // ----- Xếp nhiều vé rồi ghi một lượt -----
+  // Mỗi lần gọi cửa ghi là một commit và một lần bot chạy. Nhập từng vé một
+  // thì 5 vé = 5 lần chạy giẫm chân nhau (đã dính 04/09/2026: hai lần hỏng ở
+  // bước đẩy lên). Gom lại gửi một lần vừa nhanh vừa hết chuyện đó.
+  var HANG_CHO = [];
+
+  function dongVe(){
     var k = KHUON[sp.value] || {};
     var so = (o('nv-so').value || '').trim().replace(/[,;]+/g, ' ').replace(/\\s+/g, ' ');
     var mang = so ? so.split(' ') : [];
     if(mang.length !== k.so_chon){
-      noi('Cần đúng ' + k.so_chon + ' số, đang có ' + mang.length + '.', 'loi'); return;
+      return {loi: 'Cần đúng ' + k.so_chon + ' số, đang có ' + mang.length + '.'};
     }
+    var tap = {};
     for(var i = 0; i < mang.length; i++){
       var v = parseInt(mang[i], 10);
       if(!(v >= 1 && v <= k.dai_chon)){
-        noi('Số ' + mang[i] + ' ngoài dải 1-' + k.dai_chon + '.', 'loi'); return;
+        return {loi: 'Số ' + mang[i] + ' ngoài dải 1-' + k.dai_chon + '.'};
       }
-    }
-    var tap = {};
-    for(var q = 0; q < mang.length; q++){
-      if(tap[mang[q]]){ noi('Có số bị trùng.', 'loi'); return; }
-      tap[mang[q]] = 1;
+      if(tap[mang[i]]){ return {loi: 'Có số bị trùng.'}; }
+      tap[mang[i]] = 1;
     }
     var db = (o('nv-db').value || '').trim();
     if(k.db_dai){
       var dv = parseInt(db, 10);
       if(!(dv >= 1 && dv <= k.db_dai)){
-        noi('Số đặc biệt phải từ 1 đến ' + k.db_dai + '.', 'loi'); return;
+        return {loi: 'Số đặc biệt phải từ 1 đến ' + k.db_dai + '.'};
       }
     }
-    var matKhau = (mk.value || '').trim();
-    if(!matKhau){ noi('Chưa nhập mật khẩu.', 'loi'); return; }
-
     var dong = ngay.value + ' | ' + sp.value + ': ' + so + (k.db_dai ? ' | ' + db : '');
     var gc = (o('nv-ghi').value || '').trim().replace(/[#|\\n\\r]/g, ' ');
     if(gc) dong += '   # ' + gc;
+    var ten = sp.options[sp.selectedIndex] ? sp.options[sp.selectedIndex].text : sp.value;
+    return {dong: dong, ten: ten.split(' — ')[0], so: so, db: db};
+  }
 
-    nut.disabled = true; noi('Đang ghi...', '');
+  function donO(){
+    o('nv-so').value = ''; o('nv-db').value = ''; o('nv-ghi').value = '';
+    CHON = []; dongBoSo(false);
+  }
+
+  function veHangCho(){
+    var h = o('nv-hang');
+    if(!h) return;
+    h.classList.toggle('an', !HANG_CHO.length);
+    h.innerHTML = '';
+    HANG_CHO.forEach(function(x, i){
+      var d = document.createElement('div');
+      d.className = 've-cho';
+      var t = document.createElement('span');
+      t.innerHTML = '<b>' + x.ten + '</b>  ' + x.so
+        + (x.db ? '  <span class="mo">| ' + x.db + '</span>' : '');
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'nut-xoa'; b.textContent = 'Bỏ';
+      b.addEventListener('click', function(){
+        HANG_CHO.splice(i, 1); veHangCho(); noi('');
+      });
+      d.appendChild(t); d.appendChild(b);
+      h.appendChild(d);
+    });
+    var them = (o('nv-so').value || '').trim() ? 1 : 0;
+    nut.textContent = HANG_CHO.length
+      ? 'Ghi ' + (HANG_CHO.length + them) + ' vé vào sổ' : 'Ghi vào sổ';
+  }
+
+  var themNua = o('nv-them');
+  if(themNua) themNua.addEventListener('click', function(){
+    var r = dongVe();
+    if(r.loi){ noi(r.loi, 'loi'); return; }
+    if(HANG_CHO.length >= 19){ noi('Nhiều nhất 20 vé một lượt.', 'loi'); return; }
+    if(HANG_CHO.some(function(x){ return x.dong === r.dong; })){
+      noi('Vé này đã có trong danh sách chờ.', 'loi'); return;
+    }
+    HANG_CHO.push(r);
+    donO(); veHangCho();
+    noi('Đã xếp ' + HANG_CHO.length + ' vé. Chọn bộ số tiếp theo, xong bấm Ghi.', 'ok');
+  });
+
+  o('nv-so').addEventListener('input', veHangCho);
+
+  nut.addEventListener('click', function(){
+    var matKhau = (mk.value || '').trim();
+    if(!matKhau){ noi('Chưa nhập mật khẩu.', 'loi'); return; }
+
+    var ds = HANG_CHO.map(function(x){ return x.dong; });
+    if((o('nv-so').value || '').trim()){
+      var r = dongVe();
+      if(r.loi){ noi(r.loi, 'loi'); return; }
+      ds.push(r.dong);
+    }
+    if(!ds.length){ noi('Chưa chọn vé nào.', 'loi'); return; }
+
+    nut.disabled = true;
+    noi(ds.length > 1 ? 'Đang ghi ' + ds.length + ' vé...' : 'Đang ghi...', '');
     fetch('/api/ghi-ve', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({matKhau: matKhau, dong: dong})
+      body: JSON.stringify({matKhau: matKhau, dong: ds})
     }).then(function(r){
       return r.json().then(function(j){ return {ok: r.ok, ma: r.status, j: j}; });
     }).then(function(kq){
       if(kq.ok && kq.j.ok){
         try { localStorage.setItem('vietlott_mk', matKhau); } catch(e){}
         noi(kq.j.thong_bao || 'Đã ghi vào sổ.', 'ok');
-        o('nv-so').value = ''; o('nv-db').value = ''; o('nv-ghi').value = '';
-        CHON = []; dongBoSo(false);
+        HANG_CHO = []; donO(); veHangCho();
       } else {
         noi(kq.j.loi || ('Lỗi ' + kq.ma), 'loi');
       }
     }).catch(function(){
-      noi('Không gọi được máy chủ. Nhap ve chi chay tren trang vietlott-thongke.vercel.app, '
-        + 'khong chay khi mo file HTML tu may.', 'loi');
+      noi('Không gọi được máy chủ. Nhập vé chỉ chạy trên trang '
+        + 'vietlott-thongke.vercel.app, không chạy khi mở file HTML từ máy.', 'loi');
     }).then(function(){ nut.disabled = false; });
   });
+
+  veHangCho();
 })();
 
 // ----- Xoa mot to ve khoi so -----
@@ -534,23 +640,27 @@ def khoi_so_ve():
         elif o["tinh_tien"]:
             o["tien_trung"] += k["tien"]
 
-    def o_so(x):
-        return '<td class="so">' + x + "</td>"
+    # data-nhan: trên điện thoại bảng xếp lại thành thẻ dọc, nhãn cột thành
+    # nhãn nhỏ trên từng dòng (xem CSS .bang-the trong @media).
+    def o_so(x, nhan):
+        return '<td class="so" data-nhan="' + nhan + '">' + x + "</td>"
 
     def o_lai(x, dam=False):
         mau = "xanh" if x >= 0 else "nhan"
         t = ("+" if x >= 0 else "") + vnd(x)
         t = "<strong>" + t + "</strong>" if dam else t
-        return '<td class="so" style="color:var(--' + mau + ')">' + t + "</td>"
+        return ('<td class="so" data-nhan="Lãi / lỗ" style="color:var(--'
+                + mau + ')">' + t + "</td>")
 
     def hang(ten, o, dam=False):
         dem = str(o["so_ve"])
         if o["cho_quay"]:
             dem += '<span class="mo"> (' + str(o["cho_quay"]) + " chờ quay)</span>"
-        r = "<tr><td>" + ("<strong>" + ten + "</strong>" if dam else ten) + "</td>"
-        r += o_so(dem) + o_so(vnd(o["tien_ve"]))
+        r = ('<tr><td data-nhan="Sản phẩm">'
+             + ("<strong>" + ten + "</strong>" if dam else ten) + "</td>")
+        r += o_so(dem, "Số vé") + o_so(vnd(o["tien_ve"]), "Tiền mua vé")
         r += o_so(vnd(o["tien_trung"]) if o["tinh_tien"]
-                  else '<span class="mo">không tính</span>')
+                  else '<span class="mo">không tính</span>', "Tiền trúng")
         r += o_lai(o["tien_trung"] - o["tien_ve"], dam)
         return r + "</tr>"
 
@@ -564,7 +674,8 @@ def khoi_so_ve():
         p.append('<div class="mo">' + str(tong["ve_khong_tinh_tien"])
                  + " tờ thuộc sản phẩm chỉ báo số trùng, không tính tiền thưởng — "
                  "tiền mua vẫn tính đủ, nên nếu có trúng thì con số trên đang thiệt cho chị.</div>")
-    p.append('<div class="cuon" style="margin-top:12px"><table><thead><tr>'
+    p.append('<div class="cuon" style="margin-top:12px">'
+             '<table class="bang-the"><thead><tr>'
              '<th>Sản phẩm</th><th class="so">Số vé</th><th class="so">Tiền mua vé</th>'
              '<th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody>')
     if len(nhom) > 1:
@@ -577,7 +688,8 @@ def khoi_so_ve():
                   tong_o, dam=len(nhom) > 1))
     p.append("</tbody></table></div></div>")
 
-    p.append('<div class="the"><div class="cuon"><table><thead><tr>'
+    p.append('<div class="the"><div class="cuon">'
+             '<table class="bang-the bang-ve"><thead><tr>'
              "<th>Ngày mua</th><th>Vé</th><th>Kỳ quay</th><th>Kết quả</th>"
              "<th></th></tr></thead><tbody>")
     for k in reversed(kq):
@@ -588,8 +700,11 @@ def khoi_so_ve():
         if v["ghi_chu"]:
             o_ve += '<div class="mo">' + e(v["ghi_chu"]) + "</div>"
         if k["trang_thai"] == "cho":
-            p.append("<tr><td>" + e(ngay_viet(v["ngay_mua"], kem_thu=False)) + "</td><td>" + o_ve
-                     + '</td><td class="mo">&mdash;</td><td><span class="nhan-nho">chờ quay</span></td>'
+            p.append('<tr><td data-nhan="Ngày mua">'
+                     + e(ngay_viet(v["ngay_mua"], kem_thu=False))
+                     + '</td><td data-nhan="Vé">' + o_ve
+                     + '</td><td class="mo" data-nhan="Kỳ quay">&mdash;</td>'
+                     + '<td data-nhan="Kết quả"><span class="nhan-nho">chờ quay</span></td>'
                      + o_xoa(v) + "</tr>")
             continue
         ky = k["ky"]
@@ -611,8 +726,12 @@ def khoi_so_ve():
             dong += ('<div class="mo">ngày này quay nhiều kỳ — đang chấm kỳ đầu tiên; '
                      "muốn kỳ khác, thêm @&lt;mã kỳ&gt; vào dòng vé</div>")
         o_kq += "<div>" + dong + "</div>"
-        p.append("<tr><td>" + e(ngay_viet(v["ngay_mua"], kem_thu=False)) + "</td><td>" + o_ve
-                 + "</td><td>" + o_ky + "</td><td>" + o_kq + "</td>" + o_xoa(v) + "</tr>")
+        p.append('<tr><td data-nhan="Ngày mua">'
+                 + e(ngay_viet(v["ngay_mua"], kem_thu=False))
+                 + '</td><td data-nhan="Vé">' + o_ve
+                 + '</td><td data-nhan="Kỳ quay">' + o_ky
+                 + '</td><td data-nhan="Kết quả">' + o_kq + "</td>"
+                 + o_xoa(v) + "</tr>")
     p.append("</tbody></table></div></div>")
 
     if loi:
@@ -759,7 +878,8 @@ def khoi_xac_suat():
 
 def o_xoa(v):
     """Ô chứa nút xoá một tờ vé. Xoá theo NGUYÊN VĂN dòng nên không sợ lệch số dòng."""
-    return ('<td><button class="nut-xoa" data-dong="' + e(v.get("raw", ""))
+    # data-nhan rỗng: trên điện thoại ô này không cần nhãn, chỉ có nút
+    return ('<td data-nhan=""><button class="nut-xoa" data-dong="' + e(v.get("raw", ""))
             + '" title="Xoá tờ vé này khỏi sổ">Xoá</button></td>')
 
 
@@ -801,8 +921,10 @@ def khung_nhap_ve():
         'style="margin-left:6px">Xoá hết</button></span></div>'
         '<div class="o-so" id="nv-oso"></div>'
         "</div>"
+        '<div class="hang-cho an" id="nv-hang"></div>'
         '<div class="hang-nut">'
         '<button id="nv-gui" class="nut">Ghi vào sổ</button>'
+        '<button type="button" id="nv-them" class="nut phu">Thêm vé nữa</button>'
         '<span id="nv-bao" class="nv-bao"></span></div>'
         "</div>")
 

@@ -15,9 +15,16 @@ on:
 permissions:
   contents: write
 
+# Nhập nhiều vé liên tiếp trên web thì mỗi lần ghi vé gọi bot chạy một lần.
+# Trước 05/09/2026 để `cancel-in-progress: false`, các lần chạy xếp hàng rồi
+# giẫm chân nhau: lần sau lấy mã nguồn ở thời điểm cũ, làm xong thì lần trước
+# đã đẩy lên rồi -> `git push` bị từ chối, gửi mail báo hỏng giả (đã dính
+# 04/09/2026: nhập 5 vé trong 90 giây, hai lần chạy hỏng ở đúng bước đẩy).
+# Để `true` thì lần chạy mới huỷ lần đang chạy — chỉ lần cuối cùng làm việc,
+# mà lần cuối luôn có mã nguồn mới nhất nên không bao giờ lệch.
 concurrency:
   group: cap-nhat-vietlott
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   cap-nhat:
@@ -90,7 +97,25 @@ jobs:
             echo "Không có gì thay đổi, bỏ qua."
           else
             git commit -m "Cập nhật dữ liệu Vietlott $(TZ=Asia/Ho_Chi_Minh date '+%d/%m/%Y %H:%M')"
-            git push
+            # Vẫn có thể bị từ chối nếu ai đó vừa ghi vé qua trang web trong lúc
+            # bot đang chạy. Kéo về rồi thử lại, tối đa 3 lần. Dùng `-X theirs`
+            # khi gộp: lần chạy này mới hơn nên bản của nó là bản đúng
+            # (mọi file ở đây đều dựng lại được từ nguồn, không mất gì).
+            n=0
+            until git push; do
+              n=$((n + 1))
+              if [ $n -ge 3 ]; then
+                echo "Thử 3 lần vẫn không đẩy lên được."
+                exit 1
+              fi
+              echo "Có thay đổi khác vừa đẩy lên trước — kéo về rồi thử lại (lần $n)."
+              git fetch origin main
+              GIT_EDITOR=true git rebase -X theirs origin/main || {
+                git rebase --abort
+                echo "Gộp không được."
+                exit 1
+              }
+            done
           fi
 
       # Đặt CUỐI CÙNG, sau khi đã ghi và đẩy: trang vẫn được dựng lại bình thường,
