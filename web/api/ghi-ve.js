@@ -2,7 +2,7 @@
 // rồi kích workflow dựng lại trang. Chạy trên máy chủ Vercel, không lộ ra trình duyệt.
 //
 // Cần 2 biến môi trường đặt trong Vercel (Settings -> Environment Variables):
-//   MAT_KHAU      mật khẩu chị tự nghĩ, để người lạ không ghi vé vào sổ được
+//   MAT_KHAU      mật khẩu Sếp tự nghĩ, để người lạ không ghi vé vào sổ được
 //   GITHUB_TOKEN  token GitHub có quyền Contents:write + Actions:write trên repo này
 
 const CHU_REPO = "Botraimua";

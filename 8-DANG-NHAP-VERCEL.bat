@@ -10,12 +10,12 @@ echo ==============================================================
 echo.
 echo   Chi lam 1 lan duy nhat tren may nay.
 echo.
-echo   Lat nua se hien menu chon cach dang nhap - chi chon dong
-echo   "Continue with GitHub" hoac "Continue with Email" tuy chi
+echo   Lat nua se hien menu chon cach dang nhap - Sep chon dong
+echo   "Continue with GitHub" hoac "Continue with Email" tuy Sep
 echo   dang ky bang gi, roi bam Enter. Trinh duyet se tu mo ra
-echo   de chi bam xac nhan.
+echo   de Sep bam xac nhan.
 echo.
-echo   Tai khoan cua chi:  botraimua
+echo   Tai khoan cua Sep:  botraimua
 echo.
 pause
 
@@ -29,7 +29,7 @@ if errorlevel 1 goto loi
 
 echo.
 echo ==============================================================
-echo   XONG. Gio chi bam 7-DUA-LEN-MANG.bat duoc roi.
+echo   XONG. Gio Sep bam 7-DUA-LEN-MANG.bat duoc roi.
 echo ==============================================================
 echo.
 popd

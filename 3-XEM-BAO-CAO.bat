@@ -1,13 +1,13 @@
 @echo off
 chcp 65001 >nul
 pushd "%~dp0"
-title Bao cao thong ke - Vietlott cua chi
+title Bao cao thong ke - Vietlott cua Sep
 set PYTHONIOENCODING=utf-8
 set PYTHONPATH=%~dp0src
 
 if not exist ".venv\Scripts\python.exe" goto chua_cai
 
-rem Keo ve nhung ve chi da nhap tren trang web
+rem Keo ve nhung ve Sep da nhap tren trang web
 git pull --rebase --autostash >nul 2>&1
 
 ".venv\Scripts\python.exe" "cua-chi\bao_cao.py"
@@ -22,7 +22,7 @@ exit /b 0
 
 :chua_cai
 echo.
-echo   Chua cai dat. Chi chay 1-CAI-DAT.bat truoc nhe.
+echo   Chua cai dat. Sep chay 1-CAI-DAT.bat truoc nhe.
 echo.
 popd
 pause

@@ -1,5 +1,5 @@
 # =====================================================================
-#  SỔ VÉ — những bộ số chị ĐÃ MUA, để theo dõi kết quả thật
+#  SỔ VÉ — những bộ số Sếp ĐÃ MUA, để theo dõi kết quả thật
 #
 #  Mỗi dòng một tờ vé:  <ngày mua> | <sản phẩm>: <các số>  # ghi chú
 #     2026-08-24 | power: 2 20 23 33 44 52       # gợi ý Số nóng

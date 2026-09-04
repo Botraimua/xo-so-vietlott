@@ -2,7 +2,7 @@
 """
 Máy dò nguồn: xem từ CHỖ ĐANG CHẠY thì gọi được những nguồn nào.
 
-Vì sao cần: nguồn nào thử từ máy chị (ở Việt Nam) cũng chạy, nên thử ở đây
+Vì sao cần: nguồn nào thử từ máy Sếp (ở Việt Nam) cũng chạy, nên thử ở đây
 không chứng minh được gì về máy chủ GitHub. Đúng cái bẫy đã làm bot hỏng im
 lặng 8 ngày cuối tháng 8/2026. File này chạy ở đâu thì đo ở đó, rồi GHI KẾT QUẢ
 RA FILE để đọc lại — vì nhật ký lần chạy trên GitHub không xem được nếu không

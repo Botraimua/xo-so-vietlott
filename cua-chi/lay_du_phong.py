@@ -3,7 +3,7 @@
 Đường dự phòng: lấy kết quả từ các kho dữ liệu Vietlott khác trên GitHub.
 
 Vì sao cần: vietlott.vn nấp sau dịch vụ chống bot, trả 403 cho máy chủ GitHub
-(đo tận nơi 30/08/2026). Máy chị ở Việt Nam thì gọi bình thường. Nên bot cần
+(đo tận nơi 30/08/2026). Máy Sếp ở Việt Nam thì gọi bình thường. Nên bot cần
 đường khác, mà `raw.githubusercontent.com` thì máy chủ GitHub luôn gọi được.
 
 Vì sao có NHIỀU kho chứ không một: ngày 02/09/2026 kho `vietvudanh` — lúc đó là
@@ -214,7 +214,7 @@ def gop_mot(ma):
     if keu:
         print()
         print("  !! CẢNH BÁO: " + str(len(keu)) + " kỳ lệch mà KHÔNG phải mã tự suy.")
-        print("     Đây là chuyện không nên xảy ra — giữ nguyên bản của mình, chị xem lại:")
+        print("     Đây là chuyện không nên xảy ra — giữ nguyên bản của mình, Sếp xem lại:")
         for a, b, ten in keu[:10]:
             print("     ngày " + str(a.get("date"))[:10]
                   + "   mình: mã " + _ma(a) + " " + str(a.get("result"))

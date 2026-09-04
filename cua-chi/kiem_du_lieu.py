@@ -5,7 +5,7 @@ Canh chừng dữ liệu có cũ đi không — và báo ĐỘNG nếu có.
 Vì sao có file này: cuối tháng 8/2026 bot chạy 8 ngày liền, lần nào cũng báo
 "thành công", mà thật ra không lấy được kỳ mới nào từ vietlott.vn. Mỗi commit
 chỉ đổi đúng một dòng giờ trong trang. Nhìn từ ngoài không ai biết — chỉ tới khi
-chị hỏi "vé mua không tự dò" mới lộ.
+Sếp hỏi "vé mua không tự dò" mới lộ.
 
 Hỏng mà im lặng còn tệ hơn hỏng mà kêu. File này làm cho nó kêu: dữ liệu quá cũ
 thì thoát với mã lỗi, GitHub gửi mail báo hỏng.
@@ -168,7 +168,7 @@ def main():
     do_mang()
     print()
     print("  Bot đã có đường dự phòng (kho vietvudanh trên GitHub). Cũ tới mức này")
-    print("  nghĩa là CẢ HAI đường đều tắc. Chữa nhanh: bấm nút 0 trên máy chị —")
+    print("  nghĩa là CẢ HAI đường đều tắc. Chữa nhanh: bấm nút 0 trên máy Sếp —")
     print("  máy ở Việt Nam gọi vietlott.vn bình thường.")
     print()
     for ten, cach, tran in cu:

@@ -93,7 +93,7 @@ def cham():
         cap = [(_so_ky(r.get("id")), r) for r in rows]
         bo_nho[ma] = sorted([(s, r) for s, r in cap if s is not None], key=lambda t: t[0])
 
-    chi_tiet = []      # từng bộ một, để chị soi tận nơi
+    chi_tiet = []      # từng bộ một, để Sếp soi tận nơi
     theo_cl = {}       # chiến lược -> thống kê gộp mọi sản phẩm
     theo_sp = {}       # sản phẩm  -> thống kê gộp mọi chiến lược
     tong = {"da_cham": 0, "cho_quay": 0, "co_giai": 0, "tien_ve": 0, "tien_trung": 0,

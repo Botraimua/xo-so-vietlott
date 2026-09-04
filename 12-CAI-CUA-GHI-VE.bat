@@ -48,11 +48,11 @@ set /p "TOKEN=   Chia khoa GitHub: "
 if "!TOKEN!"=="" goto trong_token
 
 echo.
-echo   2) MAT KHAU - chi tu nghi, chi de chan nguoi la ghi ve vao so.
+echo   2) MAT KHAU - Sep tu nghi, chi de chan nguoi la ghi ve vao so.
 echo      Nen dung CHU va SO thoi, tranh ky tu la nhu ^& ^| ^^ ^!
 echo.
 set "MK="
-set /p "MK=   Mat khau chi tu nghi: "
+set /p "MK=   Mat khau Sep tu nghi: "
 if "!MK!"=="" goto trong_mk
 
 echo.

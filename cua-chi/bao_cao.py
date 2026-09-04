@@ -521,13 +521,13 @@ def day_bi(ds, db=None, tap_trung=None):
     return "".join(ra)
 
 
-# ---------- Khối vé của chị ----------
+# ---------- Khối vé của Sếp ----------
 
 def khoi_ve(du_lieu):
     ve_list = doc_ve()
     if not ve_list:
         return ""
-    p = ['<h2 id="ve">Vé của chị</h2>']
+    p = ['<h2 id="ve">Vé của Sếp</h2>']
     hop_le = [v for v in ve_list if "loi" not in v]
     loi = [v for v in ve_list if "loi" in v]
 
@@ -627,7 +627,7 @@ def khoi_so_ve():
     lai = tong["lai_lo"]
 
     # Gom theo sản phẩm để biết lỗ ở loại nào, chứ một dòng gộp thì không nói
-    # được gì khi chị mua nhiều loại.
+    # được gì khi Sếp mua nhiều loại.
     nhom = {}
     for k in kq:
         ma = k["ve"]["ma"]
@@ -666,14 +666,14 @@ def khoi_so_ve():
 
     # Câu trả lời trước, số liệu sau — nhìn một dòng là biết đang lãi hay lỗ.
     p.append('<div class="the">')
-    p.append("<div style='font-size:17px;margin-bottom:2px'>Tới giờ chị "
+    p.append("<div style='font-size:17px;margin-bottom:2px'>Tới giờ Sếp "
              + ("<strong style='color:var(--xanh)'>lãi " if lai >= 0
                 else "<strong style='color:var(--nhan)'>lỗ ")
              + vnd(abs(lai)) + "</strong> trên " + str(tong["so_ve"]) + " tờ vé.</div>")
     if tong["ve_khong_tinh_tien"]:
         p.append('<div class="mo">' + str(tong["ve_khong_tinh_tien"])
                  + " tờ thuộc sản phẩm chỉ báo số trùng, không tính tiền thưởng — "
-                 "tiền mua vẫn tính đủ, nên nếu có trúng thì con số trên đang thiệt cho chị.</div>")
+                 "tiền mua vẫn tính đủ, nên nếu có trúng thì con số trên đang thiệt cho Sếp.</div>")
     p.append('<div class="cuon" style="margin-top:12px">'
              '<table class="bang-the"><thead><tr>'
              '<th>Sản phẩm</th><th class="so">Số vé</th><th class="so">Tiền mua vé</th>'
@@ -760,7 +760,7 @@ def khoi_goi_so():
              + " bộ cho mỗi cách chọn số. Bấm vào một bộ là chép được, dán thẳng vào "
              + "<code>ve-cua-chi.txt</code>. Sang ngày mới thì ra bộ khác.</div>")
     p.append('<div class="canh" style="margin:14px 0">Mấy bộ số này <strong>không dễ '
-             "trúng hơn</strong> bộ chị tự nghĩ. Bảng kiểm thử ngay bên dưới cho thấy "
+             "trúng hơn</strong> bộ Sếp tự nghĩ. Bảng kiểm thử ngay bên dưới cho thấy "
              "cả 9 cách đều lỗ 78&ndash;92%, kể cả bốc bừa. Đây là công cụ đỡ phải ngồi "
              "nghĩ số, không phải công cụ dự đoán.</div>")
 
@@ -839,7 +839,7 @@ def khoi_xac_suat():
 
     p = ['<h2 id="xac-suat">Xác suất trúng của một bộ số</h2>']
     p.append('<div class="mo">Tính thẳng từ tổ hợp, không phải ước lượng. '
-             "Con số này đúng cho <strong>mọi</strong> bộ số &mdash; bộ gợi ý, bộ chị tự nghĩ, "
+             "Con số này đúng cho <strong>mọi</strong> bộ số &mdash; bộ gợi ý, bộ Sếp tự nghĩ, "
              "hay bộ bốc bừa đều y hệt nhau.</div>")
     p.append('<div class="luoi luoi-bd">')
     for ten, mo, d, co_giai, T, nhan_tong in sp:
@@ -1512,10 +1512,10 @@ def khoi_gon(ma, rows):
 
 
 def main(che_do_web=False):
-    """che_do_web=True: bỏ phần 'Vé của chị' và ghi ra web/index.html để đăng lên mạng."""
+    """che_do_web=True: bỏ phần 'Vé của Sếp' và ghi ra web/index.html để đăng lên mạng."""
     print()
     print("  Đang đọc dữ liệu và dựng báo cáo"
-          + (" (bản công khai, không kèm vé của chị)..." if che_do_web else "..."))
+          + (" (bản công khai, không kèm vé của Sếp)..." if che_do_web else "..."))
     du_lieu = {}
     for ma in SAN_PHAM:
         du_lieu[ma] = doc_du_lieu(ma)
@@ -1535,7 +1535,7 @@ def main(che_do_web=False):
 
     p.append("<nav>")
     if doc_ve():
-        p.append('<a href="#ve">Vé của chị</a>')
+        p.append('<a href="#ve">Vé của Sếp</a>')
     so_ve_html = khoi_so_ve()
     if so_ve_html:
         p.append('<a href="#so-ve">Sổ vé</a>')
@@ -1552,9 +1552,9 @@ def main(che_do_web=False):
         p.append('<a href="#khac">Sản phẩm khác</a>')
     p.append("</nav>")
 
-    # Cả hai mục vé lên web — chị chọn công khai (24/08/2026)
+    # Cả hai mục vé lên web — Sếp chọn công khai (24/08/2026)
     p.append(khoi_ve(du_lieu))
-    # Sổ vé lên cả bản web — chị chọn công khai (24/08/2026)
+    # Sổ vé lên cả bản web — Sếp chọn công khai (24/08/2026)
     p.append(so_ve_html)
 
     for ma in day_du:
@@ -1576,7 +1576,7 @@ def main(che_do_web=False):
              "Mỗi kỳ quay là độc lập: quả cầu không nhớ kỳ trước. Một con số "
              '"lâu chưa về" không vì thế mà dễ về hơn ở kỳ sau, và số "về nhiều" '
              "cũng không nóng hơn. Bảng ở đây để nhìn lại lịch sử cho vui và để dò vé, "
-             "không phải công cụ dự đoán. Chơi trong khoản tiền chị sẵn sàng mất.</div>")
+             "không phải công cụ dự đoán. Chơi trong khoản tiền Sếp sẵn sàng mất.</div>")
 
     p.append("<footer>Dữ liệu thô nằm trong thư mục <code>data/</code>, định dạng .jsonl. "
              "Bộ crawl gốc: dự án nguồn mở vietlott-data (giấy phép MIT). "

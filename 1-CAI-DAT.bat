@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 pushd "%~dp0"
-title Cai dat - Vietlott cua chi
+title Cai dat - Vietlott cua Sep
 set PYTHONIOENCODING=utf-8
 
 echo.
@@ -26,7 +26,7 @@ if errorlevel 1 goto loi
 
 echo.
 echo ==============================================================
-echo   XONG. Bay gio chi bam vao: 0-LAM-MOI-VA-XEM.bat
+echo   XONG. Bay gio Sep bam vao: 0-LAM-MOI-VA-XEM.bat
 echo ==============================================================
 echo.
 popd

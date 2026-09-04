@@ -18,4 +18,4 @@
 #  Dòng bắt đầu bằng dấu # là ghi chú, chương trình bỏ qua.
 # =====================================================================
 
-# --- Chị ghi bộ số đang chơi vào đây (xoá dòng này đi) ---
+# --- Sếp ghi bộ số đang chơi vào đây (xoá dòng này đi) ---

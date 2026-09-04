@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Sổ vé — ghi lại những bộ số chị ĐÃ MUA, rồi tự chấm kết quả khi kỳ quay xong.
+Sổ vé — ghi lại những bộ số Sếp ĐÃ MUA, rồi tự chấm kết quả khi kỳ quay xong.
 
 Khác với ve-cua-chi.txt (bộ số đang chơi, dò với kỳ mới nhất), sổ vé là nhật ký:
 mỗi tờ vé gắn với đúng MỘT kỳ quay, chấm xong thì đóng sổ, cộng dồn lãi/lỗ thật.
@@ -65,7 +65,7 @@ def xep_hang(ma, trung, trung_db):
 
 
 MAU_DONG = """# =====================================================================
-#  SỔ VÉ — những bộ số chị ĐÃ MUA, để theo dõi kết quả thật
+#  SỔ VÉ — những bộ số Sếp ĐÃ MUA, để theo dõi kết quả thật
 #
 #  Mỗi dòng một tờ vé:  <ngày mua> | <sản phẩm>: <các số>  # ghi chú
 #     2026-08-24 | power: 2 20 23 33 44 52       # gợi ý Số nóng
@@ -129,11 +129,11 @@ def doc_so():
         n_can = cfg["so_chinh"] if ma != "keno" else None
         if ma == "keno":
             if not (1 <= len(so) <= 10):
-                loi.append("Dòng " + str(so_dong) + ": Keno chọn 1-10 số, chị ghi " + str(len(so)))
+                loi.append("Dòng " + str(so_dong) + ": Keno chọn 1-10 số, Sếp ghi " + str(len(so)))
                 continue
         elif len(so) != n_can:
             loi.append("Dòng " + str(so_dong) + ": " + cfg["ten"] + " cần " + str(n_can)
-                       + " số, chị ghi " + str(len(so)))
+                       + " số, Sếp ghi " + str(len(so)))
             continue
         ve.append({"ngay_mua": ngay_mua, "ma": ma, "so": so, "so_db": so_db,
                    "ky_chon": ky_chon, "ghi_chu": ghi_chu, "dong": so_dong,

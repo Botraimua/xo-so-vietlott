@@ -1,6 +1,6 @@
-# Vietlott của chị — hướng dẫn dùng
+# Vietlott của Sếp — hướng dẫn dùng
 
-Bộ công cụ tải toàn bộ kết quả xổ số Vietlott về máy chị, dựng bảng thống kê và dò vé.
+Bộ công cụ tải toàn bộ kết quả xổ số Vietlott về máy Sếp, dựng bảng thống kê và dò vé.
 Chạy hoàn toàn dưới máy, **không cần Claude, không cần tài khoản, không tốn tiền**.
 
 Thư mục: `E:\Claude-Brain\xo-so-vietlott`
@@ -13,8 +13,8 @@ Mở thư mục, bấm đúp vào:
 
 **`0-LAM-MOI-VA-XEM.bat`**
 
-Nó làm liền 3 việc: tải kỳ mới về → dò vé của chị → mở báo cáo trên trình duyệt.
-Mất khoảng 20 giây. Xong là chị có mọi thứ.
+Nó làm liền 3 việc: tải kỳ mới về → dò vé của Sếp → mở báo cáo trên trình duyệt.
+Mất khoảng 20 giây. Xong là Sếp có mọi thứ.
 
 ---
 
@@ -37,12 +37,12 @@ Mất khoảng 20 giây. Xong là chị có mọi thứ.
 | `12-CAI-CUA-GHI-VE.bat` | Cài để nhập vé được trên web | **Một lần duy nhất** |
 | `13-DO-LAI-MUC-GOI-Y.bat` | Chấm lại mọi bộ số đã đề xuất | Khi muốn biết mục gợi ý trúng ra sao |
 
-> Máy chị đã cài sẵn rồi, `1-CAI-DAT.bat` không cần chạy lại.
+> Máy Sếp đã cài sẵn rồi, `1-CAI-DAT.bat` không cần chạy lại.
 > Nút 6 mất khoảng 20 giây, chạy xong thì kết quả tự hiện trong báo cáo HTML.
 
 ---
 
-## Ghi bộ số của chị vào
+## Ghi bộ số của Sếp vào
 
 Bấm `5-SUA-VE-CUA-CHI.bat`, Notepad hiện ra. Mỗi dòng một bộ số:
 
@@ -76,12 +76,12 @@ Mở cửa sổ lệnh trong thư mục này rồi gõ:
 
 ## Báo cáo có gì
 
-File `bao-cao\thong-ke-vietlott.html`. Đây là **file tự chứa** — chị copy sang USB,
+File `bao-cao\thong-ke-vietlott.html`. Đây là **file tự chứa** — Sếp copy sang USB,
 gửi Zalo, mở trên điện thoại đều được, không cần mạng.
 
 Trong đó:
 
-- **Vé của chị** — mỗi bộ số so với kỳ mới nhất; số nào trùng được tô xanh.
+- **Vé của Sếp** — mỗi bộ số so với kỳ mới nhất; số nào trùng được tô xanh.
   Kèm cả lịch sử: bộ số này từng khớp cao nhất mấy con, vào ngày nào, đã từng
   đủ điều kiện có giải bao nhiêu lần.
 - **Từng sản phẩm** (Power 6/55, Mega 6/45, Lotto 5/35, Keno):
@@ -99,7 +99,7 @@ Trong đó:
 
 ---
 
-## Dữ liệu chị đang có
+## Dữ liệu Sếp đang có
 
 | Sản phẩm | Số kỳ | Từ ngày | Lịch quay |
 |---|---:|---|---|
@@ -138,15 +138,15 @@ Mỗi sản phẩm, mỗi cách chọn số cho ra 4 bộ:
 
 | Sản phẩm | Bộ số gồm |
 |---|---|
-| Power 6/55 | 6 số từ 1–55 *(số đặc biệt do Vietlott quay, chị không chọn)* |
+| Power 6/55 | 6 số từ 1–55 *(số đặc biệt do Vietlott quay, Sếp không chọn)* |
 | Mega 6/45 | 6 số từ 1–45 |
 | Lotto 5/35 | 5 số từ 1–35 **+ 1 số đặc biệt từ 1–12** |
-| Keno | 10 số từ 1–80 *(Keno cho chọn 1–10 số, chị lấy bớt cũng được)* |
+| Keno | 10 số từ 1–80 *(Keno cho chọn 1–10 số, Sếp lấy bớt cũng được)* |
 
 Tổng cộng **144 bộ** mỗi ngày (4 sản phẩm × 9 cách chọn × 4 bộ).
 
 Bộ số **đổi theo ngày**: hôm nay chạy bao nhiêu lần cũng ra y nhau, sang ngày mai ra bộ khác.
-Nhờ vậy chị không bị cám dỗ bấm đi bấm lại đến khi ra bộ "ưng mắt".
+Nhờ vậy Sếp không bị cám dỗ bấm đi bấm lại đến khi ra bộ "ưng mắt".
 
 Trong báo cáo HTML, **bấm vào một bộ số là chép luôn** ở dạng dán được thẳng vào
 `ve-cua-chi.txt`, ví dụ `power_655: 2 20 23 33 44 52`.
@@ -157,7 +157,7 @@ Muốn nhiều hay ít bộ hơn, hoặc chỉ một sản phẩm, thì mở c�
 .venv\Scripts\python.exe cua-chi\goi_so.py 5 power
 ```
 
-> **Nói thẳng một lần cho rõ:** mấy bộ số này **không dễ trúng hơn** bộ chị tự nghĩ,
+> **Nói thẳng một lần cho rõ:** mấy bộ số này **không dễ trúng hơn** bộ Sếp tự nghĩ,
 > cũng không dễ trúng hơn bộ bốc bừa. Mọi bộ 6 số đều có xác suất y hệt nhau —
 > mục ngay dưới đây là bằng chứng. Đây là công cụ đỡ phải ngồi nghĩ số, thế thôi.
 
@@ -168,7 +168,7 @@ Muốn nhiều hay ít bộ hơn, hoặc chỉ một sản phẩm, thì mở c�
 Trong mục **Sổ vé đã mua** trên trang có ô **"Ghi một tờ vé vào sổ"**. Nhập từ điện thoại
 cũng được — vé đi thẳng vào sổ chính trên GitHub, máy tính và web đều thấy.
 
-Bấm vào một bộ ở mục **Bộ số gợi ý** thì ô này **tự điền hộ**, chị chỉ việc bấm Ghi.
+Bấm vào một bộ ở mục **Bộ số gợi ý** thì ô này **tự điền hộ**, Sếp chỉ việc bấm Ghi.
 
 Mật khẩu chỉ phải gõ lần đầu trên mỗi thiết bị, sau đó trình duyệt nhớ.
 
@@ -191,14 +191,14 @@ Mật khẩu chỉ phải gõ lần đầu trên mỗi thiết bị, sau đó tr
 
 **Bước 2 — Bấm `12-CAI-CUA-GHI-VE.bat`**
 
-Nút này hỏi chị hai câu rồi tự lo hết phần còn lại:
+Nút này hỏi Sếp hai câu rồi tự lo hết phần còn lại:
 
 1. *Chia khoa GitHub:* → bấm chuột phải vào cửa sổ đen để **dán** chuỗi vừa copy, Enter
 2. *Mat khau chi tu nghi:* → gõ một mật khẩu dễ nhớ, Enter
    *(nên dùng chữ và số thôi, tránh ký tự lạ như `&` `|` `^` `!`)*
 
 Rồi nó tự lưu lên Vercel, kiểm lại, đăng lại trang, và **thử gõ sai mật khẩu một lần**
-để chứng minh cửa ghi đã sống. Dòng cuối cùng hiện ra sẽ nói cho chị biết:
+để chứng minh cửa ghi đã sống. Dòng cuối cùng hiện ra sẽ nói cho Sếp biết:
 
 | Dòng cuối hiện gì | Nghĩa là |
 |---|---|
@@ -216,7 +216,7 @@ Trong mục **Sổ vé đã mua**, mỗi dòng vé có nút **Xoá** ở cuối.
 (nếu trình duyệt chưa nhớ). Khoảng 2 phút sau vé biến khỏi sổ, ở cả web lẫn máy.
 
 Xoá theo **nguyên văn dòng vé** chứ không theo số thứ tự, nên không bao giờ xoá nhầm tờ khác.
-Nếu trang đang cũ mà chị bấm xoá, nó báo *"Không tìm thấy vé này trong sổ"* thay vì xoá bừa.
+Nếu trang đang cũ mà Sếp bấm xoá, nó báo *"Không tìm thấy vé này trong sổ"* thay vì xoá bừa.
 
 **Xoá rồi không lấy lại được** — nhưng vé cũ vẫn còn trong lịch sử GitHub nếu thật sự cần tìm.
 
@@ -227,13 +227,13 @@ bấm `10-DAY-LEN-GITHUB.bat`.
 
 ### Chạy như thế nào
 
-1. Chị bấm **Ghi vào sổ** trên trang
+1. Sếp bấm **Ghi vào sổ** trên trang
 2. Máy chủ kiểm mật khẩu, ghi thêm một dòng vào `cua-chi/so-ve.txt` trên GitHub
 3. Máy chủ kích workflow dựng lại trang — khoảng **2 phút** sau vé hiện ra, đã chấm sẵn
-4. Lần sau chị bấm nút 0 hoặc nút 3 trên máy, nó tự kéo vé đó về
+4. Lần sau Sếp bấm nút 0 hoặc nút 3 trên máy, nó tự kéo vé đó về
 
 **Mật khẩu để làm gì:** trang công khai nên nếu không có mật khẩu thì ai cũng ghi vé vào
-sổ chị được. Mật khẩu kiểm ở phía máy chủ, không nằm trong trang. Chìa khoá GitHub cũng
+sổ Sếp được. Mật khẩu kiểm ở phía máy chủ, không nằm trong trang. Chìa khoá GitHub cũng
 nằm ở phía máy chủ, người xem trang không thấy được.
 
 **Nếu bấm Ghi mà báo lỗi:**
@@ -243,26 +243,26 @@ nằm ở phía máy chủ, người xem trang không thấy được.
 | *Máy chủ chưa được cài đặt* | Chưa làm Bước 1–2, hoặc chưa bấm nút 7 sau khi thêm biến |
 | *Mật khẩu không đúng* | Gõ sai. Xoá ô mật khẩu rồi gõ lại |
 | *Không đọc được sổ vé (mã 403/404)* | Chìa khoá thiếu quyền, hoặc chọn nhầm repo ở Bước 1 |
-| *Không gọi được máy chủ* | Chị đang mở file HTML từ máy. Ô nhập chỉ chạy trên trang web thật |
+| *Không gọi được máy chủ* | Sếp đang mở file HTML từ máy. Ô nhập chỉ chạy trên trang web thật |
 
 ---
 
 ## Sổ vé đã mua (nút 11)
 
-Khi chị **mua thật** một bộ số, ghi nó vào sổ để theo dõi kết quả và lãi/lỗ thật:
+Khi Sếp **mua thật** một bộ số, ghi nó vào sổ để theo dõi kết quả và lãi/lỗ thật:
 
-1. Trong báo cáo, bấm vào bộ số chị mua (nó tự chép, kèm luôn tên chiến lược và ngày)
+1. Trong báo cáo, bấm vào bộ số Sếp mua (nó tự chép, kèm luôn tên chiến lược và ngày)
 2. Bấm **`11-GHI-VE-DA-MUA.bat`** — vé vào sổ với ngày hôm nay
 
 Hoặc nhập thẳng trên trang web — xem mục ngay trên.
 
 Từ đó, mỗi lần mở báo cáo (nút 0 / nút 3) sẽ có mục **"Sổ vé đã mua"**. Hai nút này giờ
-**tự kéo về** những vé chị đã nhập trên web trước khi dựng báo cáo:
+**tự kéo về** những vé Sếp đã nhập trên web trước khi dựng báo cáo:
 
 - Vé chưa tới kỳ quay: hiện *chờ quay*. Quay xong: tự chấm, tô xanh số trùng
 - Trúng giải: ghi rõ hạng và tiền (Power 6/55: nhất 40tr / nhì 500k / ba 50k;
   Mega 6/45: nhất 10tr / nhì 300k / ba 30k; Jackpot ghi mức tối thiểu)
-- Dòng tổng: **tiền mua vé − tiền trúng = lãi/lỗ thật của chị**
+- Dòng tổng: **tiền mua vé − tiền trúng = lãi/lỗ thật của Sếp**
 
 Mỗi vé gắn với đúng **một** kỳ: vé mua ngày nào dự kỳ quay đầu tiên từ ngày đó trở đi.
 Lotto 5/35 quay 2 kỳ/ngày — mặc định chấm kỳ 13h; vé mua buổi chiều thì thêm `@<mã kỳ>`
@@ -273,7 +273,7 @@ không có nguồn công khai đủ rõ, em không đoán bừa.
 
 Sổ nằm ở `cua-chi\so-ve.txt` — file chữ thường, sửa tay bằng Notepad được.
 
-**Sổ vé CÓ lên trang web** (chị chọn công khai 24/08/2026): sau khi ghi vé, nút 11 tự đẩy
+**Sổ vé CÓ lên trang web** (Sếp chọn công khai 24/08/2026): sau khi ghi vé, nút 11 tự đẩy
 lên mạng — khoảng 1 phút sau mục "Sổ vé đã mua" hiện trên vietlott-thongke.vercel.app,
 xem được từ điện thoại, và bot tự chấm lại 3 lần mỗi ngày.
 
@@ -281,7 +281,7 @@ Muốn gỡ sổ vé khỏi trang web (giữ lại chỉ trên máy) thì bảo 
 
 Bộ số **đang chơi** trong `ve-cua-chi.txt` thì vẫn chỉ nằm trên máy như cũ.
 
-Sổ này cũng là bàn thí nghiệm tốt: sau vài chục vé, chị sẽ thấy lãi/lỗ thật của mình
+Sổ này cũng là bàn thí nghiệm tốt: sau vài chục vé, Sếp sẽ thấy lãi/lỗ thật của mình
 bám đúng con số −70% mà bảng xác suất dự báo.
 
 ---
@@ -378,7 +378,7 @@ cách chấm của họ, và con số nhảy từ khoảng −80% lên hơn +4.0
 
 ## Xem từ điện thoại (nút 7)
 
-**Trang của chị đã lên rồi:** https://vietlott-thongke.vercel.app
+**Trang của Sếp đã lên rồi:** https://vietlott-thongke.vercel.app
 
 Mở bằng điện thoại, máy tính bảng, máy nào cũng được — không cần bật máy tính ở nhà.
 
@@ -387,14 +387,14 @@ Mở bằng điện thoại, máy tính bảng, máy nào cũng được — kh�
 
 ### Lần đầu phải đăng nhập một lần
 
-Em đăng bản đầu tiên từ phiên làm việc của em. Nhưng cửa sổ lệnh trên máy chị thì
-Vercel chưa nhận đăng nhập, nên **lần đầu chị phải bấm `8-DANG-NHAP-VERCEL.bat`**.
-Nó mở trình duyệt cho chị bấm xác nhận, xong là thôi, không phải làm lại.
+Em đăng bản đầu tiên từ phiên làm việc của em. Nhưng cửa sổ lệnh trên máy Sếp thì
+Vercel chưa nhận đăng nhập, nên **lần đầu Sếp phải bấm `8-DANG-NHAP-VERCEL.bat`**.
+Nó mở trình duyệt cho Sếp bấm xác nhận, xong là thôi, không phải làm lại.
 
-Nếu chị bấm nút 7 mà nó báo "chua dang nhap Vercel" thì đúng là chuyện này.
+Nếu Sếp bấm nút 7 mà nó báo "chua dang nhap Vercel" thì đúng là chuyện này.
 
-Bản công khai **không kèm vé của chị** — chỉ có thống kê và kết quả xổ số, là dữ liệu
-ai cũng xem được. Bộ số riêng chỉ nằm trên máy chị.
+Bản công khai **không kèm vé của Sếp** — chỉ có thống kê và kết quả xổ số, là dữ liệu
+ai cũng xem được. Bộ số riêng chỉ nằm trên máy Sếp.
 
 Trang đặt cờ `noindex` nên Google không đưa vào kết quả tìm kiếm; ai có đường dẫn thì
 vẫn mở được.
@@ -409,14 +409,14 @@ Bộ công cụ có ba cánh cửa riêng biệt, đừng lẫn:
 
 | Cửa | Ai vào được | Có gì bên trong |
 |---|---|---|
-| Máy của chị | Chỉ chị | Tất cả |
-| Repo GitHub `Botraimua/xo-so-vietlott` | **Riêng tư — chỉ chị** | Mã nguồn, dữ liệu thô, `so-ve.txt`, `ve-cua-chi.txt` |
-| Trang vietlott-thongke.vercel.app | **Công khai** — ai có link | Thống kê, biểu đồ, bộ số gợi ý, **Vé của chị**, **Sổ vé** |
+| Máy của Sếp | Chỉ Sếp | Tất cả |
+| Repo GitHub `Botraimua/xo-so-vietlott` | **Riêng tư — chỉ Sếp** | Mã nguồn, dữ liệu thô, `so-ve.txt`, `ve-cua-chi.txt` |
+| Trang vietlott-thongke.vercel.app | **Công khai** — ai có link | Thống kê, biểu đồ, bộ số gợi ý, **Vé của Sếp**, **Sổ vé** |
 
 Điều dễ hiểu nhầm: **repo riêng tư không làm trang web riêng tư.** Vercel đọc từ repo
-riêng tư rồi dựng ra một trang công khai. Chị đã chọn như vậy (24/08/2026) — biết và đồng ý.
+riêng tư rồi dựng ra một trang công khai. Sếp đã chọn như vậy (24/08/2026) — biết và đồng ý.
 
-Từ 24/08/2026 chị chọn công khai **cả hai** mục vé: "Vé của chị" (bộ số đang chơi)
+Từ 24/08/2026 Sếp chọn công khai **cả hai** mục vé: "Vé của Sếp" (bộ số đang chơi)
 và "Sổ vé đã mua". Cả hai đều hiện trên trang web.
 
 Trang có đặt cờ `noindex` nên Google không đưa vào kết quả tìm kiếm; phải có đúng đường
@@ -429,7 +429,7 @@ dẫn mới vào được.
 Mặc định bộ công cụ **không tự chạy**: máy tắt là mọi thứ đứng yên, trang web giữ nguyên
 số liệu của lần đăng cuối.
 
-Muốn nó tự cập nhật kể cả khi máy chị tắt thì để GitHub chạy hộ — **và việc này đã bật rồi.**
+Muốn nó tự cập nhật kể cả khi máy Sếp tắt thì để GitHub chạy hộ — **và việc này đã bật rồi.**
 
 ### Đã xong hết — không còn việc gì phải làm
 
@@ -439,7 +439,7 @@ Muốn nó tự cập nhật kể cả khi máy chị tắt thì để GitHub ch
   Bộ số đang chơi trong `ve-cua-chi.txt` **không** lên mạng — đã chặn và đã kiểm chứng.
 - ✅ **GitHub Actions đã chạy thật** (00h20 ngày 24/08/2026): tự tải kỳ mới, dựng lại trang,
   ghi vào repo.
-- ✅ **Vercel đã nối với repo** (chị nối đêm 23/08).
+- ✅ **Vercel đã nối với repo** (Sếp nối đêm 23/08).
 - ✅ **Root Directory** = `web`.
 - ✅ Đã kiểm cả dây chuyền: đẩy lên GitHub → Vercel tự đăng lại trang trong vòng 1 phút.
 
@@ -485,14 +485,14 @@ Có **ba đường**, chạy lần lượt theo đúng thứ tự này:
 (vietvudanh) và nó **ngừng cập nhật từ 29/08** — Lotto 5/35, Max 3D, Max 3D Pro mất sạch nguồn,
 chuông báo phải kêu. Một kho là một điểm chết, nên giờ có ba.
 
-Máy chị ở Việt Nam thì đường 1 luôn chạy, hai đường kia không cần tới.
+Máy Sếp ở Việt Nam thì đường 1 luôn chạy, hai đường kia không cần tới.
 
 **Máy chủ GitHub thì đường 1 luôn tắc.** Đo tận nơi ngày 30/08/2026: vietlott.vn nấp sau
 dịch vụ chống bot, trả **403 ở mọi đường**. Không phải chặn theo nước — IP nhà dân Việt Nam
 vẫn qua, còn máy chủ trung tâm dữ liệu thì bị chặn. Nhờ trung gian gọi hộ cũng tắc nốt.
 
 Vì sao chuyện này quan trọng: bot từng chạy **8 ngày liền báo "thành công"** mà mỗi lần chỉ
-đổi đúng một dòng đồng hồ trong trang — không có kỳ nào mới. Chỉ lộ ra khi chị hỏi "vé mua
+đổi đúng một dòng đồng hồ trong trang — không có kỳ nào mới. Chỉ lộ ra khi Sếp hỏi "vé mua
 không tự dò".
 
 ### Đường 2 có một chỗ phải cẩn thận
@@ -509,7 +509,7 @@ Kỳ nào lệch mà *không* phải mã tự suy thì nó giữ nguyên bản c
 
 **Lotto 5/35, Max 3D, Max 3D Pro** — không nguồn nào máy chủ GitHub gọi được có chúng.
 kqxs.vn chỉ có 4 sản phẩm, minhngoc chỉ có 2. Muốn ba cái đó cũng có trong ngày thì bấm
-`0-LAM-MOI-VA-XEM.bat` trên máy chị.
+`0-LAM-MOI-VA-XEM.bat` trên máy Sếp.
 
 ### Bản ghi hỏng còn nguy hơn không lấy được dữ liệu
 
@@ -528,8 +528,8 @@ Nên bước canh cuối giờ kiểm thêm ba thứ, hỏng là thoát mã lỗ
 ### Nếu cả ba đường cùng tắc
 
 Bước cuối của bot canh chừng: dữ liệu cũ quá trần ngày (Power/Mega 5 ngày, Lotto 3 ngày)
-thì lần chạy bị **đánh dấu hỏng** và GitHub gửi mail cho chị. Lúc đó bấm
-`0-LAM-MOI-VA-XEM.bat` là xong — máy chị vẫn gọi được vietlott.vn.
+thì lần chạy bị **đánh dấu hỏng** và GitHub gửi mail cho Sếp. Lúc đó bấm
+`0-LAM-MOI-VA-XEM.bat` là xong — máy Sếp vẫn gọi được vietlott.vn.
 
 Trang vẫn được dựng bình thường kể cả khi bước canh này báo đỏ, nên không sợ mất trang.
 
@@ -537,7 +537,7 @@ Trang vẫn được dựng bình thường kể cả khi bước canh này báo
 
 Mỗi lần bot chạy, nó đo lại mọi nguồn và ghi kết quả vào `cua-chi/ket-qua-do-nguon.md`
 ngay trong kho — mở file đó ra là thấy máy chủ GitHub gọi được cái gì, không gọi được cái
-gì, kèm mã HTTP và ngày mới nhất từng nguồn. Chạy trên máy chị thì gõ:
+gì, kèm mã HTTP và ngày mới nhất từng nguồn. Chạy trên máy Sếp thì gõ:
 
 ```
 .venv\Scripts\python.exe cua-chi\do_nguon.py
@@ -556,12 +556,12 @@ Từ đó GitHub tự chạy **3 lần mỗi ngày**:
 | ~21h45 | Lotto 5/35 kỳ tối |
 
 Mỗi lần nó tải kỳ mới → chạy lại bàn kiểm thử → sinh bộ số mới cho ngày → dựng lại trang →
-ghi vào repo. Vercel thấy repo đổi thì tự đăng lại trang. Máy chị không cần bật.
+ghi vào repo. Vercel thấy repo đổi thì tự đăng lại trang. Máy Sếp không cần bật.
 
 > GitHub hay chạy trễ 5–30 phút so với giờ hẹn, chuyện bình thường.
 > Muốn chạy ngay không đợi: vào tab **Actions**, bấm **Run workflow**.
 
-Sau khi bật cái này thì **nút 7 thành tuỳ chọn** — chỉ dùng khi chị muốn đẩy ngay lập tức
+Sau khi bật cái này thì **nút 7 thành tuỳ chọn** — chỉ dùng khi Sếp muốn đẩy ngay lập tức
 chứ không đợi tới giờ.
 
 ### Muốn tắt tự chạy
@@ -592,9 +592,9 @@ khoảng 15–30 phút. Bấm lại sau.
 xo-so-vietlott\
 ├── 0-LAM-MOI-VA-XEM.bat        <- nút chính
 ├── 1..10-*.bat                  <- các nút phụ
-├── HUONG-DAN.md                 <- file chị đang đọc
-├── cua-chi\                     <- phần em viết riêng cho chị
-│   ├── ve-cua-chi.txt              bộ số của chị
+├── HUONG-DAN.md                 <- file Sếp đang đọc
+├── cua-chi\                     <- phần em viết riêng cho Sếp
+│   ├── ve-cua-chi.txt              bộ số của Sếp
 │   ├── thu_vien.py                 hàm dùng chung
 │   ├── cap_nhat.py                 tải kỳ mới
 │   ├── bao_cao.py                  dựng HTML
@@ -615,7 +615,7 @@ xo-so-vietlott\
 
 Phần `src\` là mã nguồn mở của dự án `vietvudanh/vietlott-data` (giấy phép MIT) —
 em giữ nguyên để sau này còn kéo bản vá về được. Mọi thứ trong `cua-chi\` và các
-file `.bat` là của riêng chị, em viết thêm.
+file `.bat` là của riêng Sếp, em viết thêm.
 
 Muốn kéo bản mới của tác giả gốc về: `git pull goc main`.
 
@@ -630,4 +630,4 @@ không vì thế mà dễ về hơn ở kỳ sau — đó là cái bẫy suy ngh
 *ngộ nhận của con bạc*. Số "về nhiều nhất" cũng không nóng hơn số khác.
 
 Xác suất trúng Jackpot Power 6/55 là 1 trên 28.989.675. Bộ công cụ này để dò vé
-cho nhanh và nhìn lịch sử cho vui. Chị chơi trong khoản tiền sẵn sàng mất là được.
+cho nhanh và nhìn lịch sử cho vui. Sếp chơi trong khoản tiền sẵn sàng mất là được.

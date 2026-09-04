@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Thư viện dùng chung cho bộ công cụ Vietlott của chị.
+Thư viện dùng chung cho bộ công cụ Vietlott của Sếp.
 Chỉ dùng thư viện chuẩn của Python -> chạy được ở bất cứ máy nào có Python.
 """
 
@@ -90,7 +90,7 @@ SAN_PHAM = {
     },
 }
 
-# Tên gọi khác chị hay gõ -> mã sản phẩm chuẩn
+# Tên gọi khác Sếp hay gõ -> mã sản phẩm chuẩn
 BIET_DANH = {
     "power": "power_655", "power655": "power_655", "655": "power_655",
     "power6/55": "power_655", "6/55": "power_655",
@@ -259,7 +259,7 @@ def thong_ke(ma, rows):
     }
 
 
-# ---------- Đọc & dò vé của chị ----------
+# ---------- Đọc & dò vé của Sếp ----------
 
 def doc_ve():
     """Đọc file ve-cua-chi.txt. Mỗi dòng: <san pham>: <cac so>  # ghi chu"""
@@ -304,7 +304,7 @@ def doc_ve():
             cfg = SAN_PHAM[ma]
             if len(so) != cfg["so_chinh"]:
                 ve.append({"loi": "Dòng " + str(so_dong) + ": " + cfg["ten"] + " cần " + str(cfg["so_chinh"])
-                                  + " số, chị ghi " + str(len(so)) + " số", "raw": line.strip()})
+                                  + " số, Sếp ghi " + str(len(so)) + " số", "raw": line.strip()})
                 continue
             ngoai_dai = [x for x in so if x < 1 or x > cfg["max_chinh"]]
             if ngoai_dai:

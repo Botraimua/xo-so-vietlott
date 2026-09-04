@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 pushd "%~dp0"
-title Do lai muc goi y - Vietlott cua chi
+title Do lai muc goi y - Vietlott cua Sep
 set PYTHONIOENCODING=utf-8
 set PYTHONPATH=%~dp0src
 
@@ -27,7 +27,7 @@ exit /b 0
 
 :chua_cai
 echo.
-echo   Chua cai dat. Chi chay 1-CAI-DAT.bat truoc nhe.
+echo   Chua cai dat. Sep chay 1-CAI-DAT.bat truoc nhe.
 echo.
 popd
 pause

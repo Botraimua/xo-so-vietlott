@@ -4,7 +4,7 @@ Gợi bộ số cho kỳ tới — mỗi sản phẩm, mỗi chiến lược và
 
 ĐỌC CHỖ NÀY TRƯỚC: bàn kiểm thử (kiem_thu.py) đã chứng minh không cách chọn số
 nào ăn được — tất cả lỗ 78–92%, kể cả bốc bừa. Mọi bộ 6 số đều có xác suất trúng
-y hệt nhau. File này chỉ giúp chị khỏi phải ngồi nghĩ số, không phải để dự đoán.
+y hệt nhau. File này chỉ giúp Sếp khỏi phải ngồi nghĩ số, không phải để dự đoán.
 
 Bộ số đổi theo NGÀY: cùng một ngày chạy bao nhiêu lần cũng ra y nhau,
 sang ngày mới thì ra bộ khác.
@@ -40,7 +40,7 @@ KHUON = {
     "power_535": {"so_chon": 5, "dai_chon": 35, "db_dai": 12,
                   "ghi_chu": "Số sau dấu | là số đặc biệt, chọn trong 1–12."},
     "keno": {"so_chon": 10, "dai_chon": 80, "db_dai": None,
-             "ghi_chu": "Keno cho chọn từ 1 đến 10 số; đây là bộ 10 số, chị lấy bớt cũng được."},
+             "ghi_chu": "Keno cho chọn từ 1 đến 10 số; đây là bộ 10 số, Sếp lấy bớt cũng được."},
 }
 
 
@@ -218,7 +218,7 @@ def main():
 
     print("-" * 68)
     print("  Nhắc lại cho rõ: mọi bộ số ở trên có xác suất trúng Y HỆT NHAU,")
-    print("  và y hệt bất kỳ bộ nào chị tự nghĩ ra. Bàn kiểm thử (nút 6) cho thấy")
+    print("  và y hệt bất kỳ bộ nào Sếp tự nghĩ ra. Bàn kiểm thử (nút 6) cho thấy")
     print("  cả 9 chiến lược đều lỗ 78–92%. Đây là công cụ khỏi phải nghĩ số,")
     print("  không phải công cụ dự đoán.")
     print()

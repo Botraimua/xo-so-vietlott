@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Dò bộ số của chị với kỳ mới nhất và với toàn bộ lịch sử.
+Dò bộ số của Sếp với kỳ mới nhất và với toàn bộ lịch sử.
 
 Cách chạy:
     python cua-chi/do_ve.py                          -> dò mọi vé trong ve-cua-chi.txt
@@ -43,7 +43,7 @@ def in_ket_qua(kq):
     if moi:
         print("  Kỳ mới nhất: " + ngay_viet(moi["ky"].get("date")) + "  (kỳ " + str(moi["ky"].get("id")) + ")")
         print("  Kết quả:     " + in_so(moi["so_ky"], moi["so_db_ky"], tap_trung=tap))
-        dong = "  Chị trùng:   " + str(moi["trung"]) + "/" + str(cfg["so_chinh"]) + " số"
+        dong = "  Sếp trùng:   " + str(moi["trung"]) + "/" + str(cfg["so_chinh"]) + " số"
         if v["so_db"] is not None and cfg["co_so_db"]:
             dong += " | số đặc biệt: " + ("TRÚNG" if moi["trung_db"] else "không")
         print(dong)
@@ -96,14 +96,14 @@ def main():
             return 1
         cfg = SAN_PHAM[ma]
         if len(so) != cfg["so_chinh"]:
-            print("  " + cfg["ten"] + " cần " + str(cfg["so_chinh"]) + " số, chị ghi " + str(len(so)) + " số.")
+            print("  " + cfg["ten"] + " cần " + str(cfg["so_chinh"]) + " số, Sếp ghi " + str(len(so)) + " số.")
             return 1
         ve_list = [{"ma": ma, "so": sorted(so), "so_db": so_db, "ghi_chu": "", "raw": ""}]
     else:
         ve_list = doc_ve()
         if not ve_list:
             print()
-            print("  Chưa có vé nào. Mở file này rồi ghi bộ số của chị vào:")
+            print("  Chưa có vé nào. Mở file này rồi ghi bộ số của Sếp vào:")
             print("     " + str(FILE_VE))
             print()
             return 0

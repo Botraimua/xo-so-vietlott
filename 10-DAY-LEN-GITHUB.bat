@@ -8,9 +8,9 @@ echo ==============================================================
 echo   DAY THAY DOI LEN GITHUB
 echo ==============================================================
 echo.
-echo   Repo cua chi:  https://github.com/Botraimua/xo-so-vietlott
+echo   Repo cua Sep:  https://github.com/Botraimua/xo-so-vietlott
 echo.
-echo   Chi can bam file nay khi chi (hoac Claude) sua ma nguon
+echo   Chi can bam file nay khi Sep (hoac Claude) sua ma nguon
 echo   tren may. Con du lieu xo so thi GitHub tu cap nhat 2 lan
 echo   moi ngay, khong phai bam gi.
 echo.
@@ -32,7 +32,7 @@ git diff --staged --stat
 echo.
 echo   [2/3] Ghi lai thay doi...
 for /f "tokens=1-3 delims=/ " %%a in ('date /t') do set NGAY=%%a %%b %%c
-git commit -q -m "Cap nhat tu may cua chi %NGAY%"
+git commit -q -m "Cap nhat tu may cua Sep %NGAY%"
 if errorlevel 1 goto loi
 
 echo   [3/3] Day len GitHub...
@@ -53,7 +53,7 @@ echo.
 echo   Day len khong duoc. Thu lan luot:
 echo     - Kiem tra mang
 echo     - Neu bao "rejected" hoac "non-fast-forward": GitHub co ban ghi
-echo       moi hon may chi. Go lenh nay roi bam lai nut 10:
+echo       moi hon may Sep. Go lenh nay roi bam lai nut 10:
 echo         git pull --rebase
 echo.
 echo   Van khong duoc thi chup man hinh nay lai roi hoi Claude.

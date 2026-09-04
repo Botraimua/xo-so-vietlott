@@ -18,7 +18,7 @@
 #  Dòng bắt đầu bằng dấu # là ghi chú, chương trình bỏ qua.
 # =====================================================================
 
-# --- Ví dụ, chị xoá đi và thay bằng vé thật ---
+# --- Ví dụ, Sếp xoá đi và thay bằng vé thật ---
 power: 3 12 19 27 41 52 | 8      # ví dụ - ngày sinh cả nhà
 mega: 5 11 18 24 33 45           # ví dụ - bộ số hay chọn
 lotto: 4 9 17 22 31 | 5          # ví dụ
