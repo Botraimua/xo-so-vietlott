@@ -135,6 +135,10 @@ font-variant-numeric:tabular-nums;transition:background .1s,border-color .1s,col
 .vien-so.chon{background:var(--chinh);border-color:var(--chinh);color:#fff}
 .vien-so:disabled{opacity:.32;cursor:not-allowed}
 /* Danh sách vé đang xếp chờ, ghi một lượt */
+/* Từng tờ trong một lô vé gộp */
+.to-ve{padding:8px 0;border-top:1px solid var(--vien)}
+.to-duoi{display:flex;align-items:center;justify-content:space-between;
+gap:10px;flex-wrap:wrap;margin-top:2px;font-size:13px}
 .hang-cho{margin-top:12px;border:1px dashed var(--vien);border-radius:10px;padding:8px 10px}
 .ve-cho{display:flex;align-items:center;justify-content:space-between;gap:10px;
 padding:6px 0;border-bottom:1px solid var(--vien);font-size:13.5px}
@@ -170,7 +174,10 @@ padding:6px 0;border-bottom:1px solid var(--vien);font-size:13.5px}
     font-weight:650;margin-bottom:1px}
   .bang-the td[data-nhan=""]{padding-top:8px}
   .bang-the td[data-nhan=""]::before{display:none}
-  .cuon{overflow-x:visible}
+  /* KHÔNG đặt .cuon{overflow-x:visible}: trang còn nhiều bảng khác vẫn là
+     bảng thật, gỡ thanh cuộn của chúng là chúng đẩy toang cả trang, chữ bị
+     cắt ở mép phải. Bảng .bang-the đã thành thẻ dọc nên không cần cuộn nữa. */
+  .bang-the{min-width:0}
 
   .luoi,.luoi-goi{grid-template-columns:1fr}
   .o-so{grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:5px}
@@ -688,50 +695,91 @@ def khoi_so_ve():
                   tong_o, dam=len(nhom) > 1))
     p.append("</tbody></table></div></div>")
 
+    # Gộp các tờ cùng ngày mua + cùng sản phẩm + cùng kỳ quay thành MỘT thẻ.
+    # Trước đó mỗi tờ một thẻ, mà 5 tờ Mega mua cùng ngày thì lặp lại tên sản
+    # phẩm, ngày, mã kỳ và dãy số trúng y hệt 5 lần — trên điện thoại phải cuộn
+    # 5 màn hình để đọc đúng một kỳ quay.
+    lo = []          # [(khoa, [các tờ])] giữ nguyên thứ tự mới -> cũ
+    vi_tri = {}
+    for k in reversed(kq):
+        v = k["ve"]
+        ky = k.get("ky") or {}
+        khoa = (v["ngay_mua"], v["ma"], str(ky.get("id") or ""), k["trang_thai"])
+        if khoa not in vi_tri:
+            vi_tri[khoa] = len(lo)
+            lo.append((khoa, []))
+        lo[vi_tri[khoa]][1].append(k)
+
     p.append('<div class="the"><div class="cuon">'
              '<table class="bang-the bang-ve"><thead><tr>'
              "<th>Ngày mua</th><th>Vé</th><th>Kỳ quay</th><th>Kết quả</th>"
-             "<th></th></tr></thead><tbody>")
-    for k in reversed(kq):
-        v = k["ve"]
-        ten = SAN_PHAM[v["ma"]]["ten"]
-        so_html = day_bi(v["so"], v["so_db"])
-        o_ve = "<strong>" + e(ten) + "</strong><div>" + so_html + "</div>"
-        if v["ghi_chu"]:
-            o_ve += '<div class="mo">' + e(v["ghi_chu"]) + "</div>"
-        if k["trang_thai"] == "cho":
-            p.append('<tr><td data-nhan="Ngày mua">'
-                     + e(ngay_viet(v["ngay_mua"], kem_thu=False))
-                     + '</td><td data-nhan="Vé">' + o_ve
-                     + '</td><td class="mo" data-nhan="Kỳ quay">&mdash;</td>'
-                     + '<td data-nhan="Kết quả"><span class="nhan-nho">chờ quay</span></td>'
-                     + o_xoa(v) + "</tr>")
-            continue
-        ky = k["ky"]
-        o_ky = e(ngay_viet(ky.get("date"), kem_thu=False)) + '<div class="mo">kỳ ' + e(ky.get("id")) + "</div>"
-        tap = set(v["so"])
-        o_kq = "<div>" + day_bi(k["so_ky"], k["db_ky"], tap_trung=tap) + "</div>"
-        dong = "Trùng <strong>" + str(k["trung"]) + " số</strong>"
-        if v["so_db"] is not None and k["db_ky"] is not None and k["trung_db"]:
-            dong += " + số đặc biệt"
-        if k["tien"] > 0:
-            dong += ('  <span class="nhan-nho thang">' + e(k["ten_giai"]) + " " + vnd(k["tien"]) + "</span>")
-            if k["toi_thieu"]:
-                dong += '<div class="mo">mức tối thiểu — jackpot thực tế lũy tiến cao hơn</div>'
-        elif v["ma"] in ("power_655", "power_645"):
-            dong += '  <span class="nhan-nho">trượt</span>'
+             "</tr></thead><tbody>")
+
+    for (ngay_mua, ma, _, trang_thai), cac_to in lo:
+        ten = SAN_PHAM[ma]["ten"]
+        dau = e(ngay_viet(ngay_mua, kem_thu=False))
+        nhieu = len(cac_to) > 1
+
+        # --- ô "Vé": tên sản phẩm một lần, rồi từng tờ một dòng ---
+        o_ve = "<strong>" + e(ten) + "</strong>"
+        if nhieu:
+            o_ve += ' <span class="nhan-nho">' + str(len(cac_to)) + " tờ</span>"
+        for k in cac_to:
+            v = k["ve"]
+            tap_ky = set(k.get("so_ky") or [])
+            o_ve += '<div class="to-ve">'
+            o_ve += "<div>" + day_bi(v["so"], v["so_db"], tap_trung=tap_ky) + "</div>"
+            ket = ""
+            if trang_thai == "cho":
+                ket = '<span class="nhan-nho">chờ quay</span>'
+            else:
+                ket = "trùng <strong>" + str(k["trung"]) + " số</strong>"
+                if v["so_db"] is not None and k["db_ky"] is not None and k["trung_db"]:
+                    ket += " + số đặc biệt"
+                if k["tien"] > 0:
+                    ket += (' <span class="nhan-nho thang">' + e(k["ten_giai"])
+                            + " " + vnd(k["tien"]) + "</span>")
+                elif ma in ("power_655", "power_645"):
+                    ket += ' <span class="nhan-nho">trượt</span>'
+            o_ve += '<div class="to-duoi"><span class="mo">' + ket + "</span>"
+            o_ve += nut_xoa(v) + "</div>"
+            if v["ghi_chu"]:
+                o_ve += '<div class="mo">' + e(v["ghi_chu"]) + "</div>"
+            o_ve += "</div>"
+
+        # --- ô "Kỳ quay" và "Kết quả": chung cho cả lô, in MỘT lần ---
+        if trang_thai == "cho":
+            o_ky = '<span class="mo">&mdash;</span>'
+            o_kq = '<span class="nhan-nho">chờ quay</span>'
         else:
-            dong += '<div class="mo">sản phẩm này chỉ báo số trùng, không tính tiền</div>'
-        if k.get("nhieu_ky_cung_ngay"):
-            dong += ('<div class="mo">ngày này quay nhiều kỳ — đang chấm kỳ đầu tiên; '
-                     "muốn kỳ khác, thêm @&lt;mã kỳ&gt; vào dòng vé</div>")
-        o_kq += "<div>" + dong + "</div>"
-        p.append('<tr><td data-nhan="Ngày mua">'
-                 + e(ngay_viet(v["ngay_mua"], kem_thu=False))
+            k0 = cac_to[0]
+            ky = k0["ky"]
+            o_ky = (e(ngay_viet(ky.get("date"), kem_thu=False))
+                    + '<div class="mo">kỳ ' + e(ky.get("id")) + "</div>")
+            # tô xanh số nào có trong BẤT KỲ tờ nào của lô
+            tap_minh = set()
+            for k in cac_to:
+                tap_minh |= set(k["ve"]["so"])
+            o_kq = "<div>" + day_bi(k0["so_ky"], k0["db_ky"], tap_trung=tap_minh) + "</div>"
+            tien = sum(k["tien"] for k in cac_to)
+            if nhieu:
+                tt = str(sum(1 for k in cac_to if k["trung"] >= 3))
+                o_kq += ('<div class="mo">' + tt + "/" + str(len(cac_to))
+                         + " tờ trùng từ 3 số trở lên</div>")
+            if tien > 0:
+                o_kq += ('<div><span class="nhan-nho thang">được ' + vnd(tien)
+                         + "</span></div>")
+            if ma not in ("power_655", "power_645"):
+                o_kq += '<div class="mo">sản phẩm này chỉ báo số trùng, không tính tiền</div>'
+            if any(k.get("nhieu_ky_cung_ngay") for k in cac_to):
+                o_kq += ('<div class="mo">ngày này quay nhiều kỳ — đang chấm kỳ đầu tiên; '
+                         "muốn kỳ khác, thêm @&lt;mã kỳ&gt; vào dòng vé</div>")
+
+        p.append('<tr><td data-nhan="Ngày mua">' + dau
                  + '</td><td data-nhan="Vé">' + o_ve
                  + '</td><td data-nhan="Kỳ quay">' + o_ky
-                 + '</td><td data-nhan="Kết quả">' + o_kq + "</td>"
-                 + o_xoa(v) + "</tr>")
+                 + '</td><td data-nhan="Kết quả">' + o_kq
+                 + "</td></tr>")
     p.append("</tbody></table></div></div>")
 
     if loi:
@@ -878,9 +926,13 @@ def khoi_xac_suat():
 
 def o_xoa(v):
     """Ô chứa nút xoá một tờ vé. Xoá theo NGUYÊN VĂN dòng nên không sợ lệch số dòng."""
-    # data-nhan rỗng: trên điện thoại ô này không cần nhãn, chỉ có nút
-    return ('<td data-nhan=""><button class="nut-xoa" data-dong="' + e(v.get("raw", ""))
-            + '" title="Xoá tờ vé này khỏi sổ">Xoá</button></td>')
+    return '<td data-nhan="">' + nut_xoa(v) + "</td>"
+
+
+def nut_xoa(v):
+    """Chỉ cái nút, không bọc ô — bảng gộp đặt nút ngay dưới từng bộ số."""
+    return ('<button class="nut-xoa" data-dong="' + e(v.get("raw", ""))
+            + '" title="Xoá tờ vé này khỏi sổ">Xoá</button>')
 
 
 def khung_nhap_ve():
