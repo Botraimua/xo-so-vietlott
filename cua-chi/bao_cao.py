@@ -81,7 +81,7 @@ border:1px solid transparent;transition:background .12s,border-color .12s}
 .bo-so.chep-roi::after{content:" đã chép";font-size:11.5px;color:var(--xanh);
 font-weight:600;vertical-align:middle}
 .bo-so.da-chon{border-color:var(--chinh);background:rgba(37,99,235,.12)}
-.bo-so.da-chon::after{content:" \2713 đã xếp vào sổ";font-size:11.5px;
+.bo-so.da-chon::after{content:" đã xếp vào sổ ✓";font-size:11.5px;
 color:var(--chinh);font-weight:600;vertical-align:middle}
 /* Thanh chốt nổi ở đáy: chọn bộ số ở bất kỳ đâu trên trang cũng thấy được
    đang chọn mấy bộ, và ghi luôn — khỏi cuộn đi tìm nút. */
