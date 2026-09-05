@@ -80,6 +80,18 @@ border:1px solid transparent;transition:background .12s,border-color .12s}
 .bo-so.chep-roi{border-color:var(--xanh);background:var(--xanhdiu)}
 .bo-so.chep-roi::after{content:" đã chép";font-size:11.5px;color:var(--xanh);
 font-weight:600;vertical-align:middle}
+.bo-so.da-chon{border-color:var(--chinh);background:rgba(37,99,235,.12)}
+.bo-so.da-chon::after{content:" \2713 đã xếp vào sổ";font-size:11.5px;
+color:var(--chinh);font-weight:600;vertical-align:middle}
+/* Thanh chốt nổi ở đáy: chọn bộ số ở bất kỳ đâu trên trang cũng thấy được
+   đang chọn mấy bộ, và ghi luôn — khỏi cuộn đi tìm nút. */
+.thanh-chon{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;
+align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;
+background:var(--the);border-top:1px solid var(--vien);
+box-shadow:0 -6px 20px rgba(0,0,0,.22)}
+.thanh-chon .chu{font-size:13.5px}
+.thanh-chon .nut{padding:9px 18px}
+body.co-thanh{padding-bottom:96px}
 .canh{border-left:3px solid var(--gan);background:var(--gandiu);padding:12px 16px;
 border-radius:0 8px 8px 0;margin:24px 0;font-size:13.5px}
 footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--vien);
@@ -216,22 +228,25 @@ document.querySelectorAll('table.sapxep').forEach(function(t){
 document.querySelectorAll('.bo-so').forEach(function(el){
   el.addEventListener('click', function(){
     var t = el.dataset.chep || '';
-    function xong(){
-      document.querySelectorAll('.bo-so.chep-roi').forEach(function(o){
-        o.classList.remove('chep-roi');});
-      el.classList.add('chep-roi');
-      setTimeout(function(){el.classList.remove('chep-roi');}, 1800);
-    }
+    // Vẫn chép vào bộ nhớ tạm: trên máy tính còn dùng 11-GHI-VE-DA-MUA.bat
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(t).then(xong, function(){});
+      navigator.clipboard.writeText(t).then(function(){}, function(){});
     } else {
       var ta = document.createElement('textarea');
       ta.value = t; ta.style.position='fixed'; ta.style.opacity='0';
       document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); xong(); } catch(e) {}
+      try { document.execCommand('copy'); } catch(e) {}
       document.body.removeChild(ta);
     }
-    dienVaoO(t);
+    // Bấm là xếp vào hàng chờ, bấm lại là bỏ ra. Không cuộn đi đâu cả.
+    if (typeof window.NV_XEP !== 'function') { dienVaoO(t); return; }
+    var kq = window.NV_XEP(t);
+    if (kq.loi) {
+      el.classList.add('chep-roi');
+      setTimeout(function(){ el.classList.remove('chep-roi'); }, 1500);
+      return;
+    }
+    el.classList.toggle('da-chon', !!kq.them);
   });
 });
 
@@ -324,8 +339,7 @@ function dienVaoO(chuoi){
   dongBoSo(true);
   if(m[3]) o('nv-db').value = m[3];
   if(m[4]) o('nv-ghi').value = m[4].trim();
-  var t = o('nv-gui');
-  if(t) t.scrollIntoView({behavior:'smooth', block:'center'});
+  // KHÔNG cuộn xuống nữa: bấm bộ số giờ là xếp vào hàng chờ tại chỗ.
 }
 
 (function(){
@@ -416,8 +430,21 @@ function dienVaoO(chuoi){
       h.appendChild(d);
     });
     var them = (o('nv-so').value || '').trim() ? 1 : 0;
-    nut.textContent = HANG_CHO.length
-      ? 'Ghi ' + (HANG_CHO.length + them) + ' vé vào sổ' : 'Ghi vào sổ';
+    var tong = HANG_CHO.length + them;
+    nut.textContent = HANG_CHO.length ? 'Ghi ' + tong + ' vé vào sổ' : 'Ghi vào sổ';
+
+    // Thanh chốt nổi: hiện khi đã xếp được vé nào, để bấm bộ số ở tít trên
+    // mục gợi ý cũng thấy ngay và ghi được luôn.
+    var th = o('nv-thanh');
+    if(th){
+      var hien = HANG_CHO.length > 0;
+      th.classList.toggle('an', !hien);
+      document.body.classList.toggle('co-thanh', hien);
+      if(hien){
+        o('nv-thanh-chu').textContent = 'Đã xếp ' + HANG_CHO.length + ' vé';
+        o('nv-thanh-nut').textContent = 'Ghi ' + tong + ' vé vào sổ';
+      }
+    }
   }
 
   var themNua = o('nv-them');
@@ -467,6 +494,49 @@ function dienVaoO(chuoi){
       noi('Không gọi được máy chủ. Nhập vé chỉ chạy trên trang '
         + 'vietlott-thongke.vercel.app, không chạy khi mở file HTML từ máy.', 'loi');
     }).then(function(){ nut.disabled = false; });
+  });
+
+  // Cho mục "Bộ số gợi ý" xếp thẳng vào hàng chờ. Dùng lại đúng đường kiểm
+  // của nút "Thêm vé nữa" nên không thể lọt vé sai khuôn.
+  window.NV_XEP = function(chuoi){
+    var m = /^([a-z_0-9]+):\\s*([\\d\\s]+?)(?:\\|\\s*(\\d+))?\\s*(?:#\\s*(.*))?$/
+              .exec(String(chuoi).trim());
+    if(!m) return {loi: 'Không đọc được bộ số.'};
+    if([].some.call(sp.options, function(x){ return x.value === m[1]; })) sp.value = m[1];
+    capNhatODacBiet();
+    o('nv-so').value = m[2].trim();
+    if(m[3]) o('nv-db').value = m[3];
+    if(m[4]) o('nv-ghi').value = m[4].trim();
+    dongBoSo(true);
+    var r = dongVe();
+    donO();
+    if(r.loi){ noi(r.loi, 'loi'); return r; }
+
+    for(var i = 0; i < HANG_CHO.length; i++){
+      if(HANG_CHO[i].dong === r.dong){
+        HANG_CHO.splice(i, 1); veHangCho(); noi('');
+        return {bo: true, dong: r.dong};
+      }
+    }
+    if(HANG_CHO.length >= 20){
+      noi('Nhiều nhất 20 vé một lượt.', 'loi');
+      return {loi: 'quá 20 vé'};
+    }
+    HANG_CHO.push(r); veHangCho(); noi('');
+    return {them: true, dong: r.dong, so: HANG_CHO.length};
+  };
+
+  var tnut = o('nv-thanh-nut');
+  if(tnut) tnut.addEventListener('click', function(){
+    if(!(mk.value || '').trim()){
+      // Chưa có mật khẩu thì đưa xuống ô mật khẩu chứ đừng báo lỗi ở chỗ
+      // Sếp không nhìn thấy.
+      mk.scrollIntoView({behavior: 'smooth', block: 'center'});
+      setTimeout(function(){ mk.focus(); }, 400);
+      noi('Nhập mật khẩu rồi bấm Ghi.', 'loi');
+      return;
+    }
+    nut.click();
   });
 
   veHangCho();
@@ -810,8 +880,11 @@ def khoi_goi_so():
 
     p = ['<h2 id="goi-so">Bộ số gợi ý &mdash; ' + e(ngay_viet(d.get("ngay"))) + "</h2>"]
     p.append('<div class="mo">' + str(d.get("so_bo", 0))
-             + " bộ cho mỗi cách chọn số. Bấm vào một bộ là chép được, dán thẳng vào "
-             + "<code>ve-cua-chi.txt</code>. Sang ngày mới thì ra bộ khác.</div>")
+             + " bộ cho mỗi cách chọn số. <strong>Bấm vào bộ nào là nó xếp thẳng vào "
+             + "sổ vé chờ ghi</strong> &mdash; bấm được nhiều bộ liền tay, bấm lại để bỏ "
+             + "ra, xong bấm nút ở thanh dưới đáy màn hình. Bộ số cũng được chép vào bộ "
+             + "nhớ tạm để dán vào <code>ve-cua-chi.txt</code> nếu cần. "
+             + "Sang ngày mới thì ra bộ khác.</div>")
     p.append('<div class="canh" style="margin:14px 0">Mấy bộ số này <strong>không dễ '
              "trúng hơn</strong> bộ Sếp tự nghĩ. Bảng kiểm thử ngay bên dưới cho thấy "
              "cả 9 cách đều lỗ 78&ndash;92%, kể cả bốc bừa. Đây là công cụ đỡ phải ngồi "
@@ -835,7 +908,7 @@ def khoi_goi_so():
                 if db is not None:
                     chep += " | " + str(db)
                 chep += "   # gợi ý " + cl.get("ten", "") + " " + ngay_viet(d.get("ngay"), kem_thu=False)
-                p.append('<div class="bo-so" data-chep="' + e(chep) + '" title="Bấm để chép">'
+                p.append('<div class="bo-so" data-chep="' + e(chep) + '" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra">'
                          + day_bi(so, db) + "</div>")
             p.append("</div>")
         p.append("</div>")
@@ -952,8 +1025,9 @@ def khung_nhap_ve():
         '<div class="the nhap-ve">'
         '<div class="ten-bd">Ghi một tờ vé vào sổ</div>'
         '<div class="mo" style="margin:4px 0 14px">Gõ số vào ô, hoặc bấm '
-        '<b>Bảng số</b> để chọn bằng cách bấm. Bấm vào bộ số ở mục '
-        '<a href="#goi-so">Bộ số gợi ý</a> thì ô này tự điền hộ.</div>'
+        '<b>Bảng số</b> để chọn bằng cách bấm. Hoặc lên mục '
+        '<a href="#goi-so">Bộ số gợi ý</a> bấm thẳng vào các bộ muốn mua &mdash; '
+        'bấm được nhiều bộ một lúc, bấm lại để bỏ ra.</div>'
         '<div class="luoi-nv">'
         '<div class="o-nv rong2"><label class="nhan" for="nv-sp">Sản phẩm</label>'
         '<select id="nv-sp">' + chon + "</select></div>"
@@ -983,6 +1057,10 @@ def khung_nhap_ve():
         '<button id="nv-gui" class="nut">Ghi vào sổ</button>'
         '<button type="button" id="nv-them" class="nut phu">Thêm vé nữa</button>'
         '<span id="nv-bao" class="nv-bao"></span></div>'
+        "</div>"
+        '<div class="thanh-chon an" id="nv-thanh">'
+        '<span class="chu" id="nv-thanh-chu"></span>'
+        '<button type="button" class="nut" id="nv-thanh-nut">Ghi vào sổ</button>'
         "</div>")
 
 

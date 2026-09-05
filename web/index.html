@@ -56,6 +56,18 @@ border:1px solid transparent;transition:background .12s,border-color .12s}
 .bo-so.chep-roi{border-color:var(--xanh);background:var(--xanhdiu)}
 .bo-so.chep-roi::after{content:" đã chép";font-size:11.5px;color:var(--xanh);
 font-weight:600;vertical-align:middle}
+.bo-so.da-chon{border-color:var(--chinh);background:rgba(37,99,235,.12)}
+.bo-so.da-chon::after{content:" ¹3 đã xếp vào sổ";font-size:11.5px;
+color:var(--chinh);font-weight:600;vertical-align:middle}
+/* Thanh chốt nổi ở đáy: chọn bộ số ở bất kỳ đâu trên trang cũng thấy được
+   đang chọn mấy bộ, và ghi luôn — khỏi cuộn đi tìm nút. */
+.thanh-chon{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;
+align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;
+background:var(--the);border-top:1px solid var(--vien);
+box-shadow:0 -6px 20px rgba(0,0,0,.22)}
+.thanh-chon .chu{font-size:13.5px}
+.thanh-chon .nut{padding:9px 18px}
+body.co-thanh{padding-bottom:96px}
 .canh{border-left:3px solid var(--gan);background:var(--gandiu);padding:12px 16px;
 border-radius:0 8px 8px 0;margin:24px 0;font-size:13.5px}
 footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--vien);
@@ -177,7 +189,7 @@ align-items:center;gap:5px}
 @media (max-width:400px){.luoi-bd{grid-template-columns:1fr}}
 </style></head><body><div class='bao'>
 <header><h1>Thống kê Vietlott</h1>
-<div class="mo">Dựng lúc 06:55 ngày 05/09/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
+<div class="mo">Dựng lúc 10:28 ngày 05/09/2026 &middot; dữ liệu lấy từ vietlott.vn</div></header>
 <nav>
 <a href="#so-ve">Sổ vé</a>
 <a href="#power_655">Power 6/55</a>
@@ -192,7 +204,7 @@ align-items:center;gap:5px}
 </nav>
 <h2 id="so-ve">Sổ vé đã mua</h2>
 <div class="mo">Mỗi tờ vé gắn với đúng một kỳ quay. Nhập vé ngay bên dưới, hoặc trên máy tính thì bấm một bộ số gợi ý rồi bấm <code>11-GHI-VE-DA-MUA.bat</code>.</div>
-<div class="the nhap-ve"><div class="ten-bd">Ghi một tờ vé vào sổ</div><div class="mo" style="margin:4px 0 14px">Gõ số vào ô, hoặc bấm <b>Bảng số</b> để chọn bằng cách bấm. Bấm vào bộ số ở mục <a href="#goi-so">Bộ số gợi ý</a> thì ô này tự điền hộ.</div><div class="luoi-nv"><div class="o-nv rong2"><label class="nhan" for="nv-sp">Sản phẩm</label><select id="nv-sp"><option value="power_655">Power 6/55 &mdash; 6 số 1-55</option><option value="power_645">Mega 6/45 &mdash; 6 số 1-45</option><option value="power_535">Lotto 5/35 &mdash; 5 số 1-35 + số đặc biệt 1-12</option><option value="keno">Keno &mdash; 10 số 1-80</option></select></div><div class="o-nv rong2"><label class="nhan" for="nv-so">Các số</label><span style="display:flex;gap:8px"><input id="nv-so" inputmode="numeric" style="flex:1"><button type="button" id="nv-mopad" class="nut phu" style="white-space:nowrap">Bảng số</button></span></div><div class="o-nv nv-db"><label class="nhan" for="nv-db">Số đặc biệt</label><input id="nv-db" inputmode="numeric"></div><div class="o-nv"><label class="nhan" for="nv-ngay">Ngày mua</label><input id="nv-ngay" type="date"></div><div class="o-nv"><label class="nhan" for="nv-ghi">Ghi chú</label><input id="nv-ghi" placeholder="tuỳ ý"></div><div class="o-nv"><label class="nhan" for="nv-mk">Mật khẩu</label><input id="nv-mk" type="password" placeholder="nhớ sau lần đầu"></div></div><div class="pad an" id="nv-pad"><div class="pad-dau"><span class="pad-ten" id="nv-padten">Chọn số</span><span><span class="dem" id="nv-dem">0/6</span><button type="button" class="nut phu" id="nv-xoahet" style="margin-left:6px">Xoá hết</button></span></div><div class="o-so" id="nv-oso"></div></div><div class="hang-cho an" id="nv-hang"></div><div class="hang-nut"><button id="nv-gui" class="nut">Ghi vào sổ</button><button type="button" id="nv-them" class="nut phu">Thêm vé nữa</button><span id="nv-bao" class="nv-bao"></span></div></div>
+<div class="the nhap-ve"><div class="ten-bd">Ghi một tờ vé vào sổ</div><div class="mo" style="margin:4px 0 14px">Gõ số vào ô, hoặc bấm <b>Bảng số</b> để chọn bằng cách bấm. Hoặc lên mục <a href="#goi-so">Bộ số gợi ý</a> bấm thẳng vào các bộ muốn mua &mdash; bấm được nhiều bộ một lúc, bấm lại để bỏ ra.</div><div class="luoi-nv"><div class="o-nv rong2"><label class="nhan" for="nv-sp">Sản phẩm</label><select id="nv-sp"><option value="power_655">Power 6/55 &mdash; 6 số 1-55</option><option value="power_645">Mega 6/45 &mdash; 6 số 1-45</option><option value="power_535">Lotto 5/35 &mdash; 5 số 1-35 + số đặc biệt 1-12</option><option value="keno">Keno &mdash; 10 số 1-80</option></select></div><div class="o-nv rong2"><label class="nhan" for="nv-so">Các số</label><span style="display:flex;gap:8px"><input id="nv-so" inputmode="numeric" style="flex:1"><button type="button" id="nv-mopad" class="nut phu" style="white-space:nowrap">Bảng số</button></span></div><div class="o-nv nv-db"><label class="nhan" for="nv-db">Số đặc biệt</label><input id="nv-db" inputmode="numeric"></div><div class="o-nv"><label class="nhan" for="nv-ngay">Ngày mua</label><input id="nv-ngay" type="date"></div><div class="o-nv"><label class="nhan" for="nv-ghi">Ghi chú</label><input id="nv-ghi" placeholder="tuỳ ý"></div><div class="o-nv"><label class="nhan" for="nv-mk">Mật khẩu</label><input id="nv-mk" type="password" placeholder="nhớ sau lần đầu"></div></div><div class="pad an" id="nv-pad"><div class="pad-dau"><span class="pad-ten" id="nv-padten">Chọn số</span><span><span class="dem" id="nv-dem">0/6</span><button type="button" class="nut phu" id="nv-xoahet" style="margin-left:6px">Xoá hết</button></span></div><div class="o-so" id="nv-oso"></div></div><div class="hang-cho an" id="nv-hang"></div><div class="hang-nut"><button id="nv-gui" class="nut">Ghi vào sổ</button><button type="button" id="nv-them" class="nut phu">Thêm vé nữa</button><span id="nv-bao" class="nv-bao"></span></div></div><div class="thanh-chon an" id="nv-thanh"><span class="chu" id="nv-thanh-chu"></span><button type="button" class="nut" id="nv-thanh-nut">Ghi vào sổ</button></div>
 <div class="the">
 <div style='font-size:17px;margin-bottom:2px'>Tới giờ Sếp <strong style='color:var(--nhan)'>lỗ 30.000đ</strong> trên 6 tờ vé.</div>
 <div class="cuon" style="margin-top:12px"><table class="bang-the bang-tom"><thead><tr><th>Sản phẩm</th><th class="so">Số vé</th><th class="so">Tiền mua vé</th><th class="so">Tiền trúng</th><th class="so">Lãi / lỗ</th></tr></thead><tbody>
@@ -571,7 +583,7 @@ align-items:center;gap:5px}
 <tr><td class="so" data-v="80"><span class="bi nho">80</span></td><td class="so" data-v="20333">20333</td><td class="so" data-v="24.78">24.78%</td><td><div class="thanh" style="width:97%"></div></td><td data-v="2026-08-24">24/08/2026</td><td class="so" data-v="1">1</td></tr>
 </tbody></table></div></div>
 <h2 id="goi-so">Bộ số gợi ý &mdash; 05/09/2026 (Thứ 7)</h2>
-<div class="mo">4 bộ cho mỗi cách chọn số. Bấm vào một bộ là chép được, dán thẳng vào <code>ve-cua-chi.txt</code>. Sang ngày mới thì ra bộ khác.</div>
+<div class="mo">4 bộ cho mỗi cách chọn số. <strong>Bấm vào bộ nào là nó xếp thẳng vào sổ vé chờ ghi</strong> &mdash; bấm được nhiều bộ liền tay, bấm lại để bỏ ra, xong bấm nút ở thanh dưới đáy màn hình. Bộ số cũng được chép vào bộ nhớ tạm để dán vào <code>ve-cua-chi.txt</code> nếu cần. Sang ngày mới thì ra bộ khác.</div>
 <div class="canh" style="margin:14px 0">Mấy bộ số này <strong>không dễ trúng hơn</strong> bộ Sếp tự nghĩ. Bảng kiểm thử ngay bên dưới cho thấy cả 9 cách đều lỗ 78&ndash;92%, kể cả bốc bừa. Đây là công cụ đỡ phải ngồi nghĩ số, không phải công cụ dự đoán.</div>
 <h3 style="margin-top:24px">Power 6/55 &middot; Thứ 3 - Thứ 5 - Thứ 7, 18h00</h3>
 <div class="mo" style="margin-bottom:8px">Số đặc biệt do Vietlott quay, người chơi không chọn.</div>
@@ -579,74 +591,74 @@ align-items:center;gap:5px}
 <div class="the">
 <div><strong>Ngẫu nhiên</strong></div>
 <div class="mo" style="margin-bottom:8px">bốc bừa, không nhìn lịch sử — mốc so sánh</div>
-<div class="bo-so" data-chep="power_655: 11 15 17 39 46 52   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">11</span><span class="bi ">15</span><span class="bi ">17</span><span class="bi ">39</span><span class="bi ">46</span><span class="bi ">52</span></div>
-<div class="bo-so" data-chep="power_655: 2 16 19 34 38 39   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">16</span><span class="bi ">19</span><span class="bi ">34</span><span class="bi ">38</span><span class="bi ">39</span></div>
-<div class="bo-so" data-chep="power_655: 7 10 16 18 46 49   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">10</span><span class="bi ">16</span><span class="bi ">18</span><span class="bi ">46</span><span class="bi ">49</span></div>
-<div class="bo-so" data-chep="power_655: 2 12 23 32 41 55   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">12</span><span class="bi ">23</span><span class="bi ">32</span><span class="bi ">41</span><span class="bi ">55</span></div>
+<div class="bo-so" data-chep="power_655: 11 15 17 39 46 52   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">11</span><span class="bi ">15</span><span class="bi ">17</span><span class="bi ">39</span><span class="bi ">46</span><span class="bi ">52</span></div>
+<div class="bo-so" data-chep="power_655: 2 16 19 34 38 39   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">16</span><span class="bi ">19</span><span class="bi ">34</span><span class="bi ">38</span><span class="bi ">39</span></div>
+<div class="bo-so" data-chep="power_655: 7 10 16 18 46 49   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">10</span><span class="bi ">16</span><span class="bi ">18</span><span class="bi ">46</span><span class="bi ">49</span></div>
+<div class="bo-so" data-chep="power_655: 2 12 23 32 41 55   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">12</span><span class="bi ">23</span><span class="bi ">32</span><span class="bi ">41</span><span class="bi ">55</span></div>
 </div>
 <div class="the">
 <div><strong>Số nóng</strong></div>
 <div class="mo" style="margin-bottom:8px">ưu tiên số hay về trong ~180 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_655: 17 25 26 34 44 54   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">17</span><span class="bi ">25</span><span class="bi ">26</span><span class="bi ">34</span><span class="bi ">44</span><span class="bi ">54</span></div>
-<div class="bo-so" data-chep="power_655: 5 7 21 28 33 49   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">07</span><span class="bi ">21</span><span class="bi ">28</span><span class="bi ">33</span><span class="bi ">49</span></div>
-<div class="bo-so" data-chep="power_655: 16 25 27 30 42 54   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">16</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi ">30</span><span class="bi ">42</span><span class="bi ">54</span></div>
-<div class="bo-so" data-chep="power_655: 9 17 40 42 48 49   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">09</span><span class="bi ">17</span><span class="bi ">40</span><span class="bi ">42</span><span class="bi ">48</span><span class="bi ">49</span></div>
+<div class="bo-so" data-chep="power_655: 17 25 26 34 44 54   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">17</span><span class="bi ">25</span><span class="bi ">26</span><span class="bi ">34</span><span class="bi ">44</span><span class="bi ">54</span></div>
+<div class="bo-so" data-chep="power_655: 5 7 21 28 33 49   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">07</span><span class="bi ">21</span><span class="bi ">28</span><span class="bi ">33</span><span class="bi ">49</span></div>
+<div class="bo-so" data-chep="power_655: 16 25 27 30 42 54   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">16</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi ">30</span><span class="bi ">42</span><span class="bi ">54</span></div>
+<div class="bo-so" data-chep="power_655: 9 17 40 42 48 49   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">09</span><span class="bi ">17</span><span class="bi ">40</span><span class="bi ">42</span><span class="bi ">48</span><span class="bi ">49</span></div>
 </div>
 <div class="the">
 <div><strong>Số lạnh</strong></div>
 <div class="mo" style="margin-bottom:8px">ưu tiên số ít về trong ~180 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_655: 9 10 15 17 46 52   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">15</span><span class="bi ">17</span><span class="bi ">46</span><span class="bi ">52</span></div>
-<div class="bo-so" data-chep="power_655: 3 6 12 17 20 45   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">06</span><span class="bi ">12</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">45</span></div>
-<div class="bo-so" data-chep="power_655: 5 6 9 25 27 35   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">06</span><span class="bi ">09</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi ">35</span></div>
-<div class="bo-so" data-chep="power_655: 12 17 20 21 23 53   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi ">23</span><span class="bi ">53</span></div>
+<div class="bo-so" data-chep="power_655: 9 10 15 17 46 52   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">15</span><span class="bi ">17</span><span class="bi ">46</span><span class="bi ">52</span></div>
+<div class="bo-so" data-chep="power_655: 3 6 12 17 20 45   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">06</span><span class="bi ">12</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">45</span></div>
+<div class="bo-so" data-chep="power_655: 5 6 9 25 27 35   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">06</span><span class="bi ">09</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi ">35</span></div>
+<div class="bo-so" data-chep="power_655: 12 17 20 21 23 53   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi ">23</span><span class="bi ">53</span></div>
 </div>
 <div class="the">
 <div><strong>Lâu chưa về</strong></div>
 <div class="mo" style="margin-bottom:8px">chỉ bốc trong 10 số vắng lâu nhất</div>
-<div class="bo-so" data-chep="power_655: 22 24 28 32 37 53   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">22</span><span class="bi ">24</span><span class="bi ">28</span><span class="bi ">32</span><span class="bi ">37</span><span class="bi ">53</span></div>
-<div class="bo-so" data-chep="power_655: 6 12 24 32 37 52   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">06</span><span class="bi ">12</span><span class="bi ">24</span><span class="bi ">32</span><span class="bi ">37</span><span class="bi ">52</span></div>
-<div class="bo-so" data-chep="power_655: 4 22 28 32 37 52   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">22</span><span class="bi ">28</span><span class="bi ">32</span><span class="bi ">37</span><span class="bi ">52</span></div>
-<div class="bo-so" data-chep="power_655: 6 12 24 32 52 53   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">06</span><span class="bi ">12</span><span class="bi ">24</span><span class="bi ">32</span><span class="bi ">52</span><span class="bi ">53</span></div>
+<div class="bo-so" data-chep="power_655: 22 24 28 32 37 53   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">22</span><span class="bi ">24</span><span class="bi ">28</span><span class="bi ">32</span><span class="bi ">37</span><span class="bi ">53</span></div>
+<div class="bo-so" data-chep="power_655: 6 12 24 32 37 52   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">06</span><span class="bi ">12</span><span class="bi ">24</span><span class="bi ">32</span><span class="bi ">37</span><span class="bi ">52</span></div>
+<div class="bo-so" data-chep="power_655: 4 22 28 32 37 52   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">22</span><span class="bi ">28</span><span class="bi ">32</span><span class="bi ">37</span><span class="bi ">52</span></div>
+<div class="bo-so" data-chep="power_655: 6 12 24 32 52 53   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">06</span><span class="bi ">12</span><span class="bi ">24</span><span class="bi ">32</span><span class="bi ">52</span><span class="bi ">53</span></div>
 </div>
 <div class="the">
 <div><strong>Không lặp lại</strong></div>
 <div class="mo" style="margin-bottom:8px">né các số vừa về 15 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_655: 14 18 32 42 44 50   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">14</span><span class="bi ">18</span><span class="bi ">32</span><span class="bi ">42</span><span class="bi ">44</span><span class="bi ">50</span></div>
-<div class="bo-so" data-chep="power_655: 4 15 17 32 52 53   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">15</span><span class="bi ">17</span><span class="bi ">32</span><span class="bi ">52</span><span class="bi ">53</span></div>
-<div class="bo-so" data-chep="power_655: 6 8 13 24 43 52   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">06</span><span class="bi ">08</span><span class="bi ">13</span><span class="bi ">24</span><span class="bi ">43</span><span class="bi ">52</span></div>
-<div class="bo-so" data-chep="power_655: 11 32 37 39 51 52   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">11</span><span class="bi ">32</span><span class="bi ">37</span><span class="bi ">39</span><span class="bi ">51</span><span class="bi ">52</span></div>
+<div class="bo-so" data-chep="power_655: 14 18 32 42 44 50   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">14</span><span class="bi ">18</span><span class="bi ">32</span><span class="bi ">42</span><span class="bi ">44</span><span class="bi ">50</span></div>
+<div class="bo-so" data-chep="power_655: 4 15 17 32 52 53   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">15</span><span class="bi ">17</span><span class="bi ">32</span><span class="bi ">52</span><span class="bi ">53</span></div>
+<div class="bo-so" data-chep="power_655: 6 8 13 24 43 52   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">06</span><span class="bi ">08</span><span class="bi ">13</span><span class="bi ">24</span><span class="bi ">43</span><span class="bi ">52</span></div>
+<div class="bo-so" data-chep="power_655: 11 32 37 39 51 52   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">11</span><span class="bi ">32</span><span class="bi ">37</span><span class="bi ">39</span><span class="bi ">51</span><span class="bi ">52</span></div>
 </div>
 <div class="the">
 <div><strong>Suy giảm mũ</strong></div>
 <div class="mo" style="margin-bottom:8px">số nóng nhưng kỳ càng cũ càng nhẹ ký</div>
-<div class="bo-so" data-chep="power_655: 16 23 36 50 51 55   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">16</span><span class="bi ">23</span><span class="bi ">36</span><span class="bi ">50</span><span class="bi ">51</span><span class="bi ">55</span></div>
-<div class="bo-so" data-chep="power_655: 2 16 38 42 49 54   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">16</span><span class="bi ">38</span><span class="bi ">42</span><span class="bi ">49</span><span class="bi ">54</span></div>
-<div class="bo-so" data-chep="power_655: 1 4 5 22 26 38   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">04</span><span class="bi ">05</span><span class="bi ">22</span><span class="bi ">26</span><span class="bi ">38</span></div>
-<div class="bo-so" data-chep="power_655: 5 20 21 34 38 41   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi ">34</span><span class="bi ">38</span><span class="bi ">41</span></div>
+<div class="bo-so" data-chep="power_655: 16 23 36 50 51 55   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">16</span><span class="bi ">23</span><span class="bi ">36</span><span class="bi ">50</span><span class="bi ">51</span><span class="bi ">55</span></div>
+<div class="bo-so" data-chep="power_655: 2 16 38 42 49 54   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">16</span><span class="bi ">38</span><span class="bi ">42</span><span class="bi ">49</span><span class="bi ">54</span></div>
+<div class="bo-so" data-chep="power_655: 1 4 5 22 26 38   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">04</span><span class="bi ">05</span><span class="bi ">22</span><span class="bi ">26</span><span class="bi ">38</span></div>
+<div class="bo-so" data-chep="power_655: 5 20 21 34 38 41   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi ">34</span><span class="bi ">38</span><span class="bi ">41</span></div>
 </div>
 <div class="the">
 <div><strong>Tần suất cặp</strong></div>
 <div class="mo" style="margin-bottom:8px">số hay đi cùng các số của kỳ liền trước</div>
-<div class="bo-so" data-chep="power_655: 1 11 18 30 32 33   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">11</span><span class="bi ">18</span><span class="bi ">30</span><span class="bi ">32</span><span class="bi ">33</span></div>
-<div class="bo-so" data-chep="power_655: 15 20 29 50 51 52   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">15</span><span class="bi ">20</span><span class="bi ">29</span><span class="bi ">50</span><span class="bi ">51</span><span class="bi ">52</span></div>
-<div class="bo-so" data-chep="power_655: 13 23 32 39 48 53   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">13</span><span class="bi ">23</span><span class="bi ">32</span><span class="bi ">39</span><span class="bi ">48</span><span class="bi ">53</span></div>
-<div class="bo-so" data-chep="power_655: 5 26 31 33 42 48   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">26</span><span class="bi ">31</span><span class="bi ">33</span><span class="bi ">42</span><span class="bi ">48</span></div>
+<div class="bo-so" data-chep="power_655: 1 11 18 30 32 33   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">11</span><span class="bi ">18</span><span class="bi ">30</span><span class="bi ">32</span><span class="bi ">33</span></div>
+<div class="bo-so" data-chep="power_655: 15 20 29 50 51 52   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">15</span><span class="bi ">20</span><span class="bi ">29</span><span class="bi ">50</span><span class="bi ">51</span><span class="bi ">52</span></div>
+<div class="bo-so" data-chep="power_655: 13 23 32 39 48 53   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">13</span><span class="bi ">23</span><span class="bi ">32</span><span class="bi ">39</span><span class="bi ">48</span><span class="bi ">53</span></div>
+<div class="bo-so" data-chep="power_655: 5 26 31 33 42 48   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">26</span><span class="bi ">31</span><span class="bi ">33</span><span class="bi ">42</span><span class="bi ">48</span></div>
 </div>
 <div class="the">
 <div><strong>Chuỗi Markov</strong></div>
 <div class="mo" style="margin-bottom:8px">số hay về ở kỳ SAU khi kỳ trước có các số đó</div>
-<div class="bo-so" data-chep="power_655: 22 29 32 34 36 55   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">22</span><span class="bi ">29</span><span class="bi ">32</span><span class="bi ">34</span><span class="bi ">36</span><span class="bi ">55</span></div>
-<div class="bo-so" data-chep="power_655: 19 28 32 35 53 54   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">19</span><span class="bi ">28</span><span class="bi ">32</span><span class="bi ">35</span><span class="bi ">53</span><span class="bi ">54</span></div>
-<div class="bo-so" data-chep="power_655: 25 26 33 40 53 55   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">25</span><span class="bi ">26</span><span class="bi ">33</span><span class="bi ">40</span><span class="bi ">53</span><span class="bi ">55</span></div>
-<div class="bo-so" data-chep="power_655: 3 5 17 22 46 55   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">05</span><span class="bi ">17</span><span class="bi ">22</span><span class="bi ">46</span><span class="bi ">55</span></div>
+<div class="bo-so" data-chep="power_655: 22 29 32 34 36 55   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">22</span><span class="bi ">29</span><span class="bi ">32</span><span class="bi ">34</span><span class="bi ">36</span><span class="bi ">55</span></div>
+<div class="bo-so" data-chep="power_655: 19 28 32 35 53 54   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">19</span><span class="bi ">28</span><span class="bi ">32</span><span class="bi ">35</span><span class="bi ">53</span><span class="bi ">54</span></div>
+<div class="bo-so" data-chep="power_655: 25 26 33 40 53 55   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">25</span><span class="bi ">26</span><span class="bi ">33</span><span class="bi ">40</span><span class="bi ">53</span><span class="bi ">55</span></div>
+<div class="bo-so" data-chep="power_655: 3 5 17 22 46 55   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">05</span><span class="bi ">17</span><span class="bi ">22</span><span class="bi ">46</span><span class="bi ">55</span></div>
 </div>
 <div class="the">
 <div><strong>Mẫu hình</strong></div>
 <div class="mo" style="margin-bottom:8px">theo phân bố 5 khoảng của dải số</div>
-<div class="bo-so" data-chep="power_655: 15 16 18 23 24 47   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">18</span><span class="bi ">23</span><span class="bi ">24</span><span class="bi ">47</span></div>
-<div class="bo-so" data-chep="power_655: 2 5 8 25 30 54   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">25</span><span class="bi ">30</span><span class="bi ">54</span></div>
-<div class="bo-so" data-chep="power_655: 33 38 41 42 47 50   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">33</span><span class="bi ">38</span><span class="bi ">41</span><span class="bi ">42</span><span class="bi ">47</span><span class="bi ">50</span></div>
-<div class="bo-so" data-chep="power_655: 6 20 26 31 34 38   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">06</span><span class="bi ">20</span><span class="bi ">26</span><span class="bi ">31</span><span class="bi ">34</span><span class="bi ">38</span></div>
+<div class="bo-so" data-chep="power_655: 15 16 18 23 24 47   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">18</span><span class="bi ">23</span><span class="bi ">24</span><span class="bi ">47</span></div>
+<div class="bo-so" data-chep="power_655: 2 5 8 25 30 54   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">25</span><span class="bi ">30</span><span class="bi ">54</span></div>
+<div class="bo-so" data-chep="power_655: 33 38 41 42 47 50   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">33</span><span class="bi ">38</span><span class="bi ">41</span><span class="bi ">42</span><span class="bi ">47</span><span class="bi ">50</span></div>
+<div class="bo-so" data-chep="power_655: 6 20 26 31 34 38   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">06</span><span class="bi ">20</span><span class="bi ">26</span><span class="bi ">31</span><span class="bi ">34</span><span class="bi ">38</span></div>
 </div>
 </div>
 <h3 style="margin-top:24px">Mega 6/45 &middot; Thứ 4 - Thứ 6 - Chủ nhật, 18h00</h3>
@@ -654,74 +666,74 @@ align-items:center;gap:5px}
 <div class="the">
 <div><strong>Ngẫu nhiên</strong></div>
 <div class="mo" style="margin-bottom:8px">bốc bừa, không nhìn lịch sử — mốc so sánh</div>
-<div class="bo-so" data-chep="power_645: 2 8 12 15 18 19   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">08</span><span class="bi ">12</span><span class="bi ">15</span><span class="bi ">18</span><span class="bi ">19</span></div>
-<div class="bo-so" data-chep="power_645: 4 27 29 32 41 43   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">27</span><span class="bi ">29</span><span class="bi ">32</span><span class="bi ">41</span><span class="bi ">43</span></div>
-<div class="bo-so" data-chep="power_645: 4 6 22 25 29 41   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">06</span><span class="bi ">22</span><span class="bi ">25</span><span class="bi ">29</span><span class="bi ">41</span></div>
-<div class="bo-so" data-chep="power_645: 5 15 21 22 33 36   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">15</span><span class="bi ">21</span><span class="bi ">22</span><span class="bi ">33</span><span class="bi ">36</span></div>
+<div class="bo-so" data-chep="power_645: 2 8 12 15 18 19   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">08</span><span class="bi ">12</span><span class="bi ">15</span><span class="bi ">18</span><span class="bi ">19</span></div>
+<div class="bo-so" data-chep="power_645: 4 27 29 32 41 43   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">27</span><span class="bi ">29</span><span class="bi ">32</span><span class="bi ">41</span><span class="bi ">43</span></div>
+<div class="bo-so" data-chep="power_645: 4 6 22 25 29 41   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">06</span><span class="bi ">22</span><span class="bi ">25</span><span class="bi ">29</span><span class="bi ">41</span></div>
+<div class="bo-so" data-chep="power_645: 5 15 21 22 33 36   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">15</span><span class="bi ">21</span><span class="bi ">22</span><span class="bi ">33</span><span class="bi ">36</span></div>
 </div>
 <div class="the">
 <div><strong>Số nóng</strong></div>
 <div class="mo" style="margin-bottom:8px">ưu tiên số hay về trong ~180 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_645: 5 25 28 33 44 45   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">25</span><span class="bi ">28</span><span class="bi ">33</span><span class="bi ">44</span><span class="bi ">45</span></div>
-<div class="bo-so" data-chep="power_645: 20 26 29 35 42 44   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">20</span><span class="bi ">26</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi ">42</span><span class="bi ">44</span></div>
-<div class="bo-so" data-chep="power_645: 17 19 24 29 35 44   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">17</span><span class="bi ">19</span><span class="bi ">24</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi ">44</span></div>
-<div class="bo-so" data-chep="power_645: 4 11 18 24 27 33   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">11</span><span class="bi ">18</span><span class="bi ">24</span><span class="bi ">27</span><span class="bi ">33</span></div>
+<div class="bo-so" data-chep="power_645: 5 25 28 33 44 45   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">25</span><span class="bi ">28</span><span class="bi ">33</span><span class="bi ">44</span><span class="bi ">45</span></div>
+<div class="bo-so" data-chep="power_645: 20 26 29 35 42 44   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">20</span><span class="bi ">26</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi ">42</span><span class="bi ">44</span></div>
+<div class="bo-so" data-chep="power_645: 17 19 24 29 35 44   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">17</span><span class="bi ">19</span><span class="bi ">24</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi ">44</span></div>
+<div class="bo-so" data-chep="power_645: 4 11 18 24 27 33   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">11</span><span class="bi ">18</span><span class="bi ">24</span><span class="bi ">27</span><span class="bi ">33</span></div>
 </div>
 <div class="the">
 <div><strong>Số lạnh</strong></div>
 <div class="mo" style="margin-bottom:8px">ưu tiên số ít về trong ~180 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_645: 4 26 32 33 34 40   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">26</span><span class="bi ">32</span><span class="bi ">33</span><span class="bi ">34</span><span class="bi ">40</span></div>
-<div class="bo-so" data-chep="power_645: 1 8 14 34 35 38   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">08</span><span class="bi ">14</span><span class="bi ">34</span><span class="bi ">35</span><span class="bi ">38</span></div>
-<div class="bo-so" data-chep="power_645: 4 14 20 22 25 44   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">22</span><span class="bi ">25</span><span class="bi ">44</span></div>
-<div class="bo-so" data-chep="power_645: 4 15 18 32 33 40   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">15</span><span class="bi ">18</span><span class="bi ">32</span><span class="bi ">33</span><span class="bi ">40</span></div>
+<div class="bo-so" data-chep="power_645: 4 26 32 33 34 40   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">26</span><span class="bi ">32</span><span class="bi ">33</span><span class="bi ">34</span><span class="bi ">40</span></div>
+<div class="bo-so" data-chep="power_645: 1 8 14 34 35 38   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">08</span><span class="bi ">14</span><span class="bi ">34</span><span class="bi ">35</span><span class="bi ">38</span></div>
+<div class="bo-so" data-chep="power_645: 4 14 20 22 25 44   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">22</span><span class="bi ">25</span><span class="bi ">44</span></div>
+<div class="bo-so" data-chep="power_645: 4 15 18 32 33 40   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">15</span><span class="bi ">18</span><span class="bi ">32</span><span class="bi ">33</span><span class="bi ">40</span></div>
 </div>
 <div class="the">
 <div><strong>Lâu chưa về</strong></div>
 <div class="mo" style="margin-bottom:8px">chỉ bốc trong 10 số vắng lâu nhất</div>
-<div class="bo-so" data-chep="power_645: 5 8 14 20 30 42   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">30</span><span class="bi ">42</span></div>
-<div class="bo-so" data-chep="power_645: 2 5 20 24 25 28   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">05</span><span class="bi ">20</span><span class="bi ">24</span><span class="bi ">25</span><span class="bi ">28</span></div>
-<div class="bo-so" data-chep="power_645: 14 20 25 28 30 42   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">25</span><span class="bi ">28</span><span class="bi ">30</span><span class="bi ">42</span></div>
-<div class="bo-so" data-chep="power_645: 5 8 20 24 25 42   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">20</span><span class="bi ">24</span><span class="bi ">25</span><span class="bi ">42</span></div>
+<div class="bo-so" data-chep="power_645: 5 8 14 20 30 42   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">30</span><span class="bi ">42</span></div>
+<div class="bo-so" data-chep="power_645: 2 5 20 24 25 28   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">05</span><span class="bi ">20</span><span class="bi ">24</span><span class="bi ">25</span><span class="bi ">28</span></div>
+<div class="bo-so" data-chep="power_645: 14 20 25 28 30 42   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">25</span><span class="bi ">28</span><span class="bi ">30</span><span class="bi ">42</span></div>
+<div class="bo-so" data-chep="power_645: 5 8 20 24 25 42   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">20</span><span class="bi ">24</span><span class="bi ">25</span><span class="bi ">42</span></div>
 </div>
 <div class="the">
 <div><strong>Không lặp lại</strong></div>
 <div class="mo" style="margin-bottom:8px">né các số vừa về 15 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_645: 1 15 24 37 40 44   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">15</span><span class="bi ">24</span><span class="bi ">37</span><span class="bi ">40</span><span class="bi ">44</span></div>
-<div class="bo-so" data-chep="power_645: 14 20 24 33 36 42   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">24</span><span class="bi ">33</span><span class="bi ">36</span><span class="bi ">42</span></div>
-<div class="bo-so" data-chep="power_645: 3 18 20 25 33 38   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">18</span><span class="bi ">20</span><span class="bi ">25</span><span class="bi ">33</span><span class="bi ">38</span></div>
-<div class="bo-so" data-chep="power_645: 15 16 24 26 30 42   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">24</span><span class="bi ">26</span><span class="bi ">30</span><span class="bi ">42</span></div>
+<div class="bo-so" data-chep="power_645: 1 15 24 37 40 44   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">15</span><span class="bi ">24</span><span class="bi ">37</span><span class="bi ">40</span><span class="bi ">44</span></div>
+<div class="bo-so" data-chep="power_645: 14 20 24 33 36 42   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">24</span><span class="bi ">33</span><span class="bi ">36</span><span class="bi ">42</span></div>
+<div class="bo-so" data-chep="power_645: 3 18 20 25 33 38   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">18</span><span class="bi ">20</span><span class="bi ">25</span><span class="bi ">33</span><span class="bi ">38</span></div>
+<div class="bo-so" data-chep="power_645: 15 16 24 26 30 42   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">24</span><span class="bi ">26</span><span class="bi ">30</span><span class="bi ">42</span></div>
 </div>
 <div class="the">
 <div><strong>Suy giảm mũ</strong></div>
 <div class="mo" style="margin-bottom:8px">số nóng nhưng kỳ càng cũ càng nhẹ ký</div>
-<div class="bo-so" data-chep="power_645: 7 9 14 17 26 39   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">09</span><span class="bi ">14</span><span class="bi ">17</span><span class="bi ">26</span><span class="bi ">39</span></div>
-<div class="bo-so" data-chep="power_645: 5 8 29 34 35 36   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">29</span><span class="bi ">34</span><span class="bi ">35</span><span class="bi ">36</span></div>
-<div class="bo-so" data-chep="power_645: 12 13 16 22 37 38   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">13</span><span class="bi ">16</span><span class="bi ">22</span><span class="bi ">37</span><span class="bi ">38</span></div>
-<div class="bo-so" data-chep="power_645: 2 12 28 31 42 43   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">12</span><span class="bi ">28</span><span class="bi ">31</span><span class="bi ">42</span><span class="bi ">43</span></div>
+<div class="bo-so" data-chep="power_645: 7 9 14 17 26 39   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">09</span><span class="bi ">14</span><span class="bi ">17</span><span class="bi ">26</span><span class="bi ">39</span></div>
+<div class="bo-so" data-chep="power_645: 5 8 29 34 35 36   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">29</span><span class="bi ">34</span><span class="bi ">35</span><span class="bi ">36</span></div>
+<div class="bo-so" data-chep="power_645: 12 13 16 22 37 38   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">13</span><span class="bi ">16</span><span class="bi ">22</span><span class="bi ">37</span><span class="bi ">38</span></div>
+<div class="bo-so" data-chep="power_645: 2 12 28 31 42 43   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">12</span><span class="bi ">28</span><span class="bi ">31</span><span class="bi ">42</span><span class="bi ">43</span></div>
 </div>
 <div class="the">
 <div><strong>Tần suất cặp</strong></div>
 <div class="mo" style="margin-bottom:8px">số hay đi cùng các số của kỳ liền trước</div>
-<div class="bo-so" data-chep="power_645: 2 15 20 28 30 43   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">15</span><span class="bi ">20</span><span class="bi ">28</span><span class="bi ">30</span><span class="bi ">43</span></div>
-<div class="bo-so" data-chep="power_645: 4 9 10 11 20 24   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">11</span><span class="bi ">20</span><span class="bi ">24</span></div>
-<div class="bo-so" data-chep="power_645: 4 9 10 13 22 25   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">13</span><span class="bi ">22</span><span class="bi ">25</span></div>
-<div class="bo-so" data-chep="power_645: 15 16 20 22 23 35   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">20</span><span class="bi ">22</span><span class="bi ">23</span><span class="bi ">35</span></div>
+<div class="bo-so" data-chep="power_645: 2 15 20 28 30 43   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">15</span><span class="bi ">20</span><span class="bi ">28</span><span class="bi ">30</span><span class="bi ">43</span></div>
+<div class="bo-so" data-chep="power_645: 4 9 10 11 20 24   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">11</span><span class="bi ">20</span><span class="bi ">24</span></div>
+<div class="bo-so" data-chep="power_645: 4 9 10 13 22 25   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">13</span><span class="bi ">22</span><span class="bi ">25</span></div>
+<div class="bo-so" data-chep="power_645: 15 16 20 22 23 35   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">20</span><span class="bi ">22</span><span class="bi ">23</span><span class="bi ">35</span></div>
 </div>
 <div class="the">
 <div><strong>Chuỗi Markov</strong></div>
 <div class="mo" style="margin-bottom:8px">số hay về ở kỳ SAU khi kỳ trước có các số đó</div>
-<div class="bo-so" data-chep="power_645: 18 31 35 36 37 40   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">18</span><span class="bi ">31</span><span class="bi ">35</span><span class="bi ">36</span><span class="bi ">37</span><span class="bi ">40</span></div>
-<div class="bo-so" data-chep="power_645: 11 14 29 34 36 42   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">11</span><span class="bi ">14</span><span class="bi ">29</span><span class="bi ">34</span><span class="bi ">36</span><span class="bi ">42</span></div>
-<div class="bo-so" data-chep="power_645: 3 8 29 30 43 44   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">08</span><span class="bi ">29</span><span class="bi ">30</span><span class="bi ">43</span><span class="bi ">44</span></div>
-<div class="bo-so" data-chep="power_645: 28 33 35 36 37 38   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">28</span><span class="bi ">33</span><span class="bi ">35</span><span class="bi ">36</span><span class="bi ">37</span><span class="bi ">38</span></div>
+<div class="bo-so" data-chep="power_645: 18 31 35 36 37 40   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">18</span><span class="bi ">31</span><span class="bi ">35</span><span class="bi ">36</span><span class="bi ">37</span><span class="bi ">40</span></div>
+<div class="bo-so" data-chep="power_645: 11 14 29 34 36 42   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">11</span><span class="bi ">14</span><span class="bi ">29</span><span class="bi ">34</span><span class="bi ">36</span><span class="bi ">42</span></div>
+<div class="bo-so" data-chep="power_645: 3 8 29 30 43 44   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">08</span><span class="bi ">29</span><span class="bi ">30</span><span class="bi ">43</span><span class="bi ">44</span></div>
+<div class="bo-so" data-chep="power_645: 28 33 35 36 37 38   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">28</span><span class="bi ">33</span><span class="bi ">35</span><span class="bi ">36</span><span class="bi ">37</span><span class="bi ">38</span></div>
 </div>
 <div class="the">
 <div><strong>Mẫu hình</strong></div>
 <div class="mo" style="margin-bottom:8px">theo phân bố 5 khoảng của dải số</div>
-<div class="bo-so" data-chep="power_645: 3 4 7 16 29 39   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">04</span><span class="bi ">07</span><span class="bi ">16</span><span class="bi ">29</span><span class="bi ">39</span></div>
-<div class="bo-so" data-chep="power_645: 12 14 18 28 35 41   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">14</span><span class="bi ">18</span><span class="bi ">28</span><span class="bi ">35</span><span class="bi ">41</span></div>
-<div class="bo-so" data-chep="power_645: 8 9 11 16 27 35   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">08</span><span class="bi ">09</span><span class="bi ">11</span><span class="bi ">16</span><span class="bi ">27</span><span class="bi ">35</span></div>
-<div class="bo-so" data-chep="power_645: 13 15 25 27 28 36   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">13</span><span class="bi ">15</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi ">28</span><span class="bi ">36</span></div>
+<div class="bo-so" data-chep="power_645: 3 4 7 16 29 39   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">04</span><span class="bi ">07</span><span class="bi ">16</span><span class="bi ">29</span><span class="bi ">39</span></div>
+<div class="bo-so" data-chep="power_645: 12 14 18 28 35 41   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">14</span><span class="bi ">18</span><span class="bi ">28</span><span class="bi ">35</span><span class="bi ">41</span></div>
+<div class="bo-so" data-chep="power_645: 8 9 11 16 27 35   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">08</span><span class="bi ">09</span><span class="bi ">11</span><span class="bi ">16</span><span class="bi ">27</span><span class="bi ">35</span></div>
+<div class="bo-so" data-chep="power_645: 13 15 25 27 28 36   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">13</span><span class="bi ">15</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi ">28</span><span class="bi ">36</span></div>
 </div>
 </div>
 <h3 style="margin-top:24px">Lotto 5/35 &middot; Hằng ngày 2 kỳ — 13h00 và 21h00</h3>
@@ -730,74 +742,74 @@ align-items:center;gap:5px}
 <div class="the">
 <div><strong>Ngẫu nhiên</strong></div>
 <div class="mo" style="margin-bottom:8px">bốc bừa, không nhìn lịch sử — mốc so sánh</div>
-<div class="bo-so" data-chep="power_535: 11 12 22 23 26 | 7   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">11</span><span class="bi ">12</span><span class="bi ">22</span><span class="bi ">23</span><span class="bi ">26</span><span class="bi db">07</span></div>
-<div class="bo-so" data-chep="power_535: 3 7 14 20 29 | 10   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">07</span><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">29</span><span class="bi db">10</span></div>
-<div class="bo-so" data-chep="power_535: 8 12 25 29 35 | 6   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">08</span><span class="bi ">12</span><span class="bi ">25</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi db">06</span></div>
-<div class="bo-so" data-chep="power_535: 1 8 17 20 21 | 9   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">08</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi db">09</span></div>
+<div class="bo-so" data-chep="power_535: 11 12 22 23 26 | 7   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">11</span><span class="bi ">12</span><span class="bi ">22</span><span class="bi ">23</span><span class="bi ">26</span><span class="bi db">07</span></div>
+<div class="bo-so" data-chep="power_535: 3 7 14 20 29 | 10   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">07</span><span class="bi ">14</span><span class="bi ">20</span><span class="bi ">29</span><span class="bi db">10</span></div>
+<div class="bo-so" data-chep="power_535: 8 12 25 29 35 | 6   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">08</span><span class="bi ">12</span><span class="bi ">25</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi db">06</span></div>
+<div class="bo-so" data-chep="power_535: 1 8 17 20 21 | 9   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">08</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi db">09</span></div>
 </div>
 <div class="the">
 <div><strong>Số nóng</strong></div>
 <div class="mo" style="margin-bottom:8px">ưu tiên số hay về trong ~180 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_535: 1 4 5 6 19 | 6   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">04</span><span class="bi ">05</span><span class="bi ">06</span><span class="bi ">19</span><span class="bi db">06</span></div>
-<div class="bo-so" data-chep="power_535: 5 8 20 21 33 | 7   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi ">33</span><span class="bi db">07</span></div>
-<div class="bo-so" data-chep="power_535: 3 6 18 31 34 | 10   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">06</span><span class="bi ">18</span><span class="bi ">31</span><span class="bi ">34</span><span class="bi db">10</span></div>
-<div class="bo-so" data-chep="power_535: 3 23 28 29 35 | 10   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">23</span><span class="bi ">28</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi db">10</span></div>
+<div class="bo-so" data-chep="power_535: 1 4 5 6 19 | 6   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">04</span><span class="bi ">05</span><span class="bi ">06</span><span class="bi ">19</span><span class="bi db">06</span></div>
+<div class="bo-so" data-chep="power_535: 5 8 20 21 33 | 7   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi ">33</span><span class="bi db">07</span></div>
+<div class="bo-so" data-chep="power_535: 3 6 18 31 34 | 10   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">06</span><span class="bi ">18</span><span class="bi ">31</span><span class="bi ">34</span><span class="bi db">10</span></div>
+<div class="bo-so" data-chep="power_535: 3 23 28 29 35 | 10   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">23</span><span class="bi ">28</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi db">10</span></div>
 </div>
 <div class="the">
 <div><strong>Số lạnh</strong></div>
 <div class="mo" style="margin-bottom:8px">ưu tiên số ít về trong ~180 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_535: 3 16 17 20 32 | 2   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">16</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">32</span><span class="bi db">02</span></div>
-<div class="bo-so" data-chep="power_535: 3 5 8 13 21 | 7   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">13</span><span class="bi ">21</span><span class="bi db">07</span></div>
-<div class="bo-so" data-chep="power_535: 2 4 5 23 31 | 3   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">04</span><span class="bi ">05</span><span class="bi ">23</span><span class="bi ">31</span><span class="bi db">03</span></div>
-<div class="bo-so" data-chep="power_535: 9 12 16 20 26 | 4   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">09</span><span class="bi ">12</span><span class="bi ">16</span><span class="bi ">20</span><span class="bi ">26</span><span class="bi db">04</span></div>
+<div class="bo-so" data-chep="power_535: 3 16 17 20 32 | 2   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">16</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">32</span><span class="bi db">02</span></div>
+<div class="bo-so" data-chep="power_535: 3 5 8 13 21 | 7   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">05</span><span class="bi ">08</span><span class="bi ">13</span><span class="bi ">21</span><span class="bi db">07</span></div>
+<div class="bo-so" data-chep="power_535: 2 4 5 23 31 | 3   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">04</span><span class="bi ">05</span><span class="bi ">23</span><span class="bi ">31</span><span class="bi db">03</span></div>
+<div class="bo-so" data-chep="power_535: 9 12 16 20 26 | 4   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">09</span><span class="bi ">12</span><span class="bi ">16</span><span class="bi ">20</span><span class="bi ">26</span><span class="bi db">04</span></div>
 </div>
 <div class="the">
 <div><strong>Lâu chưa về</strong></div>
 <div class="mo" style="margin-bottom:8px">chỉ bốc trong 10 số vắng lâu nhất</div>
-<div class="bo-so" data-chep="power_535: 8 12 16 32 35 | 5   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">08</span><span class="bi ">12</span><span class="bi ">16</span><span class="bi ">32</span><span class="bi ">35</span><span class="bi db">05</span></div>
-<div class="bo-so" data-chep="power_535: 10 16 32 33 35 | 10   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">10</span><span class="bi ">16</span><span class="bi ">32</span><span class="bi ">33</span><span class="bi ">35</span><span class="bi db">10</span></div>
-<div class="bo-so" data-chep="power_535: 10 12 14 17 33 | 9   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">10</span><span class="bi ">12</span><span class="bi ">14</span><span class="bi ">17</span><span class="bi ">33</span><span class="bi db">09</span></div>
-<div class="bo-so" data-chep="power_535: 10 12 16 21 35 | 8   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">10</span><span class="bi ">12</span><span class="bi ">16</span><span class="bi ">21</span><span class="bi ">35</span><span class="bi db">08</span></div>
+<div class="bo-so" data-chep="power_535: 8 12 16 32 35 | 5   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">08</span><span class="bi ">12</span><span class="bi ">16</span><span class="bi ">32</span><span class="bi ">35</span><span class="bi db">05</span></div>
+<div class="bo-so" data-chep="power_535: 10 16 32 33 35 | 10   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">10</span><span class="bi ">16</span><span class="bi ">32</span><span class="bi ">33</span><span class="bi ">35</span><span class="bi db">10</span></div>
+<div class="bo-so" data-chep="power_535: 10 12 14 17 33 | 9   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">10</span><span class="bi ">12</span><span class="bi ">14</span><span class="bi ">17</span><span class="bi ">33</span><span class="bi db">09</span></div>
+<div class="bo-so" data-chep="power_535: 10 12 16 21 35 | 8   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">10</span><span class="bi ">12</span><span class="bi ">16</span><span class="bi ">21</span><span class="bi ">35</span><span class="bi db">08</span></div>
 </div>
 <div class="the">
 <div><strong>Không lặp lại</strong></div>
 <div class="mo" style="margin-bottom:8px">né các số vừa về 15 kỳ gần đây</div>
-<div class="bo-so" data-chep="power_535: 7 13 22 26 35 | 5   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">13</span><span class="bi ">22</span><span class="bi ">26</span><span class="bi ">35</span><span class="bi db">05</span></div>
-<div class="bo-so" data-chep="power_535: 14 18 23 34 35 | 5   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">14</span><span class="bi ">18</span><span class="bi ">23</span><span class="bi ">34</span><span class="bi ">35</span><span class="bi db">05</span></div>
-<div class="bo-so" data-chep="power_535: 2 3 12 21 35 | 11   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">03</span><span class="bi ">12</span><span class="bi ">21</span><span class="bi ">35</span><span class="bi db">11</span></div>
-<div class="bo-so" data-chep="power_535: 7 15 19 20 33 | 4   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">15</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">33</span><span class="bi db">04</span></div>
+<div class="bo-so" data-chep="power_535: 7 13 22 26 35 | 5   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">13</span><span class="bi ">22</span><span class="bi ">26</span><span class="bi ">35</span><span class="bi db">05</span></div>
+<div class="bo-so" data-chep="power_535: 14 18 23 34 35 | 5   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">14</span><span class="bi ">18</span><span class="bi ">23</span><span class="bi ">34</span><span class="bi ">35</span><span class="bi db">05</span></div>
+<div class="bo-so" data-chep="power_535: 2 3 12 21 35 | 11   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">03</span><span class="bi ">12</span><span class="bi ">21</span><span class="bi ">35</span><span class="bi db">11</span></div>
+<div class="bo-so" data-chep="power_535: 7 15 19 20 33 | 4   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">15</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">33</span><span class="bi db">04</span></div>
 </div>
 <div class="the">
 <div><strong>Suy giảm mũ</strong></div>
 <div class="mo" style="margin-bottom:8px">số nóng nhưng kỳ càng cũ càng nhẹ ký</div>
-<div class="bo-so" data-chep="power_535: 2 13 28 29 31 | 1   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">13</span><span class="bi ">28</span><span class="bi ">29</span><span class="bi ">31</span><span class="bi db">01</span></div>
-<div class="bo-so" data-chep="power_535: 1 6 11 25 27 | 6   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">06</span><span class="bi ">11</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi db">06</span></div>
-<div class="bo-so" data-chep="power_535: 7 9 23 26 34 | 5   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">09</span><span class="bi ">23</span><span class="bi ">26</span><span class="bi ">34</span><span class="bi db">05</span></div>
-<div class="bo-so" data-chep="power_535: 14 15 21 31 34 | 9   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">14</span><span class="bi ">15</span><span class="bi ">21</span><span class="bi ">31</span><span class="bi ">34</span><span class="bi db">09</span></div>
+<div class="bo-so" data-chep="power_535: 2 13 28 29 31 | 1   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">13</span><span class="bi ">28</span><span class="bi ">29</span><span class="bi ">31</span><span class="bi db">01</span></div>
+<div class="bo-so" data-chep="power_535: 1 6 11 25 27 | 6   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">06</span><span class="bi ">11</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi db">06</span></div>
+<div class="bo-so" data-chep="power_535: 7 9 23 26 34 | 5   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">09</span><span class="bi ">23</span><span class="bi ">26</span><span class="bi ">34</span><span class="bi db">05</span></div>
+<div class="bo-so" data-chep="power_535: 14 15 21 31 34 | 9   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">14</span><span class="bi ">15</span><span class="bi ">21</span><span class="bi ">31</span><span class="bi ">34</span><span class="bi db">09</span></div>
 </div>
 <div class="the">
 <div><strong>Tần suất cặp</strong></div>
 <div class="mo" style="margin-bottom:8px">số hay đi cùng các số của kỳ liền trước</div>
-<div class="bo-so" data-chep="power_535: 1 5 12 21 27 | 9   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">05</span><span class="bi ">12</span><span class="bi ">21</span><span class="bi ">27</span><span class="bi db">09</span></div>
-<div class="bo-so" data-chep="power_535: 9 18 19 29 31 | 2   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">09</span><span class="bi ">18</span><span class="bi ">19</span><span class="bi ">29</span><span class="bi ">31</span><span class="bi db">02</span></div>
-<div class="bo-so" data-chep="power_535: 5 9 12 20 27 | 2   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">09</span><span class="bi ">12</span><span class="bi ">20</span><span class="bi ">27</span><span class="bi db">02</span></div>
-<div class="bo-so" data-chep="power_535: 7 10 14 26 35 | 10   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">10</span><span class="bi ">14</span><span class="bi ">26</span><span class="bi ">35</span><span class="bi db">10</span></div>
+<div class="bo-so" data-chep="power_535: 1 5 12 21 27 | 9   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">05</span><span class="bi ">12</span><span class="bi ">21</span><span class="bi ">27</span><span class="bi db">09</span></div>
+<div class="bo-so" data-chep="power_535: 9 18 19 29 31 | 2   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">09</span><span class="bi ">18</span><span class="bi ">19</span><span class="bi ">29</span><span class="bi ">31</span><span class="bi db">02</span></div>
+<div class="bo-so" data-chep="power_535: 5 9 12 20 27 | 2   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">09</span><span class="bi ">12</span><span class="bi ">20</span><span class="bi ">27</span><span class="bi db">02</span></div>
+<div class="bo-so" data-chep="power_535: 7 10 14 26 35 | 10   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">10</span><span class="bi ">14</span><span class="bi ">26</span><span class="bi ">35</span><span class="bi db">10</span></div>
 </div>
 <div class="the">
 <div><strong>Chuỗi Markov</strong></div>
 <div class="mo" style="margin-bottom:8px">số hay về ở kỳ SAU khi kỳ trước có các số đó</div>
-<div class="bo-so" data-chep="power_535: 2 9 13 23 33 | 9   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">09</span><span class="bi ">13</span><span class="bi ">23</span><span class="bi ">33</span><span class="bi db">09</span></div>
-<div class="bo-so" data-chep="power_535: 19 21 22 30 33 | 9   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">19</span><span class="bi ">21</span><span class="bi ">22</span><span class="bi ">30</span><span class="bi ">33</span><span class="bi db">09</span></div>
-<div class="bo-so" data-chep="power_535: 10 12 21 22 26 | 11   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">10</span><span class="bi ">12</span><span class="bi ">21</span><span class="bi ">22</span><span class="bi ">26</span><span class="bi db">11</span></div>
-<div class="bo-so" data-chep="power_535: 10 15 20 28 29 | 1   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">10</span><span class="bi ">15</span><span class="bi ">20</span><span class="bi ">28</span><span class="bi ">29</span><span class="bi db">01</span></div>
+<div class="bo-so" data-chep="power_535: 2 9 13 23 33 | 9   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">09</span><span class="bi ">13</span><span class="bi ">23</span><span class="bi ">33</span><span class="bi db">09</span></div>
+<div class="bo-so" data-chep="power_535: 19 21 22 30 33 | 9   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">19</span><span class="bi ">21</span><span class="bi ">22</span><span class="bi ">30</span><span class="bi ">33</span><span class="bi db">09</span></div>
+<div class="bo-so" data-chep="power_535: 10 12 21 22 26 | 11   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">10</span><span class="bi ">12</span><span class="bi ">21</span><span class="bi ">22</span><span class="bi ">26</span><span class="bi db">11</span></div>
+<div class="bo-so" data-chep="power_535: 10 15 20 28 29 | 1   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">10</span><span class="bi ">15</span><span class="bi ">20</span><span class="bi ">28</span><span class="bi ">29</span><span class="bi db">01</span></div>
 </div>
 <div class="the">
 <div><strong>Mẫu hình</strong></div>
 <div class="mo" style="margin-bottom:8px">theo phân bố 5 khoảng của dải số</div>
-<div class="bo-so" data-chep="power_535: 5 9 12 24 33 | 7   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">05</span><span class="bi ">09</span><span class="bi ">12</span><span class="bi ">24</span><span class="bi ">33</span><span class="bi db">07</span></div>
-<div class="bo-so" data-chep="power_535: 9 15 25 28 32 | 9   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">09</span><span class="bi ">15</span><span class="bi ">25</span><span class="bi ">28</span><span class="bi ">32</span><span class="bi db">09</span></div>
-<div class="bo-so" data-chep="power_535: 7 17 20 23 26 | 8   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">23</span><span class="bi ">26</span><span class="bi db">08</span></div>
-<div class="bo-so" data-chep="power_535: 1 16 21 22 25 | 10   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">16</span><span class="bi ">21</span><span class="bi ">22</span><span class="bi ">25</span><span class="bi db">10</span></div>
+<div class="bo-so" data-chep="power_535: 5 9 12 24 33 | 7   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">05</span><span class="bi ">09</span><span class="bi ">12</span><span class="bi ">24</span><span class="bi ">33</span><span class="bi db">07</span></div>
+<div class="bo-so" data-chep="power_535: 9 15 25 28 32 | 9   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">09</span><span class="bi ">15</span><span class="bi ">25</span><span class="bi ">28</span><span class="bi ">32</span><span class="bi db">09</span></div>
+<div class="bo-so" data-chep="power_535: 7 17 20 23 26 | 8   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">23</span><span class="bi ">26</span><span class="bi db">08</span></div>
+<div class="bo-so" data-chep="power_535: 1 16 21 22 25 | 10   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">16</span><span class="bi ">21</span><span class="bi ">22</span><span class="bi ">25</span><span class="bi db">10</span></div>
 </div>
 </div>
 <h3 style="margin-top:24px">Keno &middot; Mỗi 10 phút, 6h00 - 21h55</h3>
@@ -806,74 +818,74 @@ align-items:center;gap:5px}
 <div class="the">
 <div><strong>Ngẫu nhiên</strong></div>
 <div class="mo" style="margin-bottom:8px">bốc bừa, không nhìn lịch sử — mốc so sánh</div>
-<div class="bo-so" data-chep="keno: 13 15 16 24 31 41 49 50 60 67   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">13</span><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">24</span><span class="bi ">31</span><span class="bi ">41</span><span class="bi ">49</span><span class="bi ">50</span><span class="bi ">60</span><span class="bi ">67</span></div>
-<div class="bo-so" data-chep="keno: 13 14 29 35 48 56 61 64 73 77   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">13</span><span class="bi ">14</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi ">48</span><span class="bi ">56</span><span class="bi ">61</span><span class="bi ">64</span><span class="bi ">73</span><span class="bi ">77</span></div>
-<div class="bo-so" data-chep="keno: 7 17 20 21 33 41 50 52 63 66   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi ">33</span><span class="bi ">41</span><span class="bi ">50</span><span class="bi ">52</span><span class="bi ">63</span><span class="bi ">66</span></div>
-<div class="bo-so" data-chep="keno: 3 16 29 37 46 54 57 63 69 74   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">16</span><span class="bi ">29</span><span class="bi ">37</span><span class="bi ">46</span><span class="bi ">54</span><span class="bi ">57</span><span class="bi ">63</span><span class="bi ">69</span><span class="bi ">74</span></div>
+<div class="bo-so" data-chep="keno: 13 15 16 24 31 41 49 50 60 67   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">13</span><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">24</span><span class="bi ">31</span><span class="bi ">41</span><span class="bi ">49</span><span class="bi ">50</span><span class="bi ">60</span><span class="bi ">67</span></div>
+<div class="bo-so" data-chep="keno: 13 14 29 35 48 56 61 64 73 77   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">13</span><span class="bi ">14</span><span class="bi ">29</span><span class="bi ">35</span><span class="bi ">48</span><span class="bi ">56</span><span class="bi ">61</span><span class="bi ">64</span><span class="bi ">73</span><span class="bi ">77</span></div>
+<div class="bo-so" data-chep="keno: 7 17 20 21 33 41 50 52 63 66   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">21</span><span class="bi ">33</span><span class="bi ">41</span><span class="bi ">50</span><span class="bi ">52</span><span class="bi ">63</span><span class="bi ">66</span></div>
+<div class="bo-so" data-chep="keno: 3 16 29 37 46 54 57 63 69 74   # gợi ý Ngẫu nhiên 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">16</span><span class="bi ">29</span><span class="bi ">37</span><span class="bi ">46</span><span class="bi ">54</span><span class="bi ">57</span><span class="bi ">63</span><span class="bi ">69</span><span class="bi ">74</span></div>
 </div>
 <div class="the">
 <div><strong>Số nóng</strong></div>
 <div class="mo" style="margin-bottom:8px">ưu tiên số hay về trong ~180 kỳ gần đây</div>
-<div class="bo-so" data-chep="keno: 1 3 12 24 25 37 45 47 56 61   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">03</span><span class="bi ">12</span><span class="bi ">24</span><span class="bi ">25</span><span class="bi ">37</span><span class="bi ">45</span><span class="bi ">47</span><span class="bi ">56</span><span class="bi ">61</span></div>
-<div class="bo-so" data-chep="keno: 4 8 10 21 24 31 38 42 49 80   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">08</span><span class="bi ">10</span><span class="bi ">21</span><span class="bi ">24</span><span class="bi ">31</span><span class="bi ">38</span><span class="bi ">42</span><span class="bi ">49</span><span class="bi ">80</span></div>
-<div class="bo-so" data-chep="keno: 1 2 9 10 32 43 46 49 69 75   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">02</span><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">32</span><span class="bi ">43</span><span class="bi ">46</span><span class="bi ">49</span><span class="bi ">69</span><span class="bi ">75</span></div>
-<div class="bo-so" data-chep="keno: 1 10 19 28 35 41 45 48 69 74   # gợi ý Số nóng 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">10</span><span class="bi ">19</span><span class="bi ">28</span><span class="bi ">35</span><span class="bi ">41</span><span class="bi ">45</span><span class="bi ">48</span><span class="bi ">69</span><span class="bi ">74</span></div>
+<div class="bo-so" data-chep="keno: 1 3 12 24 25 37 45 47 56 61   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">03</span><span class="bi ">12</span><span class="bi ">24</span><span class="bi ">25</span><span class="bi ">37</span><span class="bi ">45</span><span class="bi ">47</span><span class="bi ">56</span><span class="bi ">61</span></div>
+<div class="bo-so" data-chep="keno: 4 8 10 21 24 31 38 42 49 80   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">08</span><span class="bi ">10</span><span class="bi ">21</span><span class="bi ">24</span><span class="bi ">31</span><span class="bi ">38</span><span class="bi ">42</span><span class="bi ">49</span><span class="bi ">80</span></div>
+<div class="bo-so" data-chep="keno: 1 2 9 10 32 43 46 49 69 75   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">02</span><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">32</span><span class="bi ">43</span><span class="bi ">46</span><span class="bi ">49</span><span class="bi ">69</span><span class="bi ">75</span></div>
+<div class="bo-so" data-chep="keno: 1 10 19 28 35 41 45 48 69 74   # gợi ý Số nóng 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">10</span><span class="bi ">19</span><span class="bi ">28</span><span class="bi ">35</span><span class="bi ">41</span><span class="bi ">45</span><span class="bi ">48</span><span class="bi ">69</span><span class="bi ">74</span></div>
 </div>
 <div class="the">
 <div><strong>Số lạnh</strong></div>
 <div class="mo" style="margin-bottom:8px">ưu tiên số ít về trong ~180 kỳ gần đây</div>
-<div class="bo-so" data-chep="keno: 2 4 9 11 23 25 39 42 51 69   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">02</span><span class="bi ">04</span><span class="bi ">09</span><span class="bi ">11</span><span class="bi ">23</span><span class="bi ">25</span><span class="bi ">39</span><span class="bi ">42</span><span class="bi ">51</span><span class="bi ">69</span></div>
-<div class="bo-so" data-chep="keno: 3 14 25 30 34 41 46 51 52 78   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">14</span><span class="bi ">25</span><span class="bi ">30</span><span class="bi ">34</span><span class="bi ">41</span><span class="bi ">46</span><span class="bi ">51</span><span class="bi ">52</span><span class="bi ">78</span></div>
-<div class="bo-so" data-chep="keno: 15 18 31 32 35 37 47 53 54 64   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">15</span><span class="bi ">18</span><span class="bi ">31</span><span class="bi ">32</span><span class="bi ">35</span><span class="bi ">37</span><span class="bi ">47</span><span class="bi ">53</span><span class="bi ">54</span><span class="bi ">64</span></div>
-<div class="bo-so" data-chep="keno: 1 17 20 30 35 40 46 60 62 80   # gợi ý Số lạnh 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">30</span><span class="bi ">35</span><span class="bi ">40</span><span class="bi ">46</span><span class="bi ">60</span><span class="bi ">62</span><span class="bi ">80</span></div>
+<div class="bo-so" data-chep="keno: 2 4 9 11 23 25 39 42 51 69   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">02</span><span class="bi ">04</span><span class="bi ">09</span><span class="bi ">11</span><span class="bi ">23</span><span class="bi ">25</span><span class="bi ">39</span><span class="bi ">42</span><span class="bi ">51</span><span class="bi ">69</span></div>
+<div class="bo-so" data-chep="keno: 3 14 25 30 34 41 46 51 52 78   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">14</span><span class="bi ">25</span><span class="bi ">30</span><span class="bi ">34</span><span class="bi ">41</span><span class="bi ">46</span><span class="bi ">51</span><span class="bi ">52</span><span class="bi ">78</span></div>
+<div class="bo-so" data-chep="keno: 15 18 31 32 35 37 47 53 54 64   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">15</span><span class="bi ">18</span><span class="bi ">31</span><span class="bi ">32</span><span class="bi ">35</span><span class="bi ">37</span><span class="bi ">47</span><span class="bi ">53</span><span class="bi ">54</span><span class="bi ">64</span></div>
+<div class="bo-so" data-chep="keno: 1 17 20 30 35 40 46 60 62 80   # gợi ý Số lạnh 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">17</span><span class="bi ">20</span><span class="bi ">30</span><span class="bi ">35</span><span class="bi ">40</span><span class="bi ">46</span><span class="bi ">60</span><span class="bi ">62</span><span class="bi ">80</span></div>
 </div>
 <div class="the">
 <div><strong>Lâu chưa về</strong></div>
 <div class="mo" style="margin-bottom:8px">chỉ bốc trong 18 số vắng lâu nhất</div>
-<div class="bo-so" data-chep="keno: 12 15 16 19 20 28 38 46 57 76   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">28</span><span class="bi ">38</span><span class="bi ">46</span><span class="bi ">57</span><span class="bi ">76</span></div>
-<div class="bo-so" data-chep="keno: 12 16 19 20 25 45 46 52 57 76   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">16</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">25</span><span class="bi ">45</span><span class="bi ">46</span><span class="bi ">52</span><span class="bi ">57</span><span class="bi ">76</span></div>
-<div class="bo-so" data-chep="keno: 12 14 19 25 28 45 57 62 64 67   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">14</span><span class="bi ">19</span><span class="bi ">25</span><span class="bi ">28</span><span class="bi ">45</span><span class="bi ">57</span><span class="bi ">62</span><span class="bi ">64</span><span class="bi ">67</span></div>
-<div class="bo-so" data-chep="keno: 12 19 20 36 38 45 57 64 67 76   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">36</span><span class="bi ">38</span><span class="bi ">45</span><span class="bi ">57</span><span class="bi ">64</span><span class="bi ">67</span><span class="bi ">76</span></div>
+<div class="bo-so" data-chep="keno: 12 15 16 19 20 28 38 46 57 76   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">28</span><span class="bi ">38</span><span class="bi ">46</span><span class="bi ">57</span><span class="bi ">76</span></div>
+<div class="bo-so" data-chep="keno: 12 16 19 20 25 45 46 52 57 76   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">16</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">25</span><span class="bi ">45</span><span class="bi ">46</span><span class="bi ">52</span><span class="bi ">57</span><span class="bi ">76</span></div>
+<div class="bo-so" data-chep="keno: 12 14 19 25 28 45 57 62 64 67   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">14</span><span class="bi ">19</span><span class="bi ">25</span><span class="bi ">28</span><span class="bi ">45</span><span class="bi ">57</span><span class="bi ">62</span><span class="bi ">64</span><span class="bi ">67</span></div>
+<div class="bo-so" data-chep="keno: 12 19 20 36 38 45 57 64 67 76   # gợi ý Lâu chưa về 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">36</span><span class="bi ">38</span><span class="bi ">45</span><span class="bi ">57</span><span class="bi ">64</span><span class="bi ">67</span><span class="bi ">76</span></div>
 </div>
 <div class="the">
 <div><strong>Không lặp lại</strong></div>
 <div class="mo" style="margin-bottom:8px">né các số vừa về 15 kỳ gần đây</div>
-<div class="bo-so" data-chep="keno: 7 10 14 18 20 31 36 47 61 68   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">07</span><span class="bi ">10</span><span class="bi ">14</span><span class="bi ">18</span><span class="bi ">20</span><span class="bi ">31</span><span class="bi ">36</span><span class="bi ">47</span><span class="bi ">61</span><span class="bi ">68</span></div>
-<div class="bo-so" data-chep="keno: 1 24 29 32 58 61 62 63 69 76   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">01</span><span class="bi ">24</span><span class="bi ">29</span><span class="bi ">32</span><span class="bi ">58</span><span class="bi ">61</span><span class="bi ">62</span><span class="bi ">63</span><span class="bi ">69</span><span class="bi ">76</span></div>
-<div class="bo-so" data-chep="keno: 12 17 28 31 36 46 47 50 70 77   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">17</span><span class="bi ">28</span><span class="bi ">31</span><span class="bi ">36</span><span class="bi ">46</span><span class="bi ">47</span><span class="bi ">50</span><span class="bi ">70</span><span class="bi ">77</span></div>
-<div class="bo-so" data-chep="keno: 15 18 24 45 57 62 69 74 78 79   # gợi ý Không lặp lại 05/09/2026" title="Bấm để chép"><span class="bi ">15</span><span class="bi ">18</span><span class="bi ">24</span><span class="bi ">45</span><span class="bi ">57</span><span class="bi ">62</span><span class="bi ">69</span><span class="bi ">74</span><span class="bi ">78</span><span class="bi ">79</span></div>
+<div class="bo-so" data-chep="keno: 7 10 14 18 20 31 36 47 61 68   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">07</span><span class="bi ">10</span><span class="bi ">14</span><span class="bi ">18</span><span class="bi ">20</span><span class="bi ">31</span><span class="bi ">36</span><span class="bi ">47</span><span class="bi ">61</span><span class="bi ">68</span></div>
+<div class="bo-so" data-chep="keno: 1 24 29 32 58 61 62 63 69 76   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">01</span><span class="bi ">24</span><span class="bi ">29</span><span class="bi ">32</span><span class="bi ">58</span><span class="bi ">61</span><span class="bi ">62</span><span class="bi ">63</span><span class="bi ">69</span><span class="bi ">76</span></div>
+<div class="bo-so" data-chep="keno: 12 17 28 31 36 46 47 50 70 77   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">17</span><span class="bi ">28</span><span class="bi ">31</span><span class="bi ">36</span><span class="bi ">46</span><span class="bi ">47</span><span class="bi ">50</span><span class="bi ">70</span><span class="bi ">77</span></div>
+<div class="bo-so" data-chep="keno: 15 18 24 45 57 62 69 74 78 79   # gợi ý Không lặp lại 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">15</span><span class="bi ">18</span><span class="bi ">24</span><span class="bi ">45</span><span class="bi ">57</span><span class="bi ">62</span><span class="bi ">69</span><span class="bi ">74</span><span class="bi ">78</span><span class="bi ">79</span></div>
 </div>
 <div class="the">
 <div><strong>Suy giảm mũ</strong></div>
 <div class="mo" style="margin-bottom:8px">số nóng nhưng kỳ càng cũ càng nhẹ ký</div>
-<div class="bo-so" data-chep="keno: 17 19 24 27 39 47 55 56 64 67   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">17</span><span class="bi ">19</span><span class="bi ">24</span><span class="bi ">27</span><span class="bi ">39</span><span class="bi ">47</span><span class="bi ">55</span><span class="bi ">56</span><span class="bi ">64</span><span class="bi ">67</span></div>
-<div class="bo-so" data-chep="keno: 3 8 16 17 40 49 51 65 72 80   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">08</span><span class="bi ">16</span><span class="bi ">17</span><span class="bi ">40</span><span class="bi ">49</span><span class="bi ">51</span><span class="bi ">65</span><span class="bi ">72</span><span class="bi ">80</span></div>
-<div class="bo-so" data-chep="keno: 3 23 29 32 40 42 49 60 73 80   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">23</span><span class="bi ">29</span><span class="bi ">32</span><span class="bi ">40</span><span class="bi ">42</span><span class="bi ">49</span><span class="bi ">60</span><span class="bi ">73</span><span class="bi ">80</span></div>
-<div class="bo-so" data-chep="keno: 10 13 15 30 41 44 56 61 62 76   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để chép"><span class="bi ">10</span><span class="bi ">13</span><span class="bi ">15</span><span class="bi ">30</span><span class="bi ">41</span><span class="bi ">44</span><span class="bi ">56</span><span class="bi ">61</span><span class="bi ">62</span><span class="bi ">76</span></div>
+<div class="bo-so" data-chep="keno: 17 19 24 27 39 47 55 56 64 67   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">17</span><span class="bi ">19</span><span class="bi ">24</span><span class="bi ">27</span><span class="bi ">39</span><span class="bi ">47</span><span class="bi ">55</span><span class="bi ">56</span><span class="bi ">64</span><span class="bi ">67</span></div>
+<div class="bo-so" data-chep="keno: 3 8 16 17 40 49 51 65 72 80   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">08</span><span class="bi ">16</span><span class="bi ">17</span><span class="bi ">40</span><span class="bi ">49</span><span class="bi ">51</span><span class="bi ">65</span><span class="bi ">72</span><span class="bi ">80</span></div>
+<div class="bo-so" data-chep="keno: 3 23 29 32 40 42 49 60 73 80   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">23</span><span class="bi ">29</span><span class="bi ">32</span><span class="bi ">40</span><span class="bi ">42</span><span class="bi ">49</span><span class="bi ">60</span><span class="bi ">73</span><span class="bi ">80</span></div>
+<div class="bo-so" data-chep="keno: 10 13 15 30 41 44 56 61 62 76   # gợi ý Suy giảm mũ 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">10</span><span class="bi ">13</span><span class="bi ">15</span><span class="bi ">30</span><span class="bi ">41</span><span class="bi ">44</span><span class="bi ">56</span><span class="bi ">61</span><span class="bi ">62</span><span class="bi ">76</span></div>
 </div>
 <div class="the">
 <div><strong>Tần suất cặp</strong></div>
 <div class="mo" style="margin-bottom:8px">số hay đi cùng các số của kỳ liền trước</div>
-<div class="bo-so" data-chep="keno: 3 4 7 21 23 39 42 63 66 77   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">04</span><span class="bi ">07</span><span class="bi ">21</span><span class="bi ">23</span><span class="bi ">39</span><span class="bi ">42</span><span class="bi ">63</span><span class="bi ">66</span><span class="bi ">77</span></div>
-<div class="bo-so" data-chep="keno: 3 11 16 28 31 41 44 51 56 62   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">11</span><span class="bi ">16</span><span class="bi ">28</span><span class="bi ">31</span><span class="bi ">41</span><span class="bi ">44</span><span class="bi ">51</span><span class="bi ">56</span><span class="bi ">62</span></div>
-<div class="bo-so" data-chep="keno: 3 7 31 42 45 53 67 70 71 79   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">07</span><span class="bi ">31</span><span class="bi ">42</span><span class="bi ">45</span><span class="bi ">53</span><span class="bi ">67</span><span class="bi ">70</span><span class="bi ">71</span><span class="bi ">79</span></div>
-<div class="bo-so" data-chep="keno: 9 18 20 25 36 47 50 53 55 76   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để chép"><span class="bi ">09</span><span class="bi ">18</span><span class="bi ">20</span><span class="bi ">25</span><span class="bi ">36</span><span class="bi ">47</span><span class="bi ">50</span><span class="bi ">53</span><span class="bi ">55</span><span class="bi ">76</span></div>
+<div class="bo-so" data-chep="keno: 3 4 7 21 23 39 42 63 66 77   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">04</span><span class="bi ">07</span><span class="bi ">21</span><span class="bi ">23</span><span class="bi ">39</span><span class="bi ">42</span><span class="bi ">63</span><span class="bi ">66</span><span class="bi ">77</span></div>
+<div class="bo-so" data-chep="keno: 3 11 16 28 31 41 44 51 56 62   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">11</span><span class="bi ">16</span><span class="bi ">28</span><span class="bi ">31</span><span class="bi ">41</span><span class="bi ">44</span><span class="bi ">51</span><span class="bi ">56</span><span class="bi ">62</span></div>
+<div class="bo-so" data-chep="keno: 3 7 31 42 45 53 67 70 71 79   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">07</span><span class="bi ">31</span><span class="bi ">42</span><span class="bi ">45</span><span class="bi ">53</span><span class="bi ">67</span><span class="bi ">70</span><span class="bi ">71</span><span class="bi ">79</span></div>
+<div class="bo-so" data-chep="keno: 9 18 20 25 36 47 50 53 55 76   # gợi ý Tần suất cặp 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">09</span><span class="bi ">18</span><span class="bi ">20</span><span class="bi ">25</span><span class="bi ">36</span><span class="bi ">47</span><span class="bi ">50</span><span class="bi ">53</span><span class="bi ">55</span><span class="bi ">76</span></div>
 </div>
 <div class="the">
 <div><strong>Chuỗi Markov</strong></div>
 <div class="mo" style="margin-bottom:8px">số hay về ở kỳ SAU khi kỳ trước có các số đó</div>
-<div class="bo-so" data-chep="keno: 4 7 22 23 34 42 45 73 75 80   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">07</span><span class="bi ">22</span><span class="bi ">23</span><span class="bi ">34</span><span class="bi ">42</span><span class="bi ">45</span><span class="bi ">73</span><span class="bi ">75</span><span class="bi ">80</span></div>
-<div class="bo-so" data-chep="keno: 3 13 21 31 49 58 62 70 73 78   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">03</span><span class="bi ">13</span><span class="bi ">21</span><span class="bi ">31</span><span class="bi ">49</span><span class="bi ">58</span><span class="bi ">62</span><span class="bi ">70</span><span class="bi ">73</span><span class="bi ">78</span></div>
-<div class="bo-so" data-chep="keno: 8 11 15 16 25 27 30 45 49 72   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">08</span><span class="bi ">11</span><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi ">30</span><span class="bi ">45</span><span class="bi ">49</span><span class="bi ">72</span></div>
-<div class="bo-so" data-chep="keno: 12 19 20 23 26 30 45 49 66 72   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để chép"><span class="bi ">12</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">23</span><span class="bi ">26</span><span class="bi ">30</span><span class="bi ">45</span><span class="bi ">49</span><span class="bi ">66</span><span class="bi ">72</span></div>
+<div class="bo-so" data-chep="keno: 4 7 22 23 34 42 45 73 75 80   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">07</span><span class="bi ">22</span><span class="bi ">23</span><span class="bi ">34</span><span class="bi ">42</span><span class="bi ">45</span><span class="bi ">73</span><span class="bi ">75</span><span class="bi ">80</span></div>
+<div class="bo-so" data-chep="keno: 3 13 21 31 49 58 62 70 73 78   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">03</span><span class="bi ">13</span><span class="bi ">21</span><span class="bi ">31</span><span class="bi ">49</span><span class="bi ">58</span><span class="bi ">62</span><span class="bi ">70</span><span class="bi ">73</span><span class="bi ">78</span></div>
+<div class="bo-so" data-chep="keno: 8 11 15 16 25 27 30 45 49 72   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">08</span><span class="bi ">11</span><span class="bi ">15</span><span class="bi ">16</span><span class="bi ">25</span><span class="bi ">27</span><span class="bi ">30</span><span class="bi ">45</span><span class="bi ">49</span><span class="bi ">72</span></div>
+<div class="bo-so" data-chep="keno: 12 19 20 23 26 30 45 49 66 72   # gợi ý Chuỗi Markov 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">12</span><span class="bi ">19</span><span class="bi ">20</span><span class="bi ">23</span><span class="bi ">26</span><span class="bi ">30</span><span class="bi ">45</span><span class="bi ">49</span><span class="bi ">66</span><span class="bi ">72</span></div>
 </div>
 <div class="the">
 <div><strong>Mẫu hình</strong></div>
 <div class="mo" style="margin-bottom:8px">theo phân bố 5 khoảng của dải số</div>
-<div class="bo-so" data-chep="keno: 4 5 12 18 35 38 40 43 63 78   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">04</span><span class="bi ">05</span><span class="bi ">12</span><span class="bi ">18</span><span class="bi ">35</span><span class="bi ">38</span><span class="bi ">40</span><span class="bi ">43</span><span class="bi ">63</span><span class="bi ">78</span></div>
-<div class="bo-so" data-chep="keno: 10 14 30 34 46 47 54 62 64 65   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">10</span><span class="bi ">14</span><span class="bi ">30</span><span class="bi ">34</span><span class="bi ">46</span><span class="bi ">47</span><span class="bi ">54</span><span class="bi ">62</span><span class="bi ">64</span><span class="bi ">65</span></div>
-<div class="bo-so" data-chep="keno: 6 9 10 17 23 48 52 54 73 78   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">06</span><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">17</span><span class="bi ">23</span><span class="bi ">48</span><span class="bi ">52</span><span class="bi ">54</span><span class="bi ">73</span><span class="bi ">78</span></div>
-<div class="bo-so" data-chep="keno: 10 27 30 31 39 43 44 67 76 79   # gợi ý Mẫu hình 05/09/2026" title="Bấm để chép"><span class="bi ">10</span><span class="bi ">27</span><span class="bi ">30</span><span class="bi ">31</span><span class="bi ">39</span><span class="bi ">43</span><span class="bi ">44</span><span class="bi ">67</span><span class="bi ">76</span><span class="bi ">79</span></div>
+<div class="bo-so" data-chep="keno: 4 5 12 18 35 38 40 43 63 78   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">04</span><span class="bi ">05</span><span class="bi ">12</span><span class="bi ">18</span><span class="bi ">35</span><span class="bi ">38</span><span class="bi ">40</span><span class="bi ">43</span><span class="bi ">63</span><span class="bi ">78</span></div>
+<div class="bo-so" data-chep="keno: 10 14 30 34 46 47 54 62 64 65   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">10</span><span class="bi ">14</span><span class="bi ">30</span><span class="bi ">34</span><span class="bi ">46</span><span class="bi ">47</span><span class="bi ">54</span><span class="bi ">62</span><span class="bi ">64</span><span class="bi ">65</span></div>
+<div class="bo-so" data-chep="keno: 6 9 10 17 23 48 52 54 73 78   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">06</span><span class="bi ">09</span><span class="bi ">10</span><span class="bi ">17</span><span class="bi ">23</span><span class="bi ">48</span><span class="bi ">52</span><span class="bi ">54</span><span class="bi ">73</span><span class="bi ">78</span></div>
+<div class="bo-so" data-chep="keno: 10 27 30 31 39 43 44 67 76 79   # gợi ý Mẫu hình 05/09/2026" title="Bấm để xếp bộ này vào sổ vé; bấm lại để bỏ ra"><span class="bi ">10</span><span class="bi ">27</span><span class="bi ">30</span><span class="bi ">31</span><span class="bi ">39</span><span class="bi ">43</span><span class="bi ">44</span><span class="bi ">67</span><span class="bi ">76</span><span class="bi ">79</span></div>
 </div>
 </div>
 <h2 id="cham-goi-y">Mục gợi ý có ăn không?</h2>
@@ -4748,22 +4760,25 @@ document.querySelectorAll('table.sapxep').forEach(function(t){
 document.querySelectorAll('.bo-so').forEach(function(el){
   el.addEventListener('click', function(){
     var t = el.dataset.chep || '';
-    function xong(){
-      document.querySelectorAll('.bo-so.chep-roi').forEach(function(o){
-        o.classList.remove('chep-roi');});
-      el.classList.add('chep-roi');
-      setTimeout(function(){el.classList.remove('chep-roi');}, 1800);
-    }
+    // Vẫn chép vào bộ nhớ tạm: trên máy tính còn dùng 11-GHI-VE-DA-MUA.bat
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(t).then(xong, function(){});
+      navigator.clipboard.writeText(t).then(function(){}, function(){});
     } else {
       var ta = document.createElement('textarea');
       ta.value = t; ta.style.position='fixed'; ta.style.opacity='0';
       document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); xong(); } catch(e) {}
+      try { document.execCommand('copy'); } catch(e) {}
       document.body.removeChild(ta);
     }
-    dienVaoO(t);
+    // Bấm là xếp vào hàng chờ, bấm lại là bỏ ra. Không cuộn đi đâu cả.
+    if (typeof window.NV_XEP !== 'function') { dienVaoO(t); return; }
+    var kq = window.NV_XEP(t);
+    if (kq.loi) {
+      el.classList.add('chep-roi');
+      setTimeout(function(){ el.classList.remove('chep-roi'); }, 1500);
+      return;
+    }
+    el.classList.toggle('da-chon', !!kq.them);
   });
 });
 
@@ -4856,8 +4871,7 @@ function dienVaoO(chuoi){
   dongBoSo(true);
   if(m[3]) o('nv-db').value = m[3];
   if(m[4]) o('nv-ghi').value = m[4].trim();
-  var t = o('nv-gui');
-  if(t) t.scrollIntoView({behavior:'smooth', block:'center'});
+  // KHÔNG cuộn xuống nữa: bấm bộ số giờ là xếp vào hàng chờ tại chỗ.
 }
 
 (function(){
@@ -4948,8 +4962,21 @@ function dienVaoO(chuoi){
       h.appendChild(d);
     });
     var them = (o('nv-so').value || '').trim() ? 1 : 0;
-    nut.textContent = HANG_CHO.length
-      ? 'Ghi ' + (HANG_CHO.length + them) + ' vé vào sổ' : 'Ghi vào sổ';
+    var tong = HANG_CHO.length + them;
+    nut.textContent = HANG_CHO.length ? 'Ghi ' + tong + ' vé vào sổ' : 'Ghi vào sổ';
+
+    // Thanh chốt nổi: hiện khi đã xếp được vé nào, để bấm bộ số ở tít trên
+    // mục gợi ý cũng thấy ngay và ghi được luôn.
+    var th = o('nv-thanh');
+    if(th){
+      var hien = HANG_CHO.length > 0;
+      th.classList.toggle('an', !hien);
+      document.body.classList.toggle('co-thanh', hien);
+      if(hien){
+        o('nv-thanh-chu').textContent = 'Đã xếp ' + HANG_CHO.length + ' vé';
+        o('nv-thanh-nut').textContent = 'Ghi ' + tong + ' vé vào sổ';
+      }
+    }
   }
 
   var themNua = o('nv-them');
@@ -4999,6 +5026,49 @@ function dienVaoO(chuoi){
       noi('Không gọi được máy chủ. Nhập vé chỉ chạy trên trang '
         + 'vietlott-thongke.vercel.app, không chạy khi mở file HTML từ máy.', 'loi');
     }).then(function(){ nut.disabled = false; });
+  });
+
+  // Cho mục "Bộ số gợi ý" xếp thẳng vào hàng chờ. Dùng lại đúng đường kiểm
+  // của nút "Thêm vé nữa" nên không thể lọt vé sai khuôn.
+  window.NV_XEP = function(chuoi){
+    var m = /^([a-z_0-9]+):\s*([\d\s]+?)(?:\|\s*(\d+))?\s*(?:#\s*(.*))?$/
+              .exec(String(chuoi).trim());
+    if(!m) return {loi: 'Không đọc được bộ số.'};
+    if([].some.call(sp.options, function(x){ return x.value === m[1]; })) sp.value = m[1];
+    capNhatODacBiet();
+    o('nv-so').value = m[2].trim();
+    if(m[3]) o('nv-db').value = m[3];
+    if(m[4]) o('nv-ghi').value = m[4].trim();
+    dongBoSo(true);
+    var r = dongVe();
+    donO();
+    if(r.loi){ noi(r.loi, 'loi'); return r; }
+
+    for(var i = 0; i < HANG_CHO.length; i++){
+      if(HANG_CHO[i].dong === r.dong){
+        HANG_CHO.splice(i, 1); veHangCho(); noi('');
+        return {bo: true, dong: r.dong};
+      }
+    }
+    if(HANG_CHO.length >= 20){
+      noi('Nhiều nhất 20 vé một lượt.', 'loi');
+      return {loi: 'quá 20 vé'};
+    }
+    HANG_CHO.push(r); veHangCho(); noi('');
+    return {them: true, dong: r.dong, so: HANG_CHO.length};
+  };
+
+  var tnut = o('nv-thanh-nut');
+  if(tnut) tnut.addEventListener('click', function(){
+    if(!(mk.value || '').trim()){
+      // Chưa có mật khẩu thì đưa xuống ô mật khẩu chứ đừng báo lỗi ở chỗ
+      // Sếp không nhìn thấy.
+      mk.scrollIntoView({behavior: 'smooth', block: 'center'});
+      setTimeout(function(){ mk.focus(); }, 400);
+      noi('Nhập mật khẩu rồi bấm Ghi.', 'loi');
+      return;
+    }
+    nut.click();
   });
 
   veHangCho();
