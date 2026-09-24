@@ -1,33 +1,33 @@
 # Kết quả dò nguồn
 
-Đo lúc **19:11 ngày 24/09/2026** (giờ Việt Nam).
+Đo lúc **22:55 ngày 24/09/2026** (giờ Việt Nam).
 
 ```
 ## 1. Máy đang chạy đứng ở đâu
 
-  Địa chỉ IP: 4.236.89.87
+  Địa chỉ IP: 4.242.196.146
   Quốc gia  : US   nhà mạng: AS8075 Microsoft Corporation
 
 ## 2. Chính vietlott.vn — đường mà bộ crawler gốc dùng
 
-  ✗ trang chủ             HTTP 403            5536 byte  0.3s
-  ✗ thử lấy cookie        HTTP 403            5554 byte  0.0s   không có cookie (không sao, crawler không cần)
-  ✗ power_655             HTTP 403            6486 byte  0.1s
-  ✗ power_645             HTTP 403            6486 byte  0.0s
-  ✗ power_535             HTTP 403            6486 byte  0.1s
+  ✗ trang chủ             HTTP 403            5536 byte  0.6s
+  ✗ thử lấy cookie        HTTP 403            5575 byte  0.0s   không có cookie (không sao, crawler không cần)
+  ✗ power_655             HTTP 403            6486 byte  0.0s
+  ✗ power_645             HTTP 403            6486 byte  0.1s
+  ✗ power_535             HTTP 403            6486 byte  0.0s
 
 ## 3. Các trang kết quả xổ số khác
 
-  ✓ kqxs.vn               HTTP 200          255372 byte  2.3s   ngày mới nhất 24/09/2026  (CÓ hôm nay)
-  ✓ minhngoc              HTTP 200          199265 byte  1.7s   ngày mới nhất 24/09/2026  (CÓ hôm nay)
-  ✗ xosodaiphat           HTTP 404           38512 byte  0.6s
-  ✗ xoso.me               HTTP 404           40337 byte  0.7s
+  ✓ kqxs.vn               HTTP 200          259471 byte  2.6s   ngày mới nhất 24/09/2026  (CÓ hôm nay)
+  ✓ minhngoc              HTTP 200          199279 byte  1.8s   ngày mới nhất 24/09/2026  (CÓ hôm nay)
+  ✗ xosodaiphat           HTTP 404           38512 byte  1.0s
+  ✗ xoso.me               HTTP 404           40337 byte  1.1s
   ✗ ketqua1               không nối được         0 byte  0.2s   URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certific
 
 ## 4. Kho dữ liệu sẵn trên GitHub (đường dự phòng)
 
-  ✓ vietvudanh/power655   HTTP 200          153944 byte  0.4s   kỳ cuối 01401 ngày 2026-09-22  (1401 kỳ)
-  ✓ vietvudanh/power645   HTTP 200          146231 byte  0.2s   kỳ cuối 01566 ngày 2026-09-23  (1369 kỳ)
+  ✓ vietvudanh/power655   HTTP 200          153944 byte  0.1s   kỳ cuối 01401 ngày 2026-09-22  (1401 kỳ)
+  ✓ vietvudanh/power645   HTTP 200          146231 byte  0.3s   kỳ cuối 01566 ngày 2026-09-23  (1369 kỳ)
   ✓ vietvudanh/power535   HTTP 200           88014 byte  0.2s   kỳ cuối 00904 ngày 2026-09-23  (830 kỳ)
   ✓ googlesky/power655    HTTP 200          172113 byte  0.2s   kỳ cuối 01401 ngày 2026-09-22  (1401 kỳ)
   ✓ googlesky/power645    HTTP 200          162659 byte  0.2s   kỳ cuối 01566 ngày 2026-09-23  (1369 kỳ)
