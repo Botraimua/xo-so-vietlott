@@ -4925,3 +4925,111 @@
 {"ngay": "2026-09-24", "ma": "power_535", "chien_luoc": "Mẫu hình", "so": [10, 20, 27, 29, 31], "so_db": 6, "sau_ky": "00905"}
 {"ngay": "2026-09-24", "ma": "power_535", "chien_luoc": "Mẫu hình", "so": [5, 7, 17, 18, 26], "so_db": 11, "sau_ky": "00905"}
 {"ngay": "2026-09-24", "ma": "power_535", "chien_luoc": "Mẫu hình", "so": [9, 11, 16, 17, 28], "so_db": 2, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Ngẫu nhiên", "so": [1, 7, 22, 25, 48, 50], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Ngẫu nhiên", "so": [3, 7, 9, 21, 34, 42], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Ngẫu nhiên", "so": [2, 7, 36, 45, 49, 53], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Ngẫu nhiên", "so": [5, 9, 10, 15, 20, 52], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Số nóng", "so": [21, 24, 26, 48, 50, 53], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Số nóng", "so": [5, 11, 22, 24, 30, 52], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Số nóng", "so": [18, 23, 32, 36, 45, 55], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Số nóng", "so": [11, 12, 20, 33, 43, 52], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Số lạnh", "so": [4, 12, 18, 23, 29, 32], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Số lạnh", "so": [9, 10, 12, 15, 18, 52], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Số lạnh", "so": [2, 6, 15, 24, 51, 54], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Số lạnh", "so": [2, 10, 17, 18, 23, 32], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Lâu chưa về", "so": [12, 20, 30, 35, 39, 48], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Lâu chưa về", "so": [12, 20, 30, 35, 48, 50], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Lâu chưa về", "so": [12, 19, 30, 39, 40, 48], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Lâu chưa về", "so": [19, 20, 30, 35, 40, 52], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Không lặp lại", "so": [1, 7, 26, 43, 48, 49], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Không lặp lại", "so": [12, 15, 19, 39, 42, 51], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Không lặp lại", "so": [3, 12, 26, 48, 50, 52], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Không lặp lại", "so": [12, 18, 35, 46, 52, 54], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Suy giảm mũ", "so": [1, 4, 6, 17, 19, 23], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Suy giảm mũ", "so": [8, 16, 31, 38, 43, 50], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Suy giảm mũ", "so": [8, 9, 17, 19, 23, 33], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Suy giảm mũ", "so": [24, 34, 35, 39, 45, 55], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Tần suất cặp", "so": [6, 10, 24, 27, 31, 34], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Tần suất cặp", "so": [6, 22, 26, 30, 41, 53], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Tần suất cặp", "so": [8, 12, 14, 18, 45, 53], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Tần suất cặp", "so": [2, 22, 36, 37, 50, 55], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Chuỗi Markov", "so": [1, 2, 16, 32, 36, 46], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Chuỗi Markov", "so": [1, 13, 27, 28, 50, 52], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Chuỗi Markov", "so": [16, 25, 41, 43, 47, 53], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Chuỗi Markov", "so": [11, 18, 21, 23, 47, 53], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Mẫu hình", "so": [2, 3, 7, 46, 47, 49], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Mẫu hình", "so": [1, 29, 33, 36, 40, 48], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Mẫu hình", "so": [11, 18, 22, 24, 30, 37], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_655", "chien_luoc": "Mẫu hình", "so": [4, 6, 7, 34, 51, 53], "so_db": null, "sau_ky": "01402"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Ngẫu nhiên", "so": [5, 7, 9, 21, 37, 45], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Ngẫu nhiên", "so": [25, 27, 30, 31, 32, 36], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Ngẫu nhiên", "so": [1, 9, 22, 33, 36, 42], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Ngẫu nhiên", "so": [1, 25, 30, 38, 39, 44], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Số nóng", "so": [11, 14, 18, 28, 31, 42], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Số nóng", "so": [5, 6, 34, 36, 43, 44], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Số nóng", "so": [6, 9, 10, 22, 30, 45], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Số nóng", "so": [9, 12, 19, 28, 32, 37], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Số lạnh", "so": [15, 26, 27, 34, 38, 41], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Số lạnh", "so": [8, 11, 15, 20, 25, 39], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Số lạnh", "so": [4, 10, 17, 18, 26, 33], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Số lạnh", "so": [1, 2, 6, 30, 40, 44], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Lâu chưa về", "so": [8, 19, 24, 28, 30, 39], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Lâu chưa về", "so": [5, 13, 19, 30, 39, 42], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Lâu chưa về", "so": [19, 24, 28, 32, 39, 42], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Lâu chưa về", "so": [5, 8, 13, 24, 28, 39], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Không lặp lại", "so": [5, 8, 19, 28, 30, 40], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Không lặp lại", "so": [4, 16, 20, 24, 27, 36], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Không lặp lại", "so": [4, 10, 20, 25, 32, 45], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Không lặp lại", "so": [24, 25, 26, 28, 30, 42], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Suy giảm mũ", "so": [12, 22, 28, 33, 36, 44], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Suy giảm mũ", "so": [1, 5, 23, 24, 29, 38], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Suy giảm mũ", "so": [8, 12, 13, 18, 23, 43], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Suy giảm mũ", "so": [7, 15, 27, 35, 36, 45], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Tần suất cặp", "so": [4, 11, 14, 26, 44, 45], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Tần suất cặp", "so": [1, 9, 14, 15, 30, 41], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Tần suất cặp", "so": [11, 20, 26, 30, 35, 44], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Tần suất cặp", "so": [5, 8, 35, 43, 44, 45], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Chuỗi Markov", "so": [11, 21, 28, 30, 31, 44], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Chuỗi Markov", "so": [3, 4, 7, 24, 26, 28], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Chuỗi Markov", "so": [24, 26, 33, 35, 38, 42], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Chuỗi Markov", "so": [17, 23, 25, 26, 31, 38], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Mẫu hình", "so": [10, 13, 18, 24, 33, 44], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Mẫu hình", "so": [2, 7, 11, 16, 21, 34], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Mẫu hình", "so": [3, 19, 30, 35, 37, 42], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_645", "chien_luoc": "Mẫu hình", "so": [9, 17, 21, 26, 30, 33], "so_db": null, "sau_ky": "01566"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Ngẫu nhiên", "so": [2, 14, 31, 34, 35], "so_db": 8, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Ngẫu nhiên", "so": [9, 11, 14, 17, 33], "so_db": 5, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Ngẫu nhiên", "so": [16, 17, 18, 20, 29], "so_db": 1, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Ngẫu nhiên", "so": [3, 14, 18, 32, 33], "so_db": 8, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Số nóng", "so": [7, 8, 10, 11, 13], "so_db": 7, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Số nóng", "so": [10, 15, 23, 29, 31], "so_db": 10, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Số nóng", "so": [8, 13, 15, 21, 34], "so_db": 9, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Số nóng", "so": [9, 18, 26, 30, 33], "so_db": 5, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Số lạnh", "so": [2, 5, 13, 20, 24], "so_db": 5, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Số lạnh", "so": [2, 4, 14, 17, 25], "so_db": 6, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Số lạnh", "so": [4, 7, 20, 21, 32], "so_db": 8, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Số lạnh", "so": [10, 12, 18, 21, 24], "so_db": 2, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Lâu chưa về", "so": [2, 13, 18, 23, 26], "so_db": 1, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Lâu chưa về", "so": [13, 21, 23, 24, 26], "so_db": 11, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Lâu chưa về", "so": [1, 2, 18, 23, 26], "so_db": 1, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Lâu chưa về", "so": [2, 13, 18, 24, 34], "so_db": 9, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Không lặp lại", "so": [1, 15, 17, 23, 31], "so_db": 7, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Không lặp lại", "so": [10, 13, 16, 20, 30], "so_db": 8, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Không lặp lại", "so": [14, 23, 24, 26, 35], "so_db": 10, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Không lặp lại", "so": [9, 18, 21, 23, 30], "so_db": 5, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Suy giảm mũ", "so": [9, 10, 19, 22, 27], "so_db": 12, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Suy giảm mũ", "so": [8, 11, 22, 25, 27], "so_db": 4, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Suy giảm mũ", "so": [3, 6, 13, 22, 32], "so_db": 12, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Suy giảm mũ", "so": [1, 9, 11, 16, 21], "so_db": 2, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Tần suất cặp", "so": [7, 11, 14, 23, 28], "so_db": 12, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Tần suất cặp", "so": [13, 21, 28, 32, 34], "so_db": 12, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Tần suất cặp", "so": [2, 4, 7, 19, 27], "so_db": 2, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Tần suất cặp", "so": [15, 21, 22, 31, 35], "so_db": 11, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Chuỗi Markov", "so": [3, 4, 6, 18, 22], "so_db": 1, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Chuỗi Markov", "so": [10, 11, 21, 23, 35], "so_db": 9, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Chuỗi Markov", "so": [3, 4, 13, 18, 35], "so_db": 12, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Chuỗi Markov", "so": [5, 14, 22, 34, 35], "so_db": 7, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Mẫu hình", "so": [5, 13, 15, 27, 30], "so_db": 6, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Mẫu hình", "so": [11, 23, 28, 30, 32], "so_db": 3, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Mẫu hình", "so": [4, 14, 22, 23, 27], "so_db": 9, "sau_ky": "00905"}
+{"ngay": "2026-09-25", "ma": "power_535", "chien_luoc": "Mẫu hình", "so": [8, 11, 25, 28, 35], "so_db": 1, "sau_ky": "00905"}
