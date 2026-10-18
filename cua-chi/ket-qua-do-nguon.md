@@ -1,28 +1,28 @@
 # Kết quả dò nguồn
 
-Đo lúc **21:50 ngày 18/10/2026** (giờ Việt Nam).
+Đo lúc **00:33 ngày 19/10/2026** (giờ Việt Nam).
 
 ```
 ## 1. Máy đang chạy đứng ở đâu
 
-  Địa chỉ IP: 135.119.238.196
+  Địa chỉ IP: 4.236.167.2
   Quốc gia  : US   nhà mạng: AS8075 Microsoft Corporation
 
 ## 2. Chính vietlott.vn — đường mà bộ crawler gốc dùng
 
   ✗ trang chủ             HTTP 403            5525 byte  0.3s
-  ✗ thử lấy cookie        HTTP 403            5564 byte  0.0s   không có cookie (không sao, crawler không cần)
-  ✗ power_655             HTTP 403            6496 byte  0.0s
-  ✗ power_645             HTTP 403            6496 byte  0.0s
-  ✗ power_535             HTTP 403            6496 byte  0.0s
+  ✗ thử lấy cookie        HTTP 403            5543 byte  0.0s   không có cookie (không sao, crawler không cần)
+  ✗ power_655             HTTP 403            6475 byte  0.0s
+  ✗ power_645             HTTP 403            6475 byte  0.0s
+  ✗ power_535             HTTP 403            6475 byte  0.0s
 
 ## 3. Các trang kết quả xổ số khác
 
-  ✗ kqxs.vn               HTTP 404          209282 byte  2.6s
-  ✓ minhngoc              HTTP 200          199242 byte  2.2s   ngày mới nhất 18/10/2026  (CÓ hôm nay)
-  ✗ xosodaiphat           HTTP 404           38619 byte  0.5s
-  ✗ xoso.me               HTTP 404           42097 byte  0.9s
-  ✓ ketqua1               HTTP 200            6989 byte  0.5s   không thấy ngày nào
+  ✗ kqxs.vn               HTTP 404          209002 byte  2.5s
+  ✓ minhngoc              HTTP 200          199231 byte  2.2s   ngày mới nhất 19/10/2026  (CÓ hôm nay)
+  ✗ xosodaiphat           HTTP 404           38619 byte  0.4s
+  ✗ xoso.me               HTTP 404           42097 byte  1.0s
+  ✓ ketqua1               HTTP 200            6990 byte  0.6s   không thấy ngày nào
 
 ## 4. Kho dữ liệu sẵn trên GitHub (đường dự phòng)
 
