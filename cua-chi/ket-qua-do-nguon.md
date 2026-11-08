@@ -1,11 +1,11 @@
 # Kết quả dò nguồn
 
-Đo lúc **02:03 ngày 08/11/2026** (giờ Việt Nam).
+Đo lúc **20:51 ngày 08/11/2026** (giờ Việt Nam).
 
 ```
 ## 1. Máy đang chạy đứng ở đâu
 
-  Địa chỉ IP: 128.85.55.132
+  Địa chỉ IP: 20.64.217.196
   Quốc gia  : US   nhà mạng: AS8075 Microsoft Corporation
 
 ## 2. Chính vietlott.vn — đường mà bộ crawler gốc dùng
@@ -18,18 +18,18 @@
 
 ## 3. Các trang kết quả xổ số khác
 
-  ✗ kqxs.vn               HTTP 404          239638 byte  3.0s
-  ✓ minhngoc              HTTP 200          199264 byte  1.5s   ngày mới nhất 08/11/2026  (CÓ hôm nay)
-  ✗ xosodaiphat           HTTP 404           39295 byte  0.7s
-  ✗ xoso.me               HTTP 404           41699 byte  0.7s
+  ✗ kqxs.vn               HTTP 404          239638 byte  2.8s
+  ✓ minhngoc              HTTP 200          199225 byte  1.5s   ngày mới nhất 08/11/2026  (CÓ hôm nay)
+  ✗ xosodaiphat           HTTP 404           39295 byte  0.4s
+  ✗ xoso.me               HTTP 404           43523 byte  5.3s
   ✓ ketqua1               HTTP 200            6989 byte  0.8s   không thấy ngày nào
 
 ## 4. Kho dữ liệu sẵn trên GitHub (đường dự phòng)
 
   ✓ vietvudanh/power655   HTTP 200          156106 byte  0.1s   kỳ cuối 01421 ngày 2026-11-07  (1421 kỳ)
-  ✓ vietvudanh/power645   HTTP 200          148229 byte  0.1s   kỳ cuối 01585 ngày 2026-11-06  (1388 kỳ)
-  ✓ vietvudanh/power535   HTTP 200          105057 byte  0.1s   kỳ cuối 00993 ngày 2026-11-07  (993 kỳ)
-  ✓ googlesky/power655    HTTP 200          174448 byte  0.2s   kỳ cuối 01420 ngày 2026-11-05  (1420 kỳ)
+  ✓ vietvudanh/power645   HTTP 200          148329 byte  0.1s   kỳ cuối 01586 ngày 2026-11-08  (1389 kỳ)
+  ✓ vietvudanh/power535   HTTP 200          105257 byte  0.1s   kỳ cuối 00995 ngày 2026-11-08  (995 kỳ)
+  ✓ googlesky/power655    HTTP 200          174571 byte  0.2s   kỳ cuối 01421 ngày 2026-11-07  (1421 kỳ)
   ✓ googlesky/power645    HTTP 200          164915 byte  0.2s   kỳ cuối 01585 ngày 2026-11-06  (1388 kỳ)
   ✗ googlesky/power535    HTTP 404              14 byte  0.1s
 
