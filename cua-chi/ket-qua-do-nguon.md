@@ -1,11 +1,11 @@
 # Kết quả dò nguồn
 
-Đo lúc **00:18 ngày 15/11/2026** (giờ Việt Nam).
+Đo lúc **02:29 ngày 15/11/2026** (giờ Việt Nam).
 
 ```
 ## 1. Máy đang chạy đứng ở đâu
 
-  Địa chỉ IP: 52.155.39.67
+  Địa chỉ IP: 20.169.53.38
   Quốc gia  : US   nhà mạng: AS8075 Microsoft Corporation
 
 ## 2. Chính vietlott.vn — đường mà bộ crawler gốc dùng
@@ -18,19 +18,19 @@
 
 ## 3. Các trang kết quả xổ số khác
 
-  ✗ kqxs.vn               HTTP 404          309526 byte  3.3s
-  ✓ minhngoc              HTTP 200          199239 byte  1.6s   ngày mới nhất 15/11/2026  (CÓ hôm nay)
-  ✗ xosodaiphat           HTTP 404           38623 byte  0.6s
-  ✗ xoso.me               HTTP 404           43715 byte  0.7s
-  ✓ ketqua1               HTTP 200            6990 byte  0.8s   không thấy ngày nào
+  ✗ kqxs.vn               HTTP 404          309526 byte  3.2s
+  ✓ minhngoc              HTTP 200          199259 byte  1.6s   ngày mới nhất 15/11/2026  (CÓ hôm nay)
+  ✗ xosodaiphat           HTTP 404           38623 byte  0.7s
+  ✗ xoso.me               HTTP 404           43715 byte  0.8s
+  ✓ ketqua1               HTTP 200            6989 byte  0.7s   không thấy ngày nào
 
 ## 4. Kho dữ liệu sẵn trên GitHub (đường dự phòng)
 
-  ✓ vietvudanh/power655   HTTP 200          156418 byte  0.3s   kỳ cuối 01424 ngày 2026-11-14  (1424 kỳ)
+  ✓ vietvudanh/power655   HTTP 200          156418 byte  0.2s   kỳ cuối 01424 ngày 2026-11-14  (1424 kỳ)
   ✓ vietvudanh/power645   HTTP 200          148530 byte  0.1s   kỳ cuối 01588 ngày 2026-11-13  (1391 kỳ)
-  ✓ vietvudanh/power535   HTTP 200          106455 byte  0.1s   kỳ cuối 01007 ngày 2026-11-14  (1007 kỳ)
-  ✓ googlesky/power655    HTTP 200          174817 byte  0.1s   kỳ cuối 01423 ngày 2026-11-12  (1423 kỳ)
-  ✓ googlesky/power645    HTTP 200          165270 byte  0.1s   kỳ cuối 01588 ngày 2026-11-13  (1391 kỳ)
+  ✓ vietvudanh/power535   HTTP 200          106455 byte  0.2s   kỳ cuối 01007 ngày 2026-11-14  (1007 kỳ)
+  ✓ googlesky/power655    HTTP 200          174817 byte  0.8s   kỳ cuối 01423 ngày 2026-11-12  (1423 kỳ)
+  ✓ googlesky/power645    HTTP 200          165270 byte  0.4s   kỳ cuối 01588 ngày 2026-11-13  (1391 kỳ)
   ✗ googlesky/power535    HTTP 404              14 byte  0.1s
 
 ```
